@@ -1,5 +1,22 @@
 #include "minirt.h"
 
+void add_sphere(double *center, double radius, double *ray_direction)
+{
+    double  *oc;
+    double  a;
+    double  b;
+    double  c;
+    double  *origin;    
+
+    origin = vec_3d_init(0, 0, 0);
+    oc = subtrac_vec_vec(center, origin);
+    a = ray_direction[0] *  ray_direction[0] + ray_direction[1] *  ray_direction[1] + ray_direction[2] *  ray_direction[2];
+    b = -2.0 * (ray_direction[0] *  oc[0] + ray_direction[1] *  oc[1] + ray_direction[2] *  oc[2]);
+    c = (oc[0] *  oc[0] + oc[1] *  oc[1] + oc[2] *  oc[2]) - radius * radius;
+    printf("%d %d %d\n", (int)a, (int)b, (int)c);
+
+}
+
 void    write_color(double *color_final)
 {
     double  r;
@@ -26,6 +43,7 @@ void  ray_color_print(double *ray_direction)
     double  *color2;
     double  *color3;
     double  *color_final;
+    //double  *point;
     
     ray_direction[1] += 1.0;
     a = multi_vec_doub(ray_direction, 0.5);
@@ -34,7 +52,9 @@ void  ray_color_print(double *ray_direction)
     color2 = vec_3d_init(0.5, 0.7, 1.0);
     color3 = multi_vec_vec(add_vec_doub(tmp, 1.0), color1);
     color_final = add_vec_vec(multi_vec_vec(a, color2), color3);
+    //point = vec_3d_init(0,0,-1);
     write_color(color_final);
+    //add_sphere(point, 0.5, ray_direction);
 }
 
 void    render(t_img *image, t_camera *camera, double *pixel00_loc, double *pixel_delta_u, double *pixel_delta_v)
