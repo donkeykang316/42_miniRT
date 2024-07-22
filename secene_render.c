@@ -8,13 +8,15 @@ t_vector    *ray_color(t_ray *ray)
     t_vector    *color1;
     t_vector    *color2;
     t_vector    *center;
+    double      t;
     
     center = vec_init(0, 0, -1);
-    if (hit_sphere(center, 0.5, ray))
+    t = hit_sphere(center, 0.5, ray);
+    if (t > 0.0)
     {
-        ray_color = vec_init(1, 0, 0);
+        ray_color = unit_vector(subtrac_vec_vec(at_vec(ray, t), center));
         free(center);
-        return (ray_color);
+        return (multi_vec_doub(vec_init(ray_color->x + 1, ray_color->y + 1, ray_color->z + 1), 0.5));
     }
     free(center);
     ray_color = malloc(sizeof(t_vector));

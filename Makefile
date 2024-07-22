@@ -3,17 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
+#    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/07/22 14:52:42 by kaan             ###   ########.fr        #
+#    Updated: 2024/07/22 22:25:30 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minirt
 
-CC		=	cc
-CFLAGS	=	-Wall -Werror -Wextra -Imlx -g 
+CC		=	gcc
+CFLAGS	=	-Wall -Werror -Wextra -Imlx -g
+MFLAGS  =	-lm
 
 LIBS	=	./lib/libft/libft.a
 
@@ -23,6 +24,7 @@ SRCS	=	main.c\
 			vector_init.c\
 			data_init.c\
 			secene_render.c\
+			hit_function.c\
 			vector_operation_1.c\
 			vector_operation_2.c\
 			vector_operation_3.c\
@@ -35,7 +37,7 @@ all:		$(NAME)
 $(NAME): $(OBJS)
 			make -C ./lib/libft
 			make -C ./lib/get_next_line
-			$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(GNL) -o $(NAME)
+			$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(GNL) -o $(NAME) $(MFLAGS)
 			
 clean:
 			make clean -C ./lib/libft

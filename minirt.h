@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/22 16:11:39 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/22 22:49:51 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ void        secene_render(t_img *image, t_camera *camera, t_viewport *viewport);
 void    image_init(t_img  *image);
 void    camera_init(t_camera *camera, t_img *image);
 void    viewport_init(t_viewport *viewport, t_img *image, t_camera *camera);
-bool    hit_sphere(t_vector *center, double radius, t_ray *ray);
+
+//hit function
+double    hit_sphere(t_vector *center, double radius, t_ray *ray);
 
 //vector init
 t_vector	*vec_init(double x, double y, double z);
@@ -98,5 +100,9 @@ t_vector    *subtrac_vec_doub(t_vector *vec, double doub);
 t_vector    *multi_vec_doub(t_vector *vec, double doub);
 t_vector    *divi_vec_doub(t_vector *vec, double doub);
 double      dot_vec(t_vector *vec1, t_vector *vec2);
+t_vector    *at_vec(t_ray *ray, double t);
+double      length_squared(t_vector *vec);
+double      vec_length(t_vector *vec);
+t_vector    *unit_vector(t_vector *vec);
 
 #endif
