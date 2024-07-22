@@ -1,12 +1,12 @@
 #include "minirt.h"
 
-double	*vec_3d_init(double x, double y, double z)
+t_vector	*vec_init(double x, double y, double z)
 {
-    double  *output;
+    t_vector *output;
 
-    output = malloc(3 * sizeof(double));
-    output[0] = x;
-    output[1] = y;
-    output[2] = z;
+    output = malloc(sizeof(t_vector));
+    output->x = x;
+    output->y = y;
+    output->z = z;
     return (output);
 }

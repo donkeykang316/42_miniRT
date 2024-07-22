@@ -1,65 +1,45 @@
 #include "minirt.h"
 
-double  *add_vec_int(double *vec, int inte)
+t_vector  *add_vec_int(t_vector *vec, int inte)
 {
-    int i;
-    double *result;
+    t_vector *result;
 
-    result = malloc(3 * sizeof(double));
-    i = 0;
-    while (i < 3)
-    {
-        result[i] = vec[i] + inte;
-        i++;
-    }
-    
+    result = malloc(sizeof(t_vector));
+    result->x = vec->x + inte;
+    result->y = vec->y + inte;
+    result->z = vec->z + inte;
     return (result);
 }
 
-double  *subtrac_vec_int(double *vec, int inte)
+t_vector  *subtrac_vec_int(t_vector *vec, int inte)
 {
-    int i;
-    double *result;
+    t_vector *result;
 
-    result = malloc(3 * sizeof(double));
-    i = 0;
-    while (i < 3)
-    {
-        result[i] = vec[i] - inte;
-        i++;
-    }
-    
+    result = malloc(sizeof(t_vector));
+    result->x = vec->x - inte;
+    result->y = vec->y - inte;
+    result->z = vec->z - inte;
     return (result);
 }
 
-double  *multi_vec_int(double *vec, int inte)
+t_vector  *multi_vec_int(t_vector *vec, int inte)
 {
-    int i;
-    double *result;
+    t_vector *result;
 
-    result = malloc(3 * sizeof(double));
-    i = 0;
-    while (i < 3)
-    {
-        result[i] = vec[i] * inte;
-        i++;
-    }
-    
+    result = malloc(sizeof(t_vector));
+    result->x = vec->x * inte;
+    result->y = vec->y * inte;
+    result->z = vec->z * inte;
     return (result);
 }
 
-double  *divi_vec_int(double *vec, int inte)
+t_vector  *divi_vec_int(t_vector *vec, int inte)
 {
-    int i;
-    double *result;
+    t_vector *result;
 
-    result = malloc(3 * sizeof(double));
-    i = 0;
-    while (i < 3)
-    {
-        result[i] = vec[i] / inte;
-        i++;
-    }
-    
+    result = malloc(sizeof(t_vector));
+    result->x = vec->x / inte;
+    result->y = vec->y / inte;
+    result->z = vec->z / inte;
     return (result);
 }

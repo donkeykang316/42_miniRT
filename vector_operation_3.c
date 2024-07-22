@@ -1,65 +1,45 @@
 #include "minirt.h"
 
-double  *add_vec_doub(double *vec, double doub)
+t_vector  *add_vec_doub(t_vector *vec, double doub)
 {
-    int i;
-    double *result;
+    t_vector *result;
 
-    result = malloc(3 * sizeof(double));
-    i = 0;
-    while (i < 3)
-    {
-        result[i] = vec[i] + doub;
-        i++;
-    }
-    
+    result = malloc(sizeof(t_vector));
+    result->x = vec->x + doub;
+    result->y = vec->y + doub;
+    result->z = vec->z + doub;
     return (result);
 }
 
-double  *subtrac_vec_doub(double *vec, double doub)
+t_vector  *subtrac_vec_doub(t_vector *vec, double doub)
 {
-    int i;
-    double *result;
+    t_vector *result;
 
-    result = malloc(3 * sizeof(double));
-    i = 0;
-    while (i < 3)
-    {
-        result[i] = vec[i] - doub;
-        i++;
-    }
-    
+    result = malloc(sizeof(t_vector));
+    result->x = vec->x - doub;
+    result->y = vec->y - doub;
+    result->z = vec->z - doub;
     return (result);
 }
 
-double  *multi_vec_doub(double *vec, double doub)
+t_vector  *multi_vec_doub(t_vector *vec, double doub)
 {
-    int i;
-    double *result;
+    t_vector *result;
 
-    result = malloc(3 * sizeof(double));
-    i = 0;
-    while (i < 3)
-    {
-        result[i] = vec[i] * doub;
-        i++;
-    }
-    
+    result = malloc(sizeof(t_vector));
+    result->x = vec->x * doub;
+    result->y = vec->y * doub;
+    result->z = vec->z * doub;
     return (result);
 }
 
-double  *divi_vec_doub(double *vec, double doub)
+t_vector  *divi_vec_doub(t_vector *vec, double doub)
 {
-    int i;
-    double *result;
+    t_vector *result;
 
-    result = malloc(3 * sizeof(double));
-    i = 0;
-    while (i < 3)
-    {
-        result[i] = vec[i] / doub;
-        i++;
-    }
-    
+    result = malloc(sizeof(t_vector));
+    result->x = vec->x / doub;
+    result->y = vec->y / doub;
+    result->z = vec->z / doub;
     return (result);
 }

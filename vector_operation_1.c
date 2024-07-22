@@ -1,66 +1,46 @@
 #include "minirt.h"
 
-double  *add_vec_vec(double *vec1, double *vec2)
+t_vector  *add_vec_vec(t_vector *vec1, t_vector *vec2)
 {
-    int i;
-    double *result;
+    t_vector *result;
 
-    result = malloc(3 * sizeof(double));
-    i = 0;
-    while (i < 3)
-    {
-        result[i] = vec1[i] + vec2[i];
-        i++;
-    }
-    
+    result = malloc(sizeof(t_vector));
+    result->x = vec1->x + vec2->x;
+    result->y = vec1->y + vec2->y;
+    result->z = vec1->z + vec2->z;
     return (result);
 }
 
-double  *subtrac_vec_vec(double *vec1, double *vec2)
+t_vector  *subtrac_vec_vec(t_vector *vec1, t_vector *vec2)
 {
-    int i;
-    double *result;
+    t_vector *result;
 
-    result = malloc(3 * sizeof(double));
-    i = 0;
-    while (i < 3)
-    {
-        result[i] = vec1[i] - vec2[i];
-        i++;
-    }
-    
+    result = malloc(sizeof(t_vector));
+    result->x = vec1->x - vec2->x;
+    result->y = vec1->y - vec2->y;
+    result->z = vec1->z - vec2->z;
     return (result);
 }
 
-double  *multi_vec_vec(double *vec1, double *vec2)
+t_vector  *multi_vec_vec(t_vector *vec1, t_vector *vec2)
 {
-    int i;
-    double *result;
+    t_vector *result;
 
-    result = malloc(3 * sizeof(double));
-    i = 0;
-    while (i < 3)
-    {
-        result[i] = vec1[i] * vec2[i];
-        i++;
-    }
-    
+    result = malloc(sizeof(t_vector));
+    result->x = vec1->x * vec2->x;
+    result->y = vec1->y * vec2->y;
+    result->z = vec1->z * vec2->z;
     return (result);
 }
 
-double  *divi_vec_vec(double *vec1, double *vec2)
+t_vector  *divi_vec_vec(t_vector *vec1, t_vector *vec2)
 {
-    int i;
-    double *result;
+    t_vector *result;
 
-    result = malloc(3 * sizeof(double));
-    i = 0;
-    while (i < 3)
-    {
-        result[i] = vec1[i] / vec2[i];
-        i++;
-    }
-    
+    result = malloc(sizeof(t_vector));
+    result->x = vec1->x / vec2->x;
+    result->y = vec1->y / vec2->y;
+    result->z = vec1->z / vec2->z;
     return (result);
 }
 

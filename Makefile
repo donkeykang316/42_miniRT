@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
+#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/07/21 22:01:16 by kaan             ###   ########.fr        #
+#    Updated: 2024/07/22 09:55:10 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,6 @@ LIBS	=	./lib/libft/libft.a
 GNL  =  ./lib/get_next_line/gnl.a
 
 SRCS	=	main.c\
-			simple_render.c\
-			render.c\
-			data_init.c\
 			vector_init.c\
 			vector_operation_1.c\
 			vector_operation_2.c\

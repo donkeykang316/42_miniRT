@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/21 22:48:52 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/22 12:54:03 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,49 +22,68 @@
 # include "lib/get_next_line/inc/get_next_line.h"
 # include "lib/libft/inc/libft.h"
 
+typedef struct s_vector
+{
+    double  x;
+    double  y;
+    double  z;
+}   t_vector;
+
 typedef struct s_img
 {
     double  aspect_ratio;
     int     image_width;
     int     image_height;
-} t_img;
+}   t_img;
 
 typedef struct s_camera
 {
-    double  focal_length;
-    double  viewport_height;
-    double  viewport_width;
-    double  *camera_center;
+    double      focal_length;
+    double      viewport_height;
+    double      viewport_width;
+    t_vector    *camera_center;
 } t_camera;
 
-//render prototype
-void    simple_render();
-void    alt_write_color(double *e);
-void    alt_render();
+typedef struct s_viewport
+{
+    t_vector    *viewport_u;
+    t_vector    *viewport_v;
+    t_vector    *pixel_delta_u;
+    t_vector    *pixel_delta_v;
+    t_vector    *viewport_upper_left;
+    t_vector    *pixel00_loc;
+}   t_viewport;
 
-//render 
-void    render(t_img *image, t_camera *camera, double *pixel00_loc, double *pixel_delta_u, double *pixel_delta_v);
 
+typedef struct s_ray
+{
+    t_vector    *origin;
+    t_vector    *direction;
+}   t_ray;
 
-//struct init
-void    img_init(t_img  *image);
-void    camera_init(t_camera *camera);
+//render
+void    render(t_img *image, t_camera *camera, t_viewport *viewport);
+
+//scene init
+void    secene_render(t_img *image, t_camera *camera, t_viewport *viewport);
+void    image_init(t_img  *image);
+void    camera_init(t_camera *camera, t_img *image);
 
 //vector init
-double	*vec_3d_init(double x, double y, double z);
+t_vector	*vec_init(double x, double y, double z);
 
 //vector operation
-double  *add_vec_vec(double *vec1, double *vec2);
-double  *subtrac_vec_vec(double *vec1, double *vec2);
-double  *multi_vec_vec(double *vec1, double *vec2);
-double  *divi_vec_vec(double *vec1, double *vec2);
-double  *add_vec_int(double *vec, int inte);
-double  *subtrac_vec_int(double *vec, int inte);
-double  *multi_vec_int(double *vec, int inte);
-double  *divi_vec_int(double *vec, int inte);
-double  *add_vec_doub(double *vec, double doub);
-double  *subtrac_vec_doub(double *vec, double doub);
-double  *multi_vec_doub(double *vec, double doub);
-double  *divi_vec_doub(double *vec, double doub);
+t_vector    *add_vec_vec(t_vector *vec1, t_vector *vec2);
+t_vector    *subtrac_vec_vec(t_vector *vec1, t_vector *vec2);
+t_vector    *multi_vec_vec(t_vector *vec1, t_vector *vec2);
+t_vector    *divi_vec_vec(t_vector *vec1, t_vector *vec2);
+t_vector    *add_vec_int(t_vector *vec, int inte);
+t_vector    *subtrac_vec_int(t_vector *vec, int inte);
+t_vector    *multi_vec_int(t_vector *vec, int inte);
+t_vector    *divi_vec_int(t_vector *vec, int inte);
+t_vector    *add_vec_doub(t_vector *vec, double doub);
+t_vector    *subtrac_vec_doub(t_vector *vec, double doub);
+t_vector    *multi_vec_doub(t_vector *vec, double doub);
+t_vector    *divi_vec_doub(t_vector *vec, double doub);
 
 #endif
