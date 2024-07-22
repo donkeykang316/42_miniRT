@@ -6,7 +6,7 @@
 #    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/07/22 09:55:10 by kaan             ###   ########.fr        #
+#    Updated: 2024/07/22 14:52:42 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,12 @@ GNL  =  ./lib/get_next_line/gnl.a
 
 SRCS	=	main.c\
 			vector_init.c\
+			data_init.c\
+			secene_render.c\
 			vector_operation_1.c\
 			vector_operation_2.c\
 			vector_operation_3.c\
+			vector_operation_4.c\
 
 OBJS	=	$(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/22 12:54:03 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/22 16:11:39 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,25 @@ typedef struct s_ray
     t_vector    *direction;
 }   t_ray;
 
-//render
-void    render(t_img *image, t_camera *camera, t_viewport *viewport);
+typedef struct s_sphere
+{
+    t_vector    *oc;
+    double      a;
+    double      b;
+    double      c;
+}   t_sphere;
 
-//scene init
-void    secene_render(t_img *image, t_camera *camera, t_viewport *viewport);
+//render
+t_vector    *ray_color(t_ray *ray);
+void        write_color(t_vector *pixel_color);
+void        render(t_img *image, t_camera *camera, t_viewport *viewport);
+void        secene_render(t_img *image, t_camera *camera, t_viewport *viewport);
+
+//data init
 void    image_init(t_img  *image);
 void    camera_init(t_camera *camera, t_img *image);
+void    viewport_init(t_viewport *viewport, t_img *image, t_camera *camera);
+bool    hit_sphere(t_vector *center, double radius, t_ray *ray);
 
 //vector init
 t_vector	*vec_init(double x, double y, double z);
@@ -85,5 +97,6 @@ t_vector    *add_vec_doub(t_vector *vec, double doub);
 t_vector    *subtrac_vec_doub(t_vector *vec, double doub);
 t_vector    *multi_vec_doub(t_vector *vec, double doub);
 t_vector    *divi_vec_doub(t_vector *vec, double doub);
+double      dot_vec(t_vector *vec1, t_vector *vec2);
 
 #endif
