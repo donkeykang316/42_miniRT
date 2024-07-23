@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/22 22:49:51 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/23 14:40:28 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,18 @@ typedef struct s_ray
     t_vector    *direction;
 }   t_ray;
 
+/*typedef struct s_world
+{
+    t_vector    
+}   t_world;*/
+
 typedef struct s_sphere
 {
     t_vector    *oc;
     double      a;
     double      b;
     double      c;
+    double      h;
 }   t_sphere;
 
 //render

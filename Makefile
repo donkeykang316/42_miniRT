@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
+#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/07/22 22:25:30 by kaan             ###   ########.fr        #
+#    Updated: 2024/07/23 12:35:04 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRCS	=	main.c\
 			vector_init.c\
 			data_init.c\
 			secene_render.c\
-			hit_function.c\
+			sphere.c\
 			vector_operation_1.c\
 			vector_operation_2.c\
 			vector_operation_3.c\
@@ -38,6 +38,7 @@ $(NAME): $(OBJS)
 			make -C ./lib/libft
 			make -C ./lib/get_next_line
 			$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(GNL) -o $(NAME) $(MFLAGS)
+			./$(NAME) > img.ppm
 			
 clean:
 			make clean -C ./lib/libft

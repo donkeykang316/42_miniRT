@@ -8,8 +8,8 @@ t_vector    *ray_color(t_ray *ray)
     t_vector    *color1;
     t_vector    *color2;
     t_vector    *center;
-    double      t;
-    
+    double      t; 
+
     center = vec_init(0, 0, -1);
     t = hit_sphere(center, 0.5, ray);
     if (t > 0.0)
