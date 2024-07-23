@@ -1,5 +1,4 @@
-## Mathmatical Breakdown
-### add_vec_vec
+
 
 \documentclass{article}
 \usepackage{amsmath} % For enhanced math support
