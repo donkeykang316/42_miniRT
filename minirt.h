@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/23 14:40:28 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/23 23:56:26 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,27 @@ typedef struct s_ray
     t_vector    *direction;
 }   t_ray;
 
-/*typedef struct s_world
+typedef struct s_hit_rec
 {
-    t_vector    
-}   t_world;*/
+    t_vector    *p;
+    t_vector    *normal;
+    double      t;
+    bool        front_face;
+}   t_hit_rec;
 
 typedef struct s_sphere
 {
-    t_vector    *oc;
-    double      a;
-    double      b;
-    double      c;
-    double      h;
+    t_vector    *center;
+    double      radius;
 }   t_sphere;
 
+typedef struct s_object_list
+{
+    t_sphere    **t_sphere;
+}   t_object_list;
+
 //render
-t_vector    *ray_color(t_ray *ray);
+t_vector    *ray_color(t_ray *ray, t_object_list *world);
 void        write_color(t_vector *pixel_color);
 void        render(t_img *image, t_camera *camera, t_viewport *viewport);
 void        secene_render(t_img *image, t_camera *camera, t_viewport *viewport);
@@ -86,8 +91,9 @@ void    image_init(t_img  *image);
 void    camera_init(t_camera *camera, t_img *image);
 void    viewport_init(t_viewport *viewport, t_img *image, t_camera *camera);
 
-//hit function
-double    hit_sphere(t_vector *center, double radius, t_ray *ray);
+//objects
+bool    hit_objects(t_ray *ray, double ray_tmin, double ray_tmax, t_hit_rec *rec, t_object_list *object_list);
+bool    hit_sphere(t_ray *ray, double ray_tmin, double ray_tmax, t_hit_rec *rec, t_sphere *sphere);
 
 //vector init
 t_vector	*vec_init(double x, double y, double z);

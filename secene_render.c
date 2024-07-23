@@ -1,25 +1,26 @@
 #include "minirt.h"
 
-t_vector    *ray_color(t_ray *ray)
+t_vector    *ray_color(t_ray *ray, t_object_list *world)
 {
+    t_hit_rec   *rec;
     t_vector    *ray_color;
-    t_vector    *unit_direction;
-    double       a;
     t_vector    *color1;
     t_vector    *color2;
-    t_vector    *center;
-    double      t; 
+    t_vector    *unit_direction;
+    double       a;
 
-    center = vec_init(0, 0, -1);
-    t = hit_sphere(center, 0.5, ray);
-    if (t > 0.0)
-    {
-        ray_color = unit_vector(subtrac_vec_vec(at_vec(ray, t), center));
-        free(center);
-        return (multi_vec_doub(vec_init(ray_color->x + 1, ray_color->y + 1, ray_color->z + 1), 0.5));
-    }
-    free(center);
     ray_color = malloc(sizeof(t_vector));
+    rec = malloc(sizeof(t_hit_rec));
+    if (hit_objects(ray, 0, INFINITY, rec, world))
+    {
+        color1 = vec_init(1, 1, 1);
+        ray_color = multi_vec_doub(add_vec_vec(rec->normal, color1), 0.5);
+        /*free(color1);
+        free(rec->normal);
+        free(rec->p);
+        free(rec);*/
+        return (ray_color);
+    }
     color1 = vec_init(1.0, 1.0, 1.0);
     color2 = vec_init(0.5, 0.7, 1.0);
     unit_direction = vec_init(ray->direction->x, ray->direction->y, ray->direction->z);
@@ -28,6 +29,9 @@ t_vector    *ray_color(t_ray *ray)
     free(color1);
     free(color2);
     free(unit_direction);
+    /*free(rec->normal);
+    free(rec->p);
+    free(rec);*/
     return (ray_color);
 }
 
@@ -55,15 +59,24 @@ void    write_color(t_vector *pixel_color)
 
 void    render(t_img *image, t_camera *camera, t_viewport *viewport)
 {
-    t_vector    *pixel_center;
-    t_vector    *pixel_color;
-    t_ray       *ray;
+    t_vector        *pixel_center;
+    t_vector        *pixel_color;
+    t_ray           *ray;
+    t_object_list   *world;
     int         i;
     int         j;
 
     i = 0;
     j = 0;
     ray = malloc(sizeof(t_ray));
+    world = malloc(sizeof(t_object_list));
+    world->t_sphere = malloc(2 * sizeof(t_sphere));
+    world->t_sphere[0] = malloc(sizeof(t_sphere));
+    world->t_sphere[1] = malloc(sizeof(t_sphere));
+    world->t_sphere[0]->center = vec_init(0, 0, -1);
+    world->t_sphere[0]->radius = 0.5;
+    world->t_sphere[1]->center = vec_init(0, 100.5, -1);
+    world->t_sphere[1]->radius = 100;
     printf("P3\n%d %d\n255\n", (int)image->image_width, (int)image->image_height);
     while (j < image->image_height)
     {
@@ -73,7 +86,7 @@ void    render(t_img *image, t_camera *camera, t_viewport *viewport)
             pixel_center = add_vec_vec(viewport->pixel00_loc, add_vec_vec(multi_vec_int(viewport->pixel_delta_u, i), multi_vec_int(viewport->pixel_delta_v, j)));
             ray->direction = subtrac_vec_vec(pixel_center, camera->camera_center);
             ray->origin = vec_init(camera->camera_center->x, camera->camera_center->y, camera->camera_center->z);
-            pixel_color = ray_color(ray);
+            pixel_color = ray_color(ray, world);
             write_color(pixel_color);
             free(pixel_center);
             free(pixel_color);
