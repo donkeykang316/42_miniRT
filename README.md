@@ -1,17 +1,34 @@
 ## Mathmatical Breakdown
 ### add_vec_vec
 
-For a 3D vector **v**, it can be represented as \( \mathbf{v} = \langle x, y, z \rangle \).
+\documentclass{article}
+\usepackage{amsmath} % For enhanced math support
 
-$$
-\mathbf{v} = \begin{bmatrix} x \\ y \\ z \end{bmatrix}
-$$
+\begin{document}
 
-$$
-\mathbf{v} = \begin{bmatrix} x \\ y \\ z \end{bmatrix}
-$$
+% Defining a 3D vector in bold
+A 3D vector can be denoted as: 
 
-<p style="font-family: 'Times New Roman', Times, serif;">
-  The 3D vector <strong>v</strong> can be represented as:
-  <span style="font-weight: bold;">v = (x, y, z)</span>
-</p>
+\[
+\mathbf{v} = \begin{bmatrix} v_x \\ v_y \\ v_z \end{bmatrix}
+\]
+
+% With specific numbers
+Here's an example with specific values: 
+
+\[
+\mathbf{v} = \begin{bmatrix} 3 \\ -2 \\ 5 \end{bmatrix}
+\]
+
+% Another format using \langle and \rangle
+Alternatively, it can be written using angled brackets: 
+
+\[
+\mathbf{v} = \langle 3, -2, 5 \rangle
+\]
+
+% Inline example
+This is an inline vector: \(\mathbf{v} = (3, -2, 5)\).
+
+\end{document}
+
