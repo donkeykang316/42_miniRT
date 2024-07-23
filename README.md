@@ -10,3 +10,8 @@ $$
 $$
 \mathbf{v} = \begin{bmatrix} x \\ y \\ z \end{bmatrix}
 $$
+
+<p style="font-family: 'Times New Roman', Times, serif;">
+  The 3D vector <strong>v</strong> can be represented as:
+  <span style="font-weight: bold;">v = (x, y, z)</span>
+</p>
