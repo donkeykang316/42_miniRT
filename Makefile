@@ -6,7 +6,7 @@
 #    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/07/23 23:00:08 by kaan             ###   ########.fr        #
+#    Updated: 2024/07/24 13:12:51 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,8 @@ GNL  =  ./lib/get_next_line/gnl.a
 SRCS	=	main.c\
 			vector_init.c\
 			data_init.c\
+			interval.c\
+			camera.c\
 			secene_render.c\
 			objects.c\
 			vector_operation_1.c\

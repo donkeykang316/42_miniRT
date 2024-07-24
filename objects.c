@@ -20,7 +20,7 @@ double  find_root2(double discriminant, double h, double a)
     return (root);
 }
 
-bool    hit_sphere(t_ray *ray, double ray_tmin, double ray_tmax, t_hit_rec *rec, t_sphere *sphere)
+bool    hit_sphere(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_sphere *sphere)
 {
     t_vector    *oc;
     double      a;
@@ -37,10 +37,10 @@ bool    hit_sphere(t_ray *ray, double ray_tmin, double ray_tmax, t_hit_rec *rec,
     if (discriminant < 0)
         return (false);
     root = find_root1(discriminant, h, a);
-    if (root <= ray_tmin || ray_tmax <= root)
+    if (!surrounds(ray_t, root))
     {
         root = find_root2(discriminant, h, a);
-        if (root <= ray_tmin || ray_tmax <= root)
+        if (!surrounds(ray_t, root))
             return (false);   
     }
     rec->t = root;
@@ -49,23 +49,26 @@ bool    hit_sphere(t_ray *ray, double ray_tmin, double ray_tmax, t_hit_rec *rec,
     return (true);
 }
 
-bool    hit_objects(t_ray *ray, double ray_tmin, double ray_tmax, t_hit_rec *rec, t_object_list *object_list)
+bool    hit_objects(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_object_list *object_list)
 {
     t_hit_rec       *temp;
     bool            hit_anything;
+    t_interval      interval;
     double          closest_so_far;
     int             i;
 
     (void)rec;
     temp = malloc(sizeof(t_hit_rec));
     hit_anything = false;
-    closest_so_far = ray_tmax;
+    closest_so_far = ray_t->max;
+    interval.max = closest_so_far;
+    interval.min = ray_t->min;
     i = 0;
     if (object_list->t_sphere)
     {
         while (object_list->t_sphere[i])
         {
-            if (hit_sphere(ray, ray_tmin, closest_so_far, temp, object_list->t_sphere[i]))
+            if (hit_sphere(ray, &interval, temp, object_list->t_sphere[i]))
             {
                 hit_anything = true;
                 closest_so_far = temp->t;

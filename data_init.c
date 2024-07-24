@@ -30,3 +30,14 @@ void   viewport_init(t_viewport *viewport, t_img *image, t_camera *camera)
     viewport->pixel00_loc = add_vec_vec(viewport->viewport_upper_left, multi_vec_doub(add_vec_vec(viewport->pixel_delta_u, viewport->pixel_delta_v), 0.5));
     free(vec);
 }
+
+void    world_init(t_object_list *world)
+{
+    world->t_sphere = malloc(2 * sizeof(t_sphere));
+    world->t_sphere[0] = malloc(sizeof(t_sphere));
+    world->t_sphere[1] = malloc(sizeof(t_sphere));
+    world->t_sphere[0]->center = vec_init(0, 100.5, -1);
+    world->t_sphere[0]->radius = 100;
+    world->t_sphere[1]->center = vec_init(0, 0, -1);
+    world->t_sphere[1]->radius = 0.5;
+}
