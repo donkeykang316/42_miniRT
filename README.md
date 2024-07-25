@@ -33,17 +33,40 @@
 ### world
 - **world.sphere** Add sphere(s) to the "world"
 
-### ray
-- **origin** The starting point from which the ray is cast
-  - `= vec3(camera.center.x, camera.center.y, camera.center.z)`
-- **direction** A vector that specifies the direction in which the ray travels from its origin
-  - `= pixel_center - camera.center`
-
 ### hit record
 - **p** Hit point, the exact location in 3D space where the ray intersects the object
 - **normal** The surface normal at the hit point, which is used for lighting calculations
 - **t** The parameter value in the ray equation that indicates the distance from the ray's origin to the hit point
 - **front_face** A boolean indicating whether the ray hit the front face or back face of the object, important for correct lighting and shading
+
+### hit sphere
+- **center** The center point of the sphere
+- **radius** The distance from the center to any point on the surface of the sphere
+- **oc** The offset from the ray's origin to the sphere's center
+  - `= sphere.center - ray.origin`
+- **a** Dot product of the ray's direction vector with itself
+  - `= dot(ray.direction, ray.direction)`
+- **h** Half the coefficient of t in the quadratic equation derived from the sphere-ray intersection equation
+  - `= dot(ray.direction, oc)`
+- **c** It represents the constant term in the quadratic equation
+  - `= dot(oc, oc) - sphere.radius * sphere.radius` 
+- **discriminant** A value derived from the quadratic formula that indicates the nature of the roots
+  - `= h*h - a*c`
+- **root** is the square root of the discriminant, used to find the actual intersection points. It's used to find the two potential intersection points along the ray
+  - `= (h - sqrt(discriminant)) / a`
+  - `= (h + sqrt(discriminant)) / a`
+- **rec.t**
+  - `= root`
+- **rec.p**
+  - `= ray.origin + ray.direction * t`
+- **rec.normal**
+  - `= (rec.p - sphere.center) / sphere.radius`
+
+### ray
+- **origin** The starting point from which the ray is cast
+  - `= vec3(camera.center.x, camera.center.y, camera.center.z)`
+- **direction** A vector that specifies the direction in which the ray travels from its origin
+  - `= pixel_center - camera.center`
 
 ### ray color
 - **interval.min** This represents the lower bound of an interval. It is used to denote the minimum valid value of a parameter, such as the parameter t in the ray equation that defines the position along the ray
