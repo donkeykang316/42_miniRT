@@ -32,12 +32,3 @@ double  vec_length(t_vector *vec)
     result = sqrt(length_squared(vec));
     return (result);
 }
-
-t_vector    *unit_vector(t_vector *vec)
-{
-    t_vector    *result;
-
-    result = malloc(sizeof(t_vector));
-    result = divi_vec_doub(vec, vec_length(vec));
-    return (result);
-}

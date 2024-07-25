@@ -82,7 +82,7 @@ t_vector    *ray_color(t_ray *ray, t_object_list *world)
     }
     color1 = vec_init(1.0, 1.0, 1.0);
     color2 = vec_init(0.5, 0.7, 1.0);
-    unit_direction = vec_init(ray->direction->x, ray->direction->y, ray->direction->z);
+    unit_direction = normalize_vec(ray->direction);
     a = 0.5 * (unit_direction->y + 1.0);
     ray_color = add_vec_vec(multi_vec_doub(color1, (1.0 - a)), multi_vec_doub(color2, a));
     free(color1);

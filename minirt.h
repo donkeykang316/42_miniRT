@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/25 19:42:56 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/25 22:12:07 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ double      length_squared(t_vector *vec);
 double      vec_length(t_vector *vec);
 t_vector    *unit_vector(t_vector *vec);
 t_vector    *increment_vec_vec(t_vector *vec_inc, t_vector *vec);
+t_vector    *normalize_vec(t_vector *vec);
 
 //util
 int ft_rand();

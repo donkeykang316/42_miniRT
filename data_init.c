@@ -56,7 +56,7 @@ void    world_init(t_object_list *world)
     world->t_sphere = malloc(2 * sizeof(t_sphere));
     world->t_sphere[0] = malloc(sizeof(t_sphere));
     world->t_sphere[1] = malloc(sizeof(t_sphere));
-    world->t_sphere[0]->center = vec_init(0, 100.5, -1);
+    world->t_sphere[0]->center = vec_init(0, -100.5, -1);
     world->t_sphere[0]->radius = 100;
     world->t_sphere[1]->center = vec_init(0, 0, -1);
     world->t_sphere[1]->radius = 0.5;
