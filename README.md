@@ -25,7 +25,52 @@
 = viewport_u / image_width
 - **pixel_delta_v** The vertical step size between adjacent pixels on the viewport
 = viewport_v / image_height
-- **viewport_upper_left**
-= 
+- **viewport_upper_left** Coordinates of the top-left corner of a viewport in a 3D graphics application
+= center - (vec + (viewport_u / 2 + viewport_v / 2))
 - **pixel00_loc** The position of the bottom-left corner pixel (often denoted as pixel (0,0)) on the viewport in world space coordinates
-= (pixel_delta_u + pixel_delta_v) * 0.5
+= viewport_upper_left + (pixel_delta_u + pixel_delta_v) * 0.5
+
+### world
+- **world.sphere** Add sphere(s) to the "world"
+
+### ray
+- **origin** The starting point from which the ray is cast
+= vec3(camera.center.x, camera.center.y, camera.center.z)
+- **direction** A vector that specifies the direction in which the ray travels from its origin
+= pixel_center - camera.center
+
+### hit record
+- **rec** 
+= 
+- **rec** 
+= 
+- **rec** 
+= 
+
+### ray color
+- **interval.min** This represents the lower bound of an interval. It is used to denote the minimum valid value of a parameter, such as the parameter t in the ray equation that defines the position along the ray
+= 0
+- **interval.max** This represents the upper bound of an interval. It defines the maximum valid value for computations, ensuring that calculations do not exceed this bound
+= INFINITY
+
+### hit objects
+- **rec** 
+= 
+- **hit_anything** 
+= 
+- **closest_so_far** 
+= 
+- **max** 
+= 
+- **max** 
+= 
+
+### render
+- **pixel_center** The exact center point of a pixel in the image space or viewport. It is a specific coordinate used to cast a ray through the pixel for rendering.
+= pixel00_loc + (pixel_delta_u * i + pixel_delta_v * j)
+- **ray.origin**
+= vec3(camera.center.x, camera.center.y, camera.center.z)
+- **ray.direction** 
+= pixel_center - camera.center
+- **pixel_color** The final color assigned to a pixel after all calculations, including ray intersections, lighting, and shading, have been completed
+= ray_color
