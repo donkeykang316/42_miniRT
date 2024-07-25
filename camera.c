@@ -32,9 +32,19 @@ void    write_color(t_vector *pixel_color)
     int         rbyte;
     int         gbyte;
     int         bbyte;
-    t_interval  intensity;
+    //t_interval  intensity;
+
 
     r = pixel_color->x;
+    g = pixel_color->y;
+    b = pixel_color->z;
+    rbyte = (int)(255.999 * r);
+    gbyte = (int)(255.999 * g);
+    bbyte = (int)(255.999 * b);
+    printf("%d %d %d\n", rbyte, gbyte, bbyte);
+
+
+    /*r = pixel_color->x;
     g = pixel_color->y;
     b = pixel_color->z;
     intensity.min = 0.000;
@@ -42,7 +52,7 @@ void    write_color(t_vector *pixel_color)
     rbyte = (int)(256 * clamp(&intensity, r));
     gbyte = (int)(256 * clamp(&intensity, g));
     bbyte = (int)(256 * clamp(&intensity, b));
-    printf("%d %d %d\n", rbyte, gbyte, bbyte);
+    printf("%d %d %d\n", rbyte, gbyte, bbyte);*/
 
 }
 
@@ -93,9 +103,35 @@ void    render(t_camera *camera)
     t_object_list   *world;
     int             i;
     int             j;
-    int             sample;
+    //int             sample;
 
+    t_vector        *pixel_center;
     i = 0;
+    j = 0;
+
+    ray = malloc(sizeof(t_ray));
+    world = malloc(sizeof(t_object_list));
+    world_init(world);
+    printf("P3\n%d %d\n255\n", (int)camera->image_width, (int)camera->image_height);
+    while (j < camera->image_height)
+    {
+        i = 0;
+        while (i < camera->image_width)
+        {
+            pixel_center = add_vec_vec(camera->pixel00_loc, add_vec_vec(multi_vec_int(camera->pixel_delta_u, i), multi_vec_int(camera->pixel_delta_v, j)));
+            ray->direction = subtrac_vec_vec(pixel_center, camera->center);
+            ray->origin = vec_init(camera->center->x, camera->center->y, camera->center->z);
+            pixel_color = ray_color(ray, world);
+            write_color(pixel_color);
+            free(pixel_center);
+            free(pixel_color);
+            free(ray->origin);
+            free(ray->direction);
+            i++;
+        }
+        j++;
+    }
+    /*i = 0;
     j = 0;
     sample = 0;
     ray = malloc(sizeof(t_ray));
@@ -122,5 +158,5 @@ void    render(t_camera *camera)
             i++;
         }
         j++;
-    }
+    }*/
 }
