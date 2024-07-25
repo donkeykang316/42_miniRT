@@ -1,4 +1,5 @@
 ## Mathmatical Breakdown (WIP)
 
-### Image Scale
+### Camera
+Variable definition
 aspect_ratio
