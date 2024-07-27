@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/25 22:12:07 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/27 13:41:45 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,14 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <stdbool.h>
+# include <stdint.h>
 # include "lib/get_next_line/inc/get_next_line.h"
 # include "lib/libft/inc/libft.h"
 
 // linear congruential generator constants
-#define RAND_A 1103515245
-#define RAND_C 12345
-#define RAND_M 2147483648
+#define A 1664525
+#define C 1013904223
+#define M 0xFFFFFFFF
 
 //pi
 #define PI 3.1415926535897932385
@@ -81,7 +82,6 @@ typedef struct s_interval
     double  max;
 }   t_interval;
 
-
 //camera
 void        write_color(t_vector *pixel_color);
 t_vector    *ray_color(t_ray *ray, t_object_list *world);
@@ -127,11 +127,15 @@ double      vec_length(t_vector *vec);
 t_vector    *unit_vector(t_vector *vec);
 t_vector    *increment_vec_vec(t_vector *vec_inc, t_vector *vec);
 t_vector    *normalize_vec(t_vector *vec);
+t_vector  *increment_vec_vec(t_vector *vec_inc, t_vector *vec);
 
 //util
-int ft_rand();
-double  random_double_a();
-double  random_double(double min, double max);
+unsigned int ft_rand(void);
+double  random_double(void);
+double  random_double_range(double min, double max);
 double  degrees_to_radians(double degrees);
+
+//tester
+void    print_vector(t_vector *v);
 
 #endif

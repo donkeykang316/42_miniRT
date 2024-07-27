@@ -51,14 +51,13 @@ bool    hit_sphere(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_sphere *sphe
 
 bool    hit_objects(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_object_list *object_list)
 {
-    t_hit_rec       *temp;
+    t_hit_rec       temp;
     bool            hit_anything;
     t_interval      interval;
     double          closest_so_far;
     int             i;
 
     (void)rec;
-    temp = malloc(sizeof(t_hit_rec));
     hit_anything = false;
     closest_so_far = ray_t->max;
     interval.max = closest_so_far;
@@ -68,20 +67,19 @@ bool    hit_objects(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_object_list
     {
         while (object_list->t_sphere[i])
         {
-            if (hit_sphere(ray, &interval, temp, object_list->t_sphere[i]))
+            if (hit_sphere(ray, &interval, &temp, object_list->t_sphere[i]))
             {
                 hit_anything = true;
-                closest_so_far = temp->t;
-                rec->front_face = temp->front_face;
-                rec->normal = vec_init(temp->normal->x, temp->normal->y, temp->normal->z);
-                free(temp->normal);
-                rec->p = vec_init(temp->p->x, temp->p->y, temp->p->z);
-                free(temp->p);
-                rec->t = temp->t;
+                closest_so_far = temp.t;
+                rec->front_face = temp.front_face;
+                rec->normal = vec_init(temp.normal->x, temp.normal->y, temp.normal->z);
+                free(temp.normal);
+                rec->p = vec_init(temp.p->x, temp.p->y, temp.p->z);
+                free(temp.p);
+                rec->t = temp.t;
             }
             i++;
         }
-        free(temp);
     }
     return (hit_anything);
 }

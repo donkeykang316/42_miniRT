@@ -6,7 +6,7 @@
 #    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/07/25 22:11:42 by kaan             ###   ########.fr        #
+#    Updated: 2024/07/26 12:41:04 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS	=	main.c\
 			vector_operation_4.c\
 			vector_operation_5.c\
 			util.c\
+			tester.c\
 
 OBJS	=	$(SRCS:.c=.o)
 

@@ -2,7 +2,7 @@
 
 int main(void)
 {
-    t_camera    camera;
+    t_camera            camera;
 
     secene_render(&camera);
 }

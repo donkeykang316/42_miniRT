@@ -1,31 +1,19 @@
 #include "minirt.h"
 
-double  degrees_to_radians(double degrees)
-{
-    double  radian;
+unsigned int seed = 1;
 
-    radian = degrees * PI /180.0;
-    return (radian);
+unsigned int ft_rand(void) {
+    // Implementing a simple LCG
+    seed = (A * seed + C) % M;
+    return seed;
 }
 
-int ft_rand()
-{
-    static unsigned int rand_seed = 1;
-
-    rand_seed = (RAND_A * rand_seed + RAND_C) % RAND_M;
-    return ((int)(rand_seed & 0x7FFFFFFF));
+double random_double(void) {
+    // Normalize ft_rand() to produce a float in [0, 1)
+    return ft_rand() / (M + 1.0);
 }
 
-double  random_double_a()
-{
-    double  rd;
-    rd = rand() / (RAND_MAX + 1.0);
-    return (rd);
-}
-
-double  random_double(double min, double max)
-{
-    double  rd;
-    rd =  min + (max-min) * random_double_a();
-    return (rd);
+double random_double_range(double min, double max) {
+    // Map the random double to the range [min, max)
+    return min + (max - min) * random_double();
 }
