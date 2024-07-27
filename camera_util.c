@@ -8,9 +8,10 @@ t_vector    *random_in_unit_sphere(void)
     {
         p = random_vec_range(-1, 1);
         if (length_squared(p) < 1)
-            continue;
-        return (p);
+            return (p);
+        free(p);
     }
+    return (NULL);
 }
 
 t_vector    *random_unit_vector(void)

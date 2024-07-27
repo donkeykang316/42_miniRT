@@ -46,35 +46,43 @@ void    write_color(t_vector *pixel_color)
 
 }
 
-t_vector    *ray_color(t_ray *ray, t_object_list *world)
+t_vector    *ray_color(t_ray *ray, int depth, t_object_list *world)
 {
     t_hit_rec   *rec;
-    t_vector    *ray_color;
+    t_vector    *r_color;
     t_vector    *color1;
     t_vector    *color2;
     t_vector    *unit_direction;
     t_interval  interval;
+    t_ray       scattered;
     double       a;
 
-    ray_color = malloc(sizeof(t_vector));
+    if (depth <= 0)
+        return (vec_init(0, 0, 0));
+    r_color = malloc(sizeof(t_vector));
     rec = malloc(sizeof(t_hit_rec));
     interval.min = 0;
     interval.max = INFINITY;
     if (hit_objects(ray, &interval, rec, world))
     {
         color1 = random_on_hemisphere(rec->normal);
-        ray_color = multi_vec_doub(add_vec_vec(rec->normal, color1), 0.5);
+        //ray_color = multi_vec_doub(add_vec_vec(rec->normal, color1), 0.5);
+        scattered.origin = vec_init(rec->p->x, rec->p->y, rec->p->z);
+        scattered.direction = vec_init(color1->x, color1->y, color1->z);
+        r_color = multi_vec_doub(ray_color(&scattered, depth - 1, world), 0.5);
         free(color1);
         free(rec->normal);
         free(rec->p);
         free(rec);
-        return (ray_color);
+        free(scattered.origin);
+        free(scattered.direction);
+        return (r_color);
     }
     color1 = vec_init(1.0, 1.0, 1.0);
     color2 = vec_init(0.5, 0.7, 1.0);
     unit_direction = normalize_vec(ray->direction);
     a = 0.5 * (unit_direction->y + 1.0);
-    ray_color = add_vec_vec(multi_vec_doub(color1, (1.0 - a)), multi_vec_doub(color2, a));
+    r_color = add_vec_vec(multi_vec_doub(color1, (1.0 - a)), multi_vec_doub(color2, a));
     free(color1);
     free(color2);
     free(unit_direction);
@@ -83,7 +91,7 @@ t_vector    *ray_color(t_ray *ray, t_object_list *world)
     if (rec->p)
         free(rec->p);
     free(rec);*/
-    return (ray_color);
+    return (r_color);
 }
 
 void    render(t_camera *camera)
@@ -103,6 +111,7 @@ void    render(t_camera *camera)
     camera->aspect_ratio = 16.0 / 9.0;
     camera->image_width = 400;
     camera->samples_per_pixel = 100;
+    camera->max_depth = 50;
     printf("P3\n%d %d\n255\n", (int)camera->image_width, (int)camera->image_height);
     while (j < camera->image_height)
     {
@@ -118,7 +127,7 @@ void    render(t_camera *camera)
             while (sample < camera->samples_per_pixel)
             {
                 ray = get_ray(camera, i, j);
-                pixel_color = increment_vec_vec(pixel_color, ray_color(ray, world));
+                pixel_color = increment_vec_vec(pixel_color, ray_color(ray, camera->max_depth, world));
                 free(ray->origin);
                 free(ray->direction);
                 free(ray);

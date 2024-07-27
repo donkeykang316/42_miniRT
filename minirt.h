@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/27 16:39:44 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/27 18:49:08 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_camera
     int         samples_per_pixel;
     int         image_height;
     double      pixel_samples_scale;
+    int         max_depth;
     t_vector    *pixel_delta_u;
     t_vector    *pixel_delta_v;
     t_vector    *center;
@@ -85,7 +86,7 @@ typedef struct s_interval
 //camera
 t_ray       *get_ray(t_camera *camera, int i, int j);
 void        write_color(t_vector *pixel_color);
-t_vector    *ray_color(t_ray *ray, t_object_list *world);
+t_vector    *ray_color(t_ray *ray, int depth, t_object_list *world);
 void        render(t_camera *camera);
 
 //camera util

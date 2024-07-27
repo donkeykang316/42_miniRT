@@ -24,6 +24,7 @@ void    camera_init(t_camera *camera)
     viewport_v = vec_init(0, -(viewport_height), 0);
     camera->center = vec_init(0, 0, 0);
     camera->pixel_samples_scale = 1.0 / camera->samples_per_pixel;
+    camera->max_depth = 10;
     viewport_upper_left = subtrac_vec_vec(camera->center, add_vec_vec(vec, add_vec_vec(divi_vec_int(viewport_u, 2), divi_vec_int(viewport_v, 2))));
     camera->pixel_delta_u = divi_vec_int(viewport_u, camera->image_width);
     camera->pixel_delta_v = divi_vec_int(viewport_v, camera->image_height);
