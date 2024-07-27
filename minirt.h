@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/27 13:41:45 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/27 16:39:44 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,15 @@ typedef struct s_interval
 }   t_interval;
 
 //camera
+t_ray       *get_ray(t_camera *camera, int i, int j);
 void        write_color(t_vector *pixel_color);
 t_vector    *ray_color(t_ray *ray, t_object_list *world);
 void        render(t_camera *camera);
+
+//camera util
+t_vector    *random_in_unit_sphere(void);
+t_vector    *random_unit_vector(void);
+t_vector    *random_on_hemisphere(t_vector *normal);
 
 //render
 void        secene_render(t_camera *camera);
@@ -127,13 +133,17 @@ double      vec_length(t_vector *vec);
 t_vector    *unit_vector(t_vector *vec);
 t_vector    *increment_vec_vec(t_vector *vec_inc, t_vector *vec);
 t_vector    *normalize_vec(t_vector *vec);
-t_vector  *increment_vec_vec(t_vector *vec_inc, t_vector *vec);
+t_vector    *increment_vec_vec(t_vector *vec_inc, t_vector *vec);
 
 //util
 unsigned int ft_rand(void);
+
+//random generator
 double  random_double(void);
 double  random_double_range(double min, double max);
 double  degrees_to_radians(double degrees);
+t_vector	*random_vec(void);
+t_vector    *random_vec_range(double min, double max);
 
 //tester
 void    print_vector(t_vector *v);

@@ -6,7 +6,7 @@
 #    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/07/26 12:41:04 by kaan             ###   ########.fr        #
+#    Updated: 2024/07/27 16:37:08 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRCS	=	main.c\
 			data_init.c\
 			interval.c\
 			camera.c\
+			camera_util.c\
 			secene_render.c\
 			objects.c\
 			vector_operation_1.c\
@@ -32,6 +33,7 @@ SRCS	=	main.c\
 			vector_operation_3.c\
 			vector_operation_4.c\
 			vector_operation_5.c\
+			random_generator.c\
 			util.c\
 			tester.c\
 

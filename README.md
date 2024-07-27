@@ -66,7 +66,7 @@
 - **offset** refers to a small adjustment or displacement applied to a position, often used to perturb sample points within a pixel to achieve anti-aliasing effects
   - `= vec3(random_double - 0.5, random_double - 0.5, 0)`
   - **pixel_sample** refers to a specific point or a set of points within a pixel where color calculations are performed. Multiple samples per pixel are often used in techniques like anti-aliasing to average the results and produce smoother images
-  - `= camera.pixel00_loc + (camera.pixel_delta_u + (i + offset.x)) + (camera.pixel_delta_v + (j + offset.y))`
+  - `= camera.pixel00_loc + (camera.pixel_delta_u * (i + offset.x)) + (camera.pixel_delta_v * (j + offset.y))`
 - **origin** The starting point from which the ray is cast
   - `= vec3(camera.center.x, camera.center.y, camera.center.z)`
 - **direction** A vector that specifies the direction in which the ray travels from its origin

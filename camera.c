@@ -62,7 +62,7 @@ t_vector    *ray_color(t_ray *ray, t_object_list *world)
     interval.max = INFINITY;
     if (hit_objects(ray, &interval, rec, world))
     {
-        color1 = vec_init(1, 1, 1);
+        color1 = random_on_hemisphere(rec->normal);
         ray_color = multi_vec_doub(add_vec_vec(rec->normal, color1), 0.5);
         free(color1);
         free(rec->normal);
