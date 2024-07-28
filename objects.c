@@ -23,6 +23,7 @@ double  find_root2(double discriminant, double h, double a)
 bool    hit_sphere(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_sphere *sphere)
 {
     t_vector    *oc;
+    t_vector    *outward_normal;
     double      a;
     double      h;
     double      c;
@@ -45,7 +46,9 @@ bool    hit_sphere(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_sphere *sphe
     }
     rec->t = root;
     rec->p = at_vec(ray, rec->t);
-    rec->normal = divi_vec_doub(subtrac_vec_vec(rec->p, sphere->center), sphere->radius);
+    outward_normal = divi_vec_doub(subtrac_vec_vec(rec->p, sphere->center), sphere->radius);
+    set_face_normal(ray, outward_normal, rec);
+    rec->material = sphere->material;
     return (true);
 }
 

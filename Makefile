@@ -6,7 +6,7 @@
 #    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/07/27 16:37:08 by kaan             ###   ########.fr        #
+#    Updated: 2024/07/28 16:48:07 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS	=	main.c\
 			camera_util.c\
 			secene_render.c\
 			objects.c\
+			material.c\
 			vector_operation_1.c\
 			vector_operation_2.c\
 			vector_operation_3.c\

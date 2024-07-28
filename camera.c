@@ -34,9 +34,9 @@ void    write_color(t_vector *pixel_color)
     int         bbyte;
     t_interval  intensity;
 
-    r = pixel_color->x;
-    g = pixel_color->y;
-    b = pixel_color->z;
+    r = linear_to_gamma(pixel_color->x);
+    g = linear_to_gamma(pixel_color->y);
+    b = linear_to_gamma(pixel_color->z);
     intensity.min = 0.000;
     intensity.max = 0.999;
     rbyte = (int)(256 * clamp(&intensity, r));
@@ -55,27 +55,28 @@ t_vector    *ray_color(t_ray *ray, int depth, t_object_list *world)
     t_vector    *unit_direction;
     t_interval  interval;
     t_ray       scattered;
+    t_vector    attenuation;
     double       a;
 
     if (depth <= 0)
         return (vec_init(0, 0, 0));
     r_color = malloc(sizeof(t_vector));
     rec = malloc(sizeof(t_hit_rec));
-    interval.min = 0;
+    interval.min = 0.001;
     interval.max = INFINITY;
     if (hit_objects(ray, &interval, rec, world))
     {
-        color1 = random_on_hemisphere(rec->normal);
-        //ray_color = multi_vec_doub(add_vec_vec(rec->normal, color1), 0.5);
-        scattered.origin = vec_init(rec->p->x, rec->p->y, rec->p->z);
-        scattered.direction = vec_init(color1->x, color1->y, color1->z);
-        r_color = multi_vec_doub(ray_color(&scattered, depth - 1, world), 0.5);
-        free(color1);
-        free(rec->normal);
-        free(rec->p);
-        free(rec);
-        free(scattered.origin);
-        free(scattered.direction);
+        if (scatter_material(ray, rec, &attenuation, &scattered, rec->material))
+        {
+            r_color = multi_vec_vec(rec->material->albedo, ray_color(&scattered, depth - 1, world));
+            free(rec->normal);
+            free(rec->p);
+            free(rec);
+            free(scattered.origin);
+            free(scattered.direction);
+            return (r_color);
+        }
+        r_color = vec_init(0, 0, 0);
         return (r_color);
     }
     color1 = vec_init(1.0, 1.0, 1.0);

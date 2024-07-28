@@ -18,3 +18,18 @@ t_vector *normalize_vec(t_vector *vec)
     result = vec_init(vec->x / length, vec->y / length, vec->z / length);
     return (result);
 }
+
+double  fabs(double x)
+{
+    if (x < 0)
+        return (-x);
+    return (x);
+}
+
+bool    near_zero(t_vector *vec)
+{
+    double  s;
+
+    s = 1e-8;
+    return (fabs(vec->x) < s && fabs(vec->y) < s && fabs(vec->z) < s);
+}

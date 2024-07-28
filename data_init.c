@@ -34,11 +34,34 @@ void    camera_init(t_camera *camera)
 
 void    world_init(t_object_list *world)
 {
-    world->t_sphere = malloc(2 * sizeof(t_sphere));
+    t_material     *material_ground;
+    t_material     *material_center;
+    t_material     *material_left;
+    t_material     *material_right;
+
+    material_ground = malloc(sizeof(t_material));
+    material_center = malloc(sizeof(t_material));
+    material_left = malloc(sizeof(t_material));
+    material_right = malloc(sizeof(t_material));
+    material_ground->albedo = vec_init(0.8, 0.8, 0.0);
+    material_center->albedo = vec_init(0.1, 0.2, 0.5);
+    material_left->albedo = vec_init(0.8, 0.8, 0.8);
+    material_right->albedo = vec_init(0.8, 0.6, 0.2);
+    world->t_sphere = malloc(4 * sizeof(t_sphere));
     world->t_sphere[0] = malloc(sizeof(t_sphere));
     world->t_sphere[1] = malloc(sizeof(t_sphere));
-    world->t_sphere[0]->center = vec_init(0, -100.5, -1);
-    world->t_sphere[0]->radius = 100;
-    world->t_sphere[1]->center = vec_init(0, 0, -1);
+    world->t_sphere[2] = malloc(sizeof(t_sphere));
+    world->t_sphere[3] = malloc(sizeof(t_sphere));
+    world->t_sphere[0]->center = vec_init(0.0, -100.5, -1.0);
+    world->t_sphere[0]->radius = 100.0;
+    world->t_sphere[0]->material = material_ground;
+    world->t_sphere[1]->center = vec_init(0.0, 0.0, -1.2);
     world->t_sphere[1]->radius = 0.5;
+    world->t_sphere[1]->material = material_center;
+    world->t_sphere[2]->center = vec_init(-1.0, 0.0, -1.0);
+    world->t_sphere[2]->radius = 0.5;
+    world->t_sphere[2]->material = material_left;
+    world->t_sphere[3]->center = vec_init(1.0, 0.0, -1.0);
+    world->t_sphere[3]->radius = 0.5;
+    world->t_sphere[3]->material = material_right;
 }

@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/27 18:49:08 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/28 18:59:56 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,26 @@ typedef struct s_ray
     t_vector    *direction;
 }   t_ray;
 
+typedef struct s_material
+{
+    t_vector    *albedo;
+}   t_material;
+
+typedef struct s_lamertian
+{
+    t_vector    *albedo;
+}   t_lamertian;
+
+typedef struct s_metal
+{
+    t_vector    *albedo;
+}   t_metal;
+
 typedef struct s_hit_rec
 {
     t_vector    *p;
     t_vector    *normal;
+    t_material *material;
     double      t;
     bool        front_face;
 }   t_hit_rec;
@@ -70,6 +86,7 @@ typedef struct s_sphere
 {
     t_vector    *center;
     double      radius;
+    t_material *material;
 }   t_sphere;
 
 typedef struct s_object_list
@@ -93,6 +110,9 @@ void        render(t_camera *camera);
 t_vector    *random_in_unit_sphere(void);
 t_vector    *random_unit_vector(void);
 t_vector    *random_on_hemisphere(t_vector *normal);
+double      linear_to_gamma(double linear_component);
+t_vector    *reflect(t_vector *vec1, t_vector *vec2);
+
 
 //render
 void        secene_render(t_camera *camera);
@@ -104,6 +124,12 @@ void    world_init(t_object_list *world);
 //objects
 bool    hit_objects(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_object_list *object_list);
 bool    hit_sphere(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_sphere *sphere);
+
+//material
+bool    scatter_material(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material);
+bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_metal *metal);
+bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_lamertian *lamertian);
+void    set_face_normal(t_ray *r, t_vector *outward_normal, t_hit_rec *rec);
 
 //interval
 double  size(t_interval *ray_t);
@@ -135,6 +161,8 @@ t_vector    *unit_vector(t_vector *vec);
 t_vector    *increment_vec_vec(t_vector *vec_inc, t_vector *vec);
 t_vector    *normalize_vec(t_vector *vec);
 t_vector    *increment_vec_vec(t_vector *vec_inc, t_vector *vec);
+double      fabs(double x);
+bool        near_zero(t_vector *vec);
 
 //util
 unsigned int ft_rand(void);
