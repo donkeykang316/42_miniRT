@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/28 18:59:56 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/29 15:25:23 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ double  clamp(t_interval *ray_t, double x);
 
 //vector init
 t_vector	*vec_init(double x, double y, double z);
+t_vector	*vec_free_init(t_vector *vec, double x, double y, double z);
 
 //vector operation
 t_vector    *add_vec_vec(t_vector *vec1, t_vector *vec2);

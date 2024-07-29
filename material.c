@@ -2,12 +2,16 @@
 
 bool    scatter_material(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material)
 {
-    (void)r_in;
-    (void)rec;
+    t_vector    *scatter_direction;
+
     (void)attenuation;
-    (void)scattered;
-    (void)material;
-    return (false);
+    (void)r_in;
+    scatter_direction = add_vec_vec(rec->normal, random_unit_vector());
+    scattered->origin = vec_init(rec->p->x, rec->p->y, rec->p->z);
+    scattered->direction = vec_init(scatter_direction->x, scatter_direction->y, scatter_direction->z);
+    free(scatter_direction);
+    attenuation = vec_init(material->albedo->x, material->albedo->y, material->albedo->z);
+    return (true);
 }
 
 bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_lamertian *lamertian)

@@ -55,7 +55,7 @@ t_vector    *ray_color(t_ray *ray, int depth, t_object_list *world)
     t_vector    *unit_direction;
     t_interval  interval;
     t_ray       scattered;
-    t_vector    attenuation;
+    t_vector    *attenuation;
     double       a;
 
     if (depth <= 0)
@@ -64,10 +64,12 @@ t_vector    *ray_color(t_ray *ray, int depth, t_object_list *world)
     rec = malloc(sizeof(t_hit_rec));
     interval.min = 0.001;
     interval.max = INFINITY;
+    attenuation = NULL;
     if (hit_objects(ray, &interval, rec, world))
     {
-        if (scatter_material(ray, rec, &attenuation, &scattered, rec->material))
+        if (scatter_material(ray, rec, attenuation, &scattered, rec->material))
         {
+            free(attenuation);
             r_color = multi_vec_vec(rec->material->albedo, ray_color(&scattered, depth - 1, world));
             free(rec->normal);
             free(rec->p);
@@ -109,10 +111,6 @@ void    render(t_camera *camera)
     sample = 0;
     world = malloc(sizeof(t_object_list));
     world_init(world);
-    camera->aspect_ratio = 16.0 / 9.0;
-    camera->image_width = 400;
-    camera->samples_per_pixel = 100;
-    camera->max_depth = 50;
     printf("P3\n%d %d\n255\n", (int)camera->image_width, (int)camera->image_height);
     while (j < camera->image_height)
     {
