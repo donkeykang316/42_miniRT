@@ -14,7 +14,7 @@ bool    scatter_material(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ra
     return (true);
 }
 
-bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_lamertian *lamertian)
+bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material)
 {
     t_vector    *scatter_direction;
 
@@ -23,22 +23,22 @@ bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_
     scatter_direction = add_vec_vec(random_unit_vector(), rec->normal);
     if (near_zero(scatter_direction))
         scatter_direction = vec_init(rec->normal->x, rec->normal->y, rec->normal->z);
-    scattered->origin = rec->p;
+    scattered->origin = vec_init(rec->p->x, rec->p->y, rec->p->z);
     scattered->direction = vec_init(scatter_direction->x, scatter_direction->y, scatter_direction->z);
     free(scatter_direction);
-    attenuation = lamertian->albedo;
+    attenuation = vec_init(material->albedo->x, material->albedo->y, material->albedo->z);
     return (true);
 }
 
-bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_metal *metal)
+bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material)
 {
     t_vector    *reflected;
 
     (void)attenuation;
     reflected = reflect(r_in->direction, rec->normal);
-    scattered->origin = rec->p;
-    scattered->direction = reflected;
-    attenuation = metal->albedo;
+    scattered->origin = vec_init(rec->p->x, rec->p->y, rec->p->z);
+    scattered->direction = vec_init(reflected->x, reflected->y, reflected->z);
+    attenuation = vec_init(material->albedo->x, material->albedo->y, material->albedo->z);
     return (true);
 }
 
