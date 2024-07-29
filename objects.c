@@ -76,9 +76,9 @@ bool    hit_objects(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_object_list
                 closest_so_far = temp.t;
                 rec->front_face = temp.front_face;
                 rec->normal = vec_init(temp.normal->x, temp.normal->y, temp.normal->z);
-                free(temp.normal);
+                //free(temp.normal);
                 rec->p = vec_init(temp.p->x, temp.p->y, temp.p->z);
-                free(temp.p);
+                //free(temp.p);
                 rec->t = temp.t;
             }
             i++;
