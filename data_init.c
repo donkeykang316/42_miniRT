@@ -55,13 +55,17 @@ void    world_init(t_object_list *world)
     world->t_sphere[0]->center = vec_init(0.0, -100.5, -1.0);
     world->t_sphere[0]->radius = 100.0;
     world->t_sphere[0]->material = material_ground;
+    world->t_sphere[0]->material->type = LAMBERTIAN;
     world->t_sphere[1]->center = vec_init(0.0, 0.0, -1.2);
     world->t_sphere[1]->radius = 0.5;
     world->t_sphere[1]->material = material_center;
+    world->t_sphere[1]->material->type = LAMBERTIAN;
     world->t_sphere[2]->center = vec_init(-1.0, 0.0, -1.0);
     world->t_sphere[2]->radius = 0.5;
     world->t_sphere[2]->material = material_left;
+    world->t_sphere[2]->material->type = METAL;
     world->t_sphere[3]->center = vec_init(1.0, 0.0, -1.0);
     world->t_sphere[3]->radius = 0.5;
     world->t_sphere[3]->material = material_right;
+    world->t_sphere[3]->material->type = METAL;
 }

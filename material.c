@@ -1,18 +1,20 @@
 #include "minirt.h"
 
-bool    scatter_material(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material)
+/*bool    scatter_dielectric(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material)
 {
-    t_vector    *scatter_direction;
+    t_vector    *unit_direction;
+    double      ri;
 
-    (void)attenuation;
-    (void)r_in;
-    scatter_direction = add_vec_vec(rec->normal, random_unit_vector());
+    attenuation = vec_init(1.0, 1.0, 1.0);
+    if (rec->front_face)
+        ri = 1.0 / material->ref_idx;
+    else
+        ri = material->ref_idx;
+    unit_direction = unit_vector(r_in->direction);
     scattered->origin = vec_init(rec->p->x, rec->p->y, rec->p->z);
-    scattered->direction = vec_init(scatter_direction->x, scatter_direction->y, scatter_direction->z);
-    free(scatter_direction);
-    attenuation = vec_init(material->albedo->x, material->albedo->y, material->albedo->z);
+    scattered->direction = refract(unit_direction, rec->normal, ri);
     return (true);
-}
+}*/
 
 bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material)
 {
@@ -20,9 +22,7 @@ bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_
 
     (void)attenuation;
     (void)r_in;
-    scatter_direction = add_vec_vec(random_unit_vector(), rec->normal);
-    if (near_zero(scatter_direction))
-        scatter_direction = vec_init(rec->normal->x, rec->normal->y, rec->normal->z);
+    scatter_direction = add_vec_vec(rec->normal, random_unit_vector());
     scattered->origin = vec_init(rec->p->x, rec->p->y, rec->p->z);
     scattered->direction = vec_init(scatter_direction->x, scatter_direction->y, scatter_direction->z);
     free(scatter_direction);

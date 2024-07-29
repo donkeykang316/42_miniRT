@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/29 17:28:26 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/29 20:48:28 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@
 
 //pi
 #define PI 3.1415926535897932385
+
+//material types
+typedef enum e_material_type
+{
+    LAMBERTIAN,
+    METAL,
+    DIELECTRIC
+}   t_material_type;
 
 typedef struct s_vector
 {
@@ -60,18 +68,9 @@ typedef struct s_ray
 
 typedef struct s_material
 {
-    t_vector    *albedo;
+    t_vector        *albedo;
+    t_material_type type;
 }   t_material;
-
-typedef struct s_lamertian
-{
-    t_vector    *albedo;
-}   t_lamertian;
-
-typedef struct s_metal
-{
-    t_vector    *albedo;
-}   t_metal;
 
 typedef struct s_hit_rec
 {
@@ -80,6 +79,7 @@ typedef struct s_hit_rec
     t_material *material;
     double      t;
     bool        front_face;
+    int         object_index;
 }   t_hit_rec;
 
 typedef struct s_sphere
@@ -111,8 +111,6 @@ t_vector    *random_in_unit_sphere(void);
 t_vector    *random_unit_vector(void);
 t_vector    *random_on_hemisphere(t_vector *normal);
 double      linear_to_gamma(double linear_component);
-t_vector    *reflect(t_vector *vec1, t_vector *vec2);
-
 
 //render
 void        secene_render(t_camera *camera);
@@ -126,10 +124,15 @@ bool    hit_objects(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_object_list
 bool    hit_sphere(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_sphere *sphere);
 
 //material
-bool    scatter_material(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material);
+bool    scatter_dielectric(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material);
 bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material);
 bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material);
 void    set_face_normal(t_ray *r, t_vector *outward_normal, t_hit_rec *rec);
+
+//material util
+t_vector    *reflect(t_vector *vec1, t_vector *vec2);
+double      fmin(double x, double y);
+t_vector    *refract(t_vector *uv, t_vector *n, double etai_over_etat);
 
 //interval
 double  size(t_interval *ray_t);

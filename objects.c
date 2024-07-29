@@ -68,6 +68,7 @@ bool    hit_objects(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_object_list
     {
         rec->material = malloc(sizeof(t_material));
         rec->material->albedo = malloc(sizeof(t_vector));
+        rec->object_index = 0;
         while (object_list->t_sphere[i])
         {
             interval.min = ray_t->min;
@@ -76,6 +77,7 @@ bool    hit_objects(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_object_list
             {
                 hit_anything = true;
                 closest_so_far = rec->t;
+                rec->object_index = i;
             }
             i++;
         }

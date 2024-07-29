@@ -67,16 +67,33 @@ t_vector    *ray_color(t_ray *ray, int depth, t_object_list *world)
     attenuation = NULL;
     if (hit_objects(ray, &interval, rec, world))
     {
-        if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
+        if (world->t_sphere[rec->object_index]->material->type == LAMBERTIAN)
         {
-            free(attenuation);
-            r_color = multi_vec_vec(rec->material->albedo, ray_color(&scattered, depth - 1, world));
-            free(rec->normal);
-            free(rec->p);
-            free(rec);
-            free(scattered.origin);
-            free(scattered.direction);
-            return (r_color);
+            if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
+            {
+                free(attenuation);
+                r_color = multi_vec_vec(rec->material->albedo, ray_color(&scattered, depth - 1, world));
+                free(rec->normal);
+                free(rec->p);
+                free(rec);
+                free(scattered.origin);
+                free(scattered.direction);
+                return (r_color);
+            }
+        }
+        else if (world->t_sphere[rec->object_index]->material->type == METAL)
+        {
+            if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
+            {
+                free(attenuation);
+                r_color = multi_vec_vec(rec->material->albedo, ray_color(&scattered, depth - 1, world));
+                free(rec->normal);
+                free(rec->p);
+                free(rec);
+                free(scattered.origin);
+                free(scattered.direction);
+                return (r_color);
+            }
         }
         r_color = vec_init(0, 0, 0);
         return (r_color);

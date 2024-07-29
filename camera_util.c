@@ -35,8 +35,3 @@ double linear_to_gamma(double linear_component)
         return (sqrt(linear_component));
     return (0);
 }
-
-t_vector    *reflect(t_vector *vec1, t_vector *vec2)
-{
-    return (subtrac_vec_vec(vec1, multi_vec_doub(vec2, 2 * dot_vec(vec1, vec2))));
-}
