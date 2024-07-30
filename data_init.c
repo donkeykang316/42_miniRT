@@ -16,7 +16,7 @@ void    camera_init(t_camera *camera)
     camera->image_height = (int)(camera->image_width / camera->aspect_ratio);
     if (camera->image_height < 1)
         camera->image_height = 1;
-    focal_length = 1.0;
+    focal_length = 0.5;
     vec = vec_init(0, 0, focal_length);
     viewport_height = 2.0;
     viewport_width = viewport_height * (double)(camera->image_width / camera->image_height);
