@@ -78,6 +78,7 @@ bool    hit_objects(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_object_list
                 hit_anything = true;
                 closest_so_far = rec->t;
                 rec->object_index = i;
+                rec->material->fuzz = object_list->t_sphere[i]->material->fuzz;
             }
             i++;
         }

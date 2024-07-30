@@ -19,13 +19,6 @@ t_vector *normalize_vec(t_vector *vec)
     return (result);
 }
 
-double  fabs(double x)
-{
-    if (x < 0)
-        return (-x);
-    return (x);
-}
-
 bool    near_zero(t_vector *vec)
 {
     double  s;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/29 20:48:28 by kaan             ###   ########.fr       */
+/*   Updated: 2024/07/30 13:34:32 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_ray
 typedef struct s_material
 {
     t_vector        *albedo;
+    double          fuzz;
     t_material_type type;
 }   t_material;
 
@@ -124,15 +125,13 @@ bool    hit_objects(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_object_list
 bool    hit_sphere(t_ray *ray, t_interval *ray_t, t_hit_rec *rec, t_sphere *sphere);
 
 //material
-bool    scatter_dielectric(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material);
 bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material);
 bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector *attenuation,t_ray *scattered, t_material *material);
 void    set_face_normal(t_ray *r, t_vector *outward_normal, t_hit_rec *rec);
 
 //material util
 t_vector    *reflect(t_vector *vec1, t_vector *vec2);
-double      fmin(double x, double y);
-t_vector    *refract(t_vector *uv, t_vector *n, double etai_over_etat);
+double      fuzz(double fuzz);
 
 //interval
 double  size(t_interval *ray_t);
@@ -165,7 +164,6 @@ t_vector    *unit_vector(t_vector *vec);
 t_vector    *increment_vec_vec(t_vector *vec_inc, t_vector *vec);
 t_vector    *normalize_vec(t_vector *vec);
 t_vector    *increment_vec_vec(t_vector *vec_inc, t_vector *vec);
-double      fabs(double x);
 bool        near_zero(t_vector *vec);
 
 //util
