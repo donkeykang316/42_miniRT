@@ -1,0 +1,1 @@
+cc -g sphere.c && ./a.out > img_test.ppm

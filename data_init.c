@@ -10,7 +10,7 @@ void    camera_init(t_camera *camera)
     t_vector    *viewport_upper_left;
     t_vector    *vec;
 
-    camera->aspect_ratio = 16.0 / 9.0;
+    camera->aspect_ratio = 16 / 9;
     camera->image_width = 400;
     camera->samples_per_pixel = 100;
     camera->image_height = (int)(camera->image_width / camera->aspect_ratio);
