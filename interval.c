@@ -15,18 +15,18 @@ bool    contains(t_interval *ray_t, double x)
     return (false);
 }
 
-bool    surrounds(t_interval *ray_t, double x)
+bool    surrounds(t_interval ray_t, double x)
 {
-    if (ray_t->min < x && x < ray_t->max)
+    if (ray_t.min < x && x < ray_t.max)
         return (true);
     return (false);
 }
 
-double  clamp(t_interval *ray_t, double x)
+double  clamp(t_interval ray_t, double x)
 {
-    if (x < ray_t->min)
-        return (ray_t->min);
-    if (x > ray_t->max)
-        return (ray_t->max);
+    if (x < ray_t.min)
+        return (ray_t.min);
+    if (x > ray_t.max)
+        return (ray_t.max);
     return (x);
 }

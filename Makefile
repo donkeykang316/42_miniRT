@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
+#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/07/29 20:40:06 by kaan             ###   ########.fr        #
+#    Updated: 2024/07/31 15:23:21 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,6 @@ SRCS	=	main.c\
 			interval.c\
 			camera.c\
 			camera_util.c\
-			secene_render.c\
 			objects.c\
 			material.c\
 			material_util.c\

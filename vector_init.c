@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-t_vector	*vec_init(double x, double y, double z)
+t_vector	*vec_ptr_init(double x, double y, double z)
 {
     t_vector *output;
 
@@ -8,6 +8,16 @@ t_vector	*vec_init(double x, double y, double z)
     output->x = x;
     output->y = y;
     output->z = z;
+    return (output);
+}
+
+t_vector	vec_init(double x, double y, double z)
+{
+    t_vector    output;
+
+    output.x = x;
+    output.y = y;
+    output.z = z;
     return (output);
 }
 
