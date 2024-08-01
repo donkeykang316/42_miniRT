@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/07/31 18:46:15 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/01 13:25:58 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@
 typedef enum e_material_type
 {
     LAMBERTIAN,
-    METAL,
-    DIELECTRIC
+    METAL
 }   t_material_type;
 
 typedef struct s_vector
@@ -106,7 +105,7 @@ typedef struct s_interval
 //camera
 t_ray       get_ray(t_camera camera, int i, int j);
 void        write_color(t_vector pixel_color);
-t_vector    ray_color(t_ray ray, t_hit_rec *rec, int depth, t_object_list *world);
+t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list *world);
 void        render(t_camera camera);
 
 //camera util
@@ -124,8 +123,8 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
 bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere *sphere);
 
 //material
-bool    scatter_metal(t_ray r_in, t_hit_rec *rec, t_vector attenuation,t_ray scattered, t_material *material);
-bool    scatter_lambertian(t_ray r_in, t_hit_rec *rec, t_vector attenuation,t_ray scattered, t_material *material);
+bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
+bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
 void    set_face_normal(t_ray r, t_vector outward_normal, t_hit_rec *rec);
 
 //material util
