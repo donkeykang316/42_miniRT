@@ -8,6 +8,16 @@ double  dot_vec(t_vector vec1, t_vector vec2)
     return (result);
 }
 
+t_vector    cross_vec(t_vector vec1, t_vector vec2)
+{
+    t_vector    result;
+
+    result.x = (vec1.y * vec2.z) - (vec1.z * vec2.y);
+    result.y = (vec1.z * vec2.x) - (vec1.x * vec2.z);
+    result.z = (vec1.x * vec2.y) - (vec1.y * vec2.x);
+    return (result);
+}
+
 t_vector    at_vec(t_ray ray, double t)
 {
     t_vector    result;

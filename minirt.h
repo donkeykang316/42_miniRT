@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/01 13:25:58 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/01 16:00:54 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ typedef struct s_camera
     int         image_height;
     double      pixel_samples_scale;
     int         max_depth;
+    double      vfov;
+    t_vector    lookfrom;
+    t_vector    lookat;
+    t_vector    vup;
     t_vector    pixel_delta_u;
     t_vector    pixel_delta_v;
     t_vector    center;
@@ -163,6 +167,7 @@ t_vector    unit_vector(t_vector vec);
 t_vector    increment_vec_vec(t_vector vec_inc, t_vector vec);
 t_vector    normalize_vec(t_vector vec);
 t_vector    increment_vec_vec(t_vector vec_inc, t_vector vec);
+t_vector    cross_vec(t_vector vec1, t_vector vec2);
 
 //util
 unsigned int ft_rand(void);

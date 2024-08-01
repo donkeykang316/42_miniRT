@@ -56,7 +56,6 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list *worl
     t_vector    r_color1;
     double       a;
 
-    //print_vector(world->sphere[1]->material->albedo);
     (void)attenuation;
     if (depth <= 0)
         return (vec_init(0, 0, 0));
@@ -127,7 +126,6 @@ void    render(t_camera camera)
                 pixel_color = increment_vec_vec(pixel_color, ray_color(&ray, &rec, camera.max_depth, &world));
                 sample++;
             }
-            //print_vector(pixel_color);
             write_color(multi_vec_doub(pixel_color, camera.pixel_samples_scale));
             i++;
         }
