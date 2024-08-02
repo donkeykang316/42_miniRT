@@ -30,3 +30,14 @@ double  clamp(t_interval ray_t, double x)
         return (ray_t.max);
     return (x);
 }
+
+/*t_interval  expand(double delta)
+{
+    t_interval  interval;
+    double      padding;
+
+    padding = delta / 2;
+    interval.min = interval.min - padding;
+    interval.max = interval.max + padding;
+    return (interval);
+}*/

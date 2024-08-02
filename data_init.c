@@ -21,9 +21,10 @@ void    camera_init(t_camera *camera)
     if (camera->image_height < 1)
         camera->image_height = 1;
     camera->vfov = 90;
-    camera->lookfrom = vec_init(-5, 2, 1);
-    camera->lookat = vec_init(0, 0, -1);
-    camera->vup = vec_init(0, 1, 0);
+    camera->lookfrom = vec_init(0, 0, 9);
+    camera->lookat = vec_init(0, 0, 0);
+    camera->vup = vec_init(0, 10, 0);
+
     theta = degrees_to_radians(camera->vfov);
     h = tan(theta / 2);
     camera->center = camera->lookfrom;
@@ -45,8 +46,9 @@ void    camera_init(t_camera *camera)
 
 void    world_init(t_object_list *world)
 {
-    world->sphere = malloc(4 * sizeof(t_sphere));
-    world->sphere[0] = malloc(sizeof(t_sphere));
+    //world->sphere = malloc(4 * sizeof(t_sphere));
+    world->quad = malloc(4 * sizeof(t_quad));
+    /*world->sphere[0] = malloc(sizeof(t_sphere));
     world->sphere[1] = malloc(sizeof(t_sphere));
     world->sphere[2] = malloc(sizeof(t_sphere));
     world->sphere[3] = malloc(sizeof(t_sphere));
@@ -73,5 +75,37 @@ void    world_init(t_object_list *world)
     world->sphere[3]->material = malloc(sizeof(t_material));
     world->sphere[3]->material->albedo = vec_init(0.8, 0.6, 0.2);
     world->sphere[3]->material->type = METAL;
-    world->sphere[3]->material->fuzz = 0.6;
+    world->sphere[3]->material->fuzz = 0.6;*/
+    world->quad[0] = malloc(sizeof(t_quad));
+    world->quad[0]->q = vec_init(-3,-2, 5);
+    world->quad[0]->u = vec_init(0, 0, -4);
+    world->quad[0]->v = vec_init(0, 4, 0);
+    world->quad[0]->material = malloc(sizeof(t_material));
+    world->quad[0]->material->albedo = vec_init(1.0, 0.2, 0.2);
+    world->quad[0]->material->type = LAMBERTIAN;
+    world->quad[0]->material->fuzz = 0.0;
+    world->quad[1] = malloc(sizeof(t_quad));
+    world->quad[1]->q = vec_init(-2,-2, 0);
+    world->quad[1]->u = vec_init(4, 0, 0);
+    world->quad[1]->v = vec_init(0, 4, 0);
+    world->quad[1]->material = malloc(sizeof(t_material));
+    world->quad[1]->material->albedo = vec_init(0.2, 1.0, 0.2);
+    world->quad[1]->material->type = LAMBERTIAN;
+    world->quad[1]->material->fuzz = 0.0;
+    world->quad[2] = malloc(sizeof(t_quad));
+    world->quad[2]->q = vec_init(3,-2, 1);
+    world->quad[2]->u = vec_init(0, 0, 4);
+    world->quad[2]->v = vec_init(0, 4, 0);
+    world->quad[2]->material = malloc(sizeof(t_material));
+    world->quad[2]->material->albedo = vec_init(0.2, 0.2, 1.0);
+    world->quad[2]->material->type = LAMBERTIAN;
+    world->quad[2]->material->fuzz = 0.0;
+    world->quad[3] = malloc(sizeof(t_quad));
+    world->quad[3]->q = vec_init(-2, 3, 1);
+    world->quad[3]->u = vec_init(4, 0, 0);
+    world->quad[3]->v = vec_init(0, 0, 4);
+    world->quad[3]->material = malloc(sizeof(t_material));
+    world->quad[3]->material->albedo = vec_init(1.0, 0.5, 0.0);
+    world->quad[3]->material->type = LAMBERTIAN;
+    world->quad[3]->material->fuzz = 0.0;
 }

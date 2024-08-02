@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
+#    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/07/31 15:23:21 by kaan             ###   ########.fr        #
+#    Updated: 2024/08/02 13:48:54 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,8 @@ SRCS	=	main.c\
 			interval.c\
 			camera.c\
 			camera_util.c\
+			sphere.c\
+			quad.c\
 			objects.c\
 			material.c\
 			material_util.c\

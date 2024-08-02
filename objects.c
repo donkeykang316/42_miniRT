@@ -1,59 +1,5 @@
 #include "minirt.h"
 
-double  find_root1(double discriminant, double h, double a)
-{
-    double      sqrtd;
-    double      root;
-
-    sqrtd = sqrt(discriminant);
-    root = (h - sqrtd) / a;
-    return (root);
-}
-
-double  find_root2(double discriminant, double h, double a)
-{
-    double      sqrtd;
-    double      root;
-
-    sqrtd = sqrt(discriminant);
-    root = (h + sqrtd) / a;
-    return (root);
-}
-
-bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere *sphere)
-{
-    t_vector    oc;
-    t_vector    outward_normal;
-    double      a;
-    double      h;
-    double      c;
-    double      discriminant;
-    double      root;
-
-
-    oc = subtrac_vec_vec(sphere->center, ray.origin);
-    a = length_squared(ray.direction);
-    h = dot_vec(ray.direction, oc);
-    c = length_squared(oc) - (sphere->radius * sphere->radius);
-    discriminant = (h * h) - (a * c);
-    if (discriminant < 0)
-        return (false);
-    root = find_root1(discriminant, h, a);
-    if (!surrounds(ray_t, root))
-    {
-        root = find_root2(discriminant, h, a);
-        if (!surrounds(ray_t, root))
-            return (false);
-    }
-    rec->t = root;
-    rec->p = at_vec(ray, rec->t);
-    rec->normal = divi_vec_doub(subtrac_vec_vec(rec->p, sphere->center), sphere->radius);
-    outward_normal = divi_vec_doub(subtrac_vec_vec(rec->p, sphere->center), sphere->radius);
-    set_face_normal(ray, outward_normal, rec);
-    rec->material->albedo = vec_init(sphere->material->albedo.x, sphere->material->albedo.y, sphere->material->albedo.z);
-    return (true);
-}
-
 bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *object_list)
 {
     bool            hit_anything;
@@ -65,7 +11,7 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
     hit_anything = false;
     closest_so_far = ray_t.max;
     i = 0;
-    if (object_list->sphere)
+    /*if (object_list->sphere)
     {
         rec->material = malloc(sizeof(t_material));
         rec->object_index = 0;
@@ -79,6 +25,24 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
                 closest_so_far = rec->t;
                 rec->object_index = i;
                 rec->material->fuzz = object_list->sphere[i]->material->fuzz;
+            }
+            i++;
+        }
+    }*/
+    if (object_list->quad)
+    {
+        rec->material = malloc(sizeof(t_material));
+        rec->object_index = 0;
+        while (object_list->quad[i])
+        {
+            interval.min = ray_t.min;
+            interval.max = closest_so_far;
+            if (hit_quad(ray, interval, rec, object_list->quad[i]))
+            {
+                hit_anything = true;
+                closest_so_far = rec->t;
+                rec->object_index = i;
+                rec->material->fuzz = object_list->quad[i]->material->fuzz;
             }
             i++;
         }

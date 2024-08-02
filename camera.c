@@ -63,7 +63,7 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list *worl
     interval.max = INFINITY;
     if (hit_objects(*ray, interval, rec, world))
     {
-        if (world->sphere[rec->object_index]->material->type == LAMBERTIAN)
+        /*if (world->sphere[rec->object_index]->material->type == LAMBERTIAN)
         {
             if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
             {
@@ -74,6 +74,26 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list *worl
             }
         }
         else if (world->sphere[rec->object_index]->material->type == METAL)
+        {
+            if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
+            {
+                albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
+                r_color1 = ray_color(&scattered, rec, depth - 1, world);
+                r_color = multi_vec_vec(albedo, r_color1);
+                return (r_color);
+            }
+        }*/
+        if (world->quad[rec->object_index]->material->type == LAMBERTIAN)
+        {
+            if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
+            {
+                albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
+                r_color1 = ray_color(&scattered, rec, depth - 1, world);
+                r_color = multi_vec_vec(albedo, r_color1);
+                return (r_color);
+            }
+        }
+        else if (world->quad[rec->object_index]->material->type == METAL)
         {
             if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
             {

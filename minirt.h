@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/01 16:00:54 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/02 15:16:00 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 #define A 1664525
 #define C 1013904223
 #define M 0xFFFFFFFF
+#define EPSILON 1e-8
 
 //pi
 #define PI 3.1415926535897932385
@@ -95,9 +96,21 @@ typedef struct s_sphere
     t_material *material;
 }   t_sphere;
 
+typedef struct  s_quad
+{
+    t_vector    q;
+    t_vector    u;
+    t_vector    v;
+    t_vector    w;
+    t_vector    normal;
+    double      d;
+    t_material  *material;
+}   t_quad;
+
 typedef struct s_object_list
 {
-    t_sphere    **sphere;
+    t_sphere        **sphere;
+    t_quad          **quad;
 }   t_object_list;
 
 typedef struct s_interval
@@ -105,6 +118,13 @@ typedef struct s_interval
     double  min;
     double  max;
 }   t_interval;
+
+typedef struct s_aabb
+{
+    t_interval  x;
+    t_interval  y;
+    t_interval  z;
+}   t_aabb;
 
 //camera
 t_ray       get_ray(t_camera camera, int i, int j);
@@ -122,9 +142,16 @@ double      linear_to_gamma(double linear_component);
 void    camera_init(t_camera *camera);
 void    world_init(t_object_list *world);
 
+//sphere
+bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere *sphere);
+double  find_root1(double discriminant, double h, double a);
+double  find_root2(double discriminant, double h, double a);
+
+//quad
+bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad *quad);
+
 //objects
 bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *object_list);
-bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere *sphere);
 
 //material
 bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
@@ -140,6 +167,12 @@ double  size(t_interval *ray_t);
 bool    contains(t_interval *ray_t, double x);
 bool    surrounds(t_interval ray_t, double x);
 double  clamp(t_interval ray_t, double x);
+t_interval  expand(double delta);
+
+//aabb
+double  *double_3(double x, double y, double z);
+t_interval  axis_interval(t_aabb aabb, int n);
+bool    hit_aabb(t_aabb aabb, t_ray ray, t_interval ray_t);
 
 //vector init
 t_vector	*vec_ptr_init(double x, double y, double z);
