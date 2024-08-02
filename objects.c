@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *object_list)
+bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object)
 {
     bool            hit_anything;
     t_interval      interval;
@@ -29,23 +29,32 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
             i++;
         }
     }*/
-    if (object_list->quad)
+    rec->material = malloc(sizeof(t_material));
+    while (object[i])
     {
-        rec->material = malloc(sizeof(t_material));
-        rec->object_index = 0;
-        while (object_list->quad[i])
+        interval.min = ray_t.min;
+        interval.max = closest_so_far;
+        if (object[i]->type == QUAD)
         {
-            interval.min = ray_t.min;
-            interval.max = closest_so_far;
-            if (hit_quad(ray, interval, rec, object_list->quad[i]))
+            if (hit_quad(ray, interval, rec, object[i]->quad))
             {
                 hit_anything = true;
                 closest_so_far = rec->t;
                 rec->object_index = i;
-                rec->material->fuzz = object_list->quad[i]->material->fuzz;
+                rec->material->fuzz = object[i]->quad->material->fuzz;
             }
-            i++;
         }
+        else if (object[i]->type == SPHERE)
+        {
+            if (hit_sphere(ray, interval, rec, object[i]->sphere))
+            {
+                hit_anything = true;
+                closest_so_far = rec->t;
+                rec->object_index = i;
+                rec->material->fuzz = object[i]->sphere->material->fuzz;
+            }
+        }
+        i++;
     }
     return (hit_anything);
 }

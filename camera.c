@@ -43,7 +43,7 @@ void    write_color(t_vector pixel_color)
 
 }
 
-t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list *world)
+t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world)
 {
     t_vector    r_color;
     t_vector    color1;
@@ -63,45 +63,58 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list *worl
     interval.max = INFINITY;
     if (hit_objects(*ray, interval, rec, world))
     {
-        /*if (world->sphere[rec->object_index]->material->type == LAMBERTIAN)
+        if (world[rec->object_index]->type == QUAD)
         {
-            if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
+            if (world[rec->object_index]->quad->material->type == LAMBERTIAN)
             {
-                albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
-                r_color1 = ray_color(&scattered, rec, depth - 1, world);
-                r_color = multi_vec_vec(albedo, r_color1);
-                return (r_color);
+                if (world[rec->object_index]->quad->material->type == LAMBERTIAN)
+                {
+                    if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
+                    {
+                        albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
+                        r_color1 = ray_color(&scattered, rec, depth - 1, world);
+                        r_color = multi_vec_vec(albedo, r_color1);
+                        return (r_color);
+                    }
+                }
             }
+            else if (world[rec->object_index]->quad->material->type == METAL)
+            {
+                if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
+                {
+                    albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
+                    r_color1 = ray_color(&scattered, rec, depth - 1, world);
+                    r_color = multi_vec_vec(albedo, r_color1);
+                    return (r_color);
+                }
+            }   
         }
-        else if (world->sphere[rec->object_index]->material->type == METAL)
+        else if (world[rec->object_index]->type == SPHERE)
         {
-            if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
+            if (world[rec->object_index]->sphere->material->type == LAMBERTIAN)
             {
-                albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
-                r_color1 = ray_color(&scattered, rec, depth - 1, world);
-                r_color = multi_vec_vec(albedo, r_color1);
-                return (r_color);
+                if (world[rec->object_index]->sphere->material->type == LAMBERTIAN)
+                {
+                    if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
+                    {
+                        albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
+                        r_color1 = ray_color(&scattered, rec, depth - 1, world);
+                        r_color = multi_vec_vec(albedo, r_color1);
+                        return (r_color);
+                    }
+                }
             }
-        }*/
-        if (world->quad[rec->object_index]->material->type == LAMBERTIAN)
-        {
-            if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
+            else if (world[rec->object_index]->sphere->material->type == METAL)
             {
-                albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
-                r_color1 = ray_color(&scattered, rec, depth - 1, world);
-                r_color = multi_vec_vec(albedo, r_color1);
-                return (r_color);
+                if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
+                {
+                    albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
+                    r_color1 = ray_color(&scattered, rec, depth - 1, world);
+                    r_color = multi_vec_vec(albedo, r_color1);
+                    return (r_color);
+                }
             }
-        }
-        else if (world->quad[rec->object_index]->material->type == METAL)
-        {
-            if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
-            {
-                albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
-                r_color1 = ray_color(&scattered, rec, depth - 1, world);
-                r_color = multi_vec_vec(albedo, r_color1);
-                return (r_color);
-            }
+            
         }
         r_color = vec_init(0, 0, 0);
         return (r_color);
@@ -118,16 +131,18 @@ void    render(t_camera camera)
 {
     t_vector        pixel_color;
     t_ray           ray;
-    t_object_list   world;
+    t_object_list   **world;
     t_hit_rec       rec;
     int             i;
     int             j;
     int             sample;
+    int             quantity = 8;
 
     i = 0;
     j = 0;
     sample = 0;
-    world_init(&world);
+    world = malloc(quantity * sizeof(t_object_list));
+    world_init(world);
     printf("P3\n%d %d\n255\n", (int)camera.image_width, (int)camera.image_height);
     while (j < camera.image_height)
     {
@@ -143,7 +158,7 @@ void    render(t_camera camera)
             while (sample < camera.samples_per_pixel)
             {
                 ray = get_ray(camera, i, j);
-                pixel_color = increment_vec_vec(pixel_color, ray_color(&ray, &rec, camera.max_depth, &world));
+                pixel_color = increment_vec_vec(pixel_color, ray_color(&ray, &rec, camera.max_depth, world));
                 sample++;
             }
             write_color(multi_vec_doub(pixel_color, camera.pixel_samples_scale));

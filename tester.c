@@ -94,6 +94,18 @@ void    print_sphere(t_sphere sphere)
     ft_putchar_fd('\n', 2);
 }
 
+void    print_quad(t_quad quad)
+{
+    ft_putstr_fd("q:\n", 2);
+    print_vector(quad.q);
+    ft_putstr_fd("u:\n", 2);
+    print_vector(quad.u);
+    ft_putstr_fd("v:\n", 2);
+    print_vector(quad.v);
+    ft_putstr_fd("material:\n", 2);
+    print_material(*quad.material);
+}
+
 void    print_material(t_material material)
 {
     ft_putstr_fd("albedo:\n", 2);
@@ -109,13 +121,22 @@ void    print_material(t_material material)
         ft_putstr_fd("UNKNOWN\n", 2);
 }
 
-void    print_world(t_object_list world)
+void    print_world(t_object_list **world)
 {
     ft_putstr_fd("world:\n", 2);
     int i = 0;
-    while (world.sphere[i])
+    while (world[i])
     {
-        print_sphere(*world.sphere[i]);
+        if (world[i]->type == SPHERE)
+        {
+            ft_putstr_fd("sphere:\n", 2);
+            print_sphere(*world[i]->sphere);
+        }
+        else if (world[i]->type == QUAD)
+        {
+            ft_putstr_fd("quad:\n", 2);
+            print_quad(*world[i]->quad);
+        }
         i++;
     }
 }

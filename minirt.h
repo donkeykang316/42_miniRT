@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/02 15:16:00 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/03 00:41:54 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,15 @@ typedef enum e_material_type
     LAMBERTIAN,
     METAL
 }   t_material_type;
+
+typedef enum e_object_type
+{
+    SPHERE,
+    QUAD,
+    TRIANGLE,
+    CUBE,
+    CYLINDER
+}   t_object_type;
 
 typedef struct s_vector
 {
@@ -109,8 +118,9 @@ typedef struct  s_quad
 
 typedef struct s_object_list
 {
-    t_sphere        **sphere;
-    t_quad          **quad;
+    t_sphere        *sphere;
+    t_quad          *quad;
+    t_object_type   type;
 }   t_object_list;
 
 typedef struct s_interval
@@ -129,7 +139,7 @@ typedef struct s_aabb
 //camera
 t_ray       get_ray(t_camera camera, int i, int j);
 void        write_color(t_vector pixel_color);
-t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list *world);
+t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
 void        render(t_camera camera);
 
 //camera util
@@ -140,7 +150,7 @@ double      linear_to_gamma(double linear_component);
 
 //data init
 void    camera_init(t_camera *camera);
-void    world_init(t_object_list *world);
+void    world_init(t_object_list **world);
 
 //sphere
 bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere *sphere);
@@ -151,7 +161,7 @@ double  find_root2(double discriminant, double h, double a);
 bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad *quad);
 
 //objects
-bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *object_list);
+bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object);
 
 //material
 bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
