@@ -1,13 +1,19 @@
 #include "minirt.h"
 
+double  dot_vec_cyl(t_vector vec1, t_vector vec2)
+{
+    double  result;
+
+    result = (vec1.x * vec2.x) + (vec1.y * vec2.y);
+    return (result);
+}
+
 bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cylinder)
 {
     t_vector    oc;
-    t_vector    direction_ortho;
-    t_vector    oc_ortho;
     t_vector    outward_normal;
     double      a;
-    double      b;
+    double      h;
     double      c;
     double      discriminant;
     double      root;
@@ -15,18 +21,16 @@ bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cy
     double      projection_length;
 
     oc = subtrac_vec_vec(cylinder->center, ray.origin);
-    direction_ortho = subtrac_vec_vec(multi_vec_doub(cylinder->axis, dot_vec(ray.direction, cylinder->axis)), ray.direction);
-    oc_ortho = subtrac_vec_vec(multi_vec_doub(cylinder->axis, dot_vec(oc, cylinder->axis)), oc);
-    a = length_squared(direction_ortho);
-    b = dot_vec(direction_ortho, oc_ortho);
-    c = length_squared(oc_ortho) - (cylinder->radius * cylinder->radius);
-    discriminant = (b * b) - (a * c);
+    a = dot_vec_cyl(ray.direction, ray.direction) - pow(dot_vec_cyl(ray.direction, cylinder->axis), 2);
+    h = dot_vec_cyl(oc, ray.direction) - (dot_vec_cyl(oc, cylinder->axis) * dot_vec_cyl(ray.direction, cylinder->axis));
+    c = dot_vec_cyl(oc, oc) - pow(dot_vec_cyl(oc, cylinder->axis), 2) - (cylinder->radius * cylinder->radius);
+    discriminant = (h * h) - (a * c);
     if (discriminant < 0)
         return (false);
-    root = (b - sqrt(discriminant)) / a;
+    root = (h - sqrt(discriminant)) / a;
     if (!surrounds(ray_t, root))
     {
-        root = (b + sqrt(discriminant)) / a;
+        root = (h + sqrt(discriminant)) / a;
         if (!surrounds(ray_t, root))
             return (false);
     }
