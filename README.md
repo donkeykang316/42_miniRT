@@ -139,4 +139,4 @@
     - `= color2 = vec_init(0.5, 0.7, 1.0);`
 - **dark for light**
     - `= color1 = vec_init(0.0, 0.0, 0.0)`
-    - `= color2 = vec_init(0.10, 0.20, 0.40);`
+    - `= color2 = vec_init(0.20, 0.30, 0.50);`
