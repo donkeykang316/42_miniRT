@@ -136,7 +136,7 @@
 ### Background Color
 - **sky**
     - `= color1 = vec_init(1.0, 1.0, 1.0)`
-    - `= color2 = vec_init(0.5, 0.7, 1.0);`
+    - `= color2 = vec_init(0.5, 0.7, 1.0)`
 - **dark for light**
     - `= color1 = vec_init(0.0, 0.0, 0.0)`
-    - `= color2 = vec_init(0.20, 0.30, 0.50);`
+    - `= color2 = vec_init(0.20, 0.30, 0.50)`
