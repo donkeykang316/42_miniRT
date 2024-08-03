@@ -57,7 +57,7 @@ void    render(t_camera camera)
     j = 0;
     sample = 0;
 
-    int quantity = 8;
+    int quantity = 10;
 
     world = malloc(quantity * sizeof(t_object_list));
     world_init(world);

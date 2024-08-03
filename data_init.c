@@ -21,7 +21,7 @@ void    camera_init(t_camera *camera)
     if (camera->image_height < 1)
         camera->image_height = 1;
     camera->vfov = 90;
-    camera->lookfrom = vec_init(0, 0, 9);
+    camera->lookfrom = vec_init(0, 5, 9);
     camera->lookat = vec_init(0, 0, 0);
     camera->vup = vec_init(0, 10, 0);
     theta = degrees_to_radians(camera->vfov);
@@ -55,7 +55,7 @@ void    world_init(t_object_list **world)
     world[0]->quad->u = vec_init(0, 0, -4);
     world[0]->quad->v = vec_init(0, 4, 0);
     world[0]->quad->material = malloc(sizeof(t_material));
-    world[0]->quad->material->albedo = vec_init(4, 4, 4);
+    world[0]->quad->material->albedo = vec_init(5, 5, 5);
     world[0]->quad->material->type = LIGHT;
     world[0]->quad->material->fuzz = 0.0;
     world[1] = malloc(sizeof(t_object_list));
@@ -138,5 +138,19 @@ void    world_init(t_object_list **world)
     world[7]->sphere->material->albedo = vec_init(0.8, 0.6, 0.2);
     world[7]->sphere->material->type = METAL;
     world[7]->sphere->material->fuzz = 0.6;
-    world[8] = NULL;
+    world[8] = malloc(sizeof(t_object_list));
+    world[8]->sphere = NULL;
+    world[8]->quad = NULL;
+    world[8]->tri = NULL;
+    world[8]->type = CYLINDER;
+    world[8]->cyl = malloc(sizeof(t_cylinder));
+    world[8]->cyl->center = vec_init(3.0, 0.0, 6.0);
+    world[8]->cyl->axis = vec_init(0.0, 1.0, 0.0);
+    world[8]->cyl->radius = 1.0;
+    world[8]->cyl->height = 1.0;
+    world[8]->cyl->material = malloc(sizeof(t_material));
+    world[8]->cyl->material->albedo = vec_init(0.5, 0.2, 0.1);
+    world[8]->cyl->material->fuzz = 0;
+    world[8]->cyl->material->type = LAMBERTIAN;
+    world[9] = NULL;
 }

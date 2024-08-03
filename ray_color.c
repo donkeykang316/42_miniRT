@@ -60,6 +60,30 @@ t_vector    ray_sphere(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wo
     return (vec_init(0, 0, 0));
 }
 
+t_vector    ray_cyl(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world)
+{
+    t_ray       scattered;
+    t_vector    attenuation;
+    
+    (void)attenuation;
+    if (world[rec->object_index]->cyl->material->type == LAMBERTIAN)
+    {
+            if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
+                return (ray_color_util(scattered, rec, depth, world));
+    }
+    else if (world[rec->object_index]->cyl->material->type == METAL)
+    {
+        if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
+            return (ray_color_util(scattered, rec, depth, world));
+    }
+    else if (world[rec->object_index]->cyl->material->type == LIGHT)
+    {
+        if (scatter_light(ray, rec, attenuation, &scattered, rec->material))
+            return (ray_color_util(scattered, rec, depth, world));
+    }
+    return (vec_init(0, 0, 0));
+}
+
 t_vector    ray_tri(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world)
 {
     t_ray       scattered;
@@ -104,10 +128,16 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wor
         else if (world[rec->object_index]->type == TRIANGLE)
             return (ray_tri(ray, rec, depth, world));
         else if (world[rec->object_index]->type == SPHERE)
-                return (ray_sphere(ray, rec, depth, world));
+            return (ray_sphere(ray, rec, depth, world));
+        else if (world[rec->object_index]->type == CYLINDER)
+            return (ray_cyl(ray, rec, depth, world));
     }
     bg_color1 = vec_init(0.0, 0.0, 0.0);
     bg_color2 = vec_init(0.20, 0.30, 0.50);
+
+    /*bg_color1 = vec_init(1.0, 1.0, 1.0);
+    bg_color2 = vec_init(0.5, 0.7, 1.0);*/
+
     unit_direction = normalize_vec(ray->direction);
     a = 0.5 * (unit_direction.y + 1.0);
     r_color = add_vec_vec(multi_vec_doub(bg_color1, (1.0 - a)), multi_vec_doub(bg_color2, a));

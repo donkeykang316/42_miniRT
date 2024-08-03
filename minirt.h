@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/03 16:04:02 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/03 17:47:21 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,14 @@ typedef struct s_sphere
     t_material *material;
 }   t_sphere;
 
-typedef struct s_cube
+typedef struct s_cylinder
 {
     t_vector    center;
-    double      side;
+    t_vector    axis;
+    double      radius;
+    double      height;
     t_material  *material;
-}   t_cube;
+}   t_cylinder;
 
 typedef struct  s_quad
 {
@@ -140,6 +142,7 @@ typedef struct s_object_list
     t_sphere        *sphere;
     t_quad          *quad;
     t_tri           *tri;
+    t_cylinder      *cyl;
     t_object_type   type;
 }   t_object_list;
 
@@ -162,6 +165,10 @@ void        write_color(t_vector pixel_color);
 void        render(t_camera camera);
 
 //ray color
+t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object_list **world);
+t_vector    ray_quad(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
+t_vector    ray_sphere(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
+t_vector    ray_tri(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
 t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
 
 //camera util
@@ -186,6 +193,9 @@ bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad *quad);
 //triangle
 bool    is_interior_tri(double alpha, double beta);
 bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_tri *tri);
+
+//cylinder
+bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cylinder);
 
 //objects
 bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object);

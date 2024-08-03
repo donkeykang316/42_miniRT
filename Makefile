@@ -6,7 +6,7 @@
 #    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/03 16:15:20 by kaan             ###   ########.fr        #
+#    Updated: 2024/08/03 17:08:09 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRCS	=	main.c\
 			sphere.c\
 			quad.c\
 			triangle.c\
+			cylinder.c\
 			objects.c\
 			light.c\
 			material.c\

@@ -46,6 +46,16 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
                 rec->material->fuzz = object[i]->sphere->material->fuzz;
             }
         }
+        else if (object[i]->type == CYLINDER)
+        {
+            if (hit_cylinder(ray, interval, rec, object[i]->cyl))
+            {
+                hit_anything = true;
+                closest_so_far = rec->t;
+                rec->object_index = i;
+                rec->material->fuzz = object[i]->cyl->material->fuzz;
+            }
+        }
         i++;
     }
     return (hit_anything);
