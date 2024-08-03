@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/03 02:56:05 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/03 04:45:04 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@
 typedef enum e_material_type
 {
     LAMBERTIAN,
-    METAL
+    METAL,
+    LIGHT
 }   t_material_type;
 
 typedef enum e_object_type
@@ -179,6 +180,9 @@ bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_tri *tri);
 
 //objects
 bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object);
+
+//light
+bool    scatter_light(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
 
 //material
 bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);

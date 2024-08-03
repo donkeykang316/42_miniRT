@@ -87,6 +87,16 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wor
                     r_color = multi_vec_vec(albedo, r_color1);
                     return (r_color);
                 }
+            }
+            else if (world[rec->object_index]->quad->material->type == LIGHT)
+            {
+                if (scatter_light(ray, rec, attenuation, &scattered, rec->material))
+                {
+                    albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
+                    r_color1 = ray_color(&scattered, rec, depth - 1, world);
+                    r_color = multi_vec_vec(albedo, r_color1);
+                    return (r_color);
+                }
             }   
         }
         else if (world[rec->object_index]->type == TRIANGLE)
@@ -144,8 +154,8 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wor
         r_color = vec_init(0, 0, 0);
         return (r_color);
     }
-    color1 = vec_init(1.0, 1.0, 1.0);
-    color2 = vec_init(0.5, 0.7, 1.0);
+    color1 = vec_init(0.0, 0.0, 0.0);
+    color2 = vec_init(0.20, 0.30, 0.50);
     unit_direction = normalize_vec(ray->direction);
     a = 0.5 * (unit_direction.y + 1.0);
     r_color = add_vec_vec(multi_vec_doub(color1, (1.0 - a)), multi_vec_doub(color2, a));
@@ -161,11 +171,13 @@ void    render(t_camera camera)
     int             i;
     int             j;
     int             sample;
-    int             quantity = 8;
 
     i = 0;
     j = 0;
     sample = 0;
+
+    int quantity = 8;
+
     world = malloc(quantity * sizeof(t_object_list));
     world_init(world);
     printf("P3\n%d %d\n255\n", (int)camera.image_width, (int)camera.image_height);

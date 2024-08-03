@@ -24,7 +24,6 @@ void    camera_init(t_camera *camera)
     camera->lookfrom = vec_init(0, 0, 9);
     camera->lookat = vec_init(0, 0, 0);
     camera->vup = vec_init(0, 10, 0);
-
     theta = degrees_to_radians(camera->vfov);
     h = tan(theta / 2);
     camera->center = camera->lookfrom;
@@ -46,6 +45,7 @@ void    camera_init(t_camera *camera)
 
 void    world_init(t_object_list **world)
 {
+
     world[0] = malloc(sizeof(t_object_list));
     world[0]->sphere = NULL;
     world[0]->tri = NULL;
@@ -55,8 +55,8 @@ void    world_init(t_object_list **world)
     world[0]->quad->u = vec_init(0, 0, -4);
     world[0]->quad->v = vec_init(0, 4, 0);
     world[0]->quad->material = malloc(sizeof(t_material));
-    world[0]->quad->material->albedo = vec_init(1.0, 0.2, 0.2);
-    world[0]->quad->material->type = LAMBERTIAN;
+    world[0]->quad->material->albedo = vec_init(4, 4, 4);
+    world[0]->quad->material->type = LIGHT;
     world[0]->quad->material->fuzz = 0.0;
     world[1] = malloc(sizeof(t_object_list));
     world[1]->sphere = NULL;

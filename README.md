@@ -132,3 +132,11 @@
 ### render
 - **pixel_color** The final color assigned to a pixel after all calculations, including ray intersections, lighting, and shading, have been completed
   - `= ray_color`
+
+### Background Color
+- **sky**
+    - `= color1 = vec_init(1.0, 1.0, 1.0)`
+    - `= color2 = vec_init(0.5, 0.7, 1.0);`
+- **dark for light**
+    - `= color1 = vec_init(0.0, 0.0, 0.0)`
+    - `= color2 = vec_init(0.10, 0.20, 0.40);`
