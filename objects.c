@@ -11,24 +11,6 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
     hit_anything = false;
     closest_so_far = ray_t.max;
     i = 0;
-    /*if (object_list->sphere)
-    {
-        rec->material = malloc(sizeof(t_material));
-        rec->object_index = 0;
-        while (object_list->sphere[i])
-        {
-            interval.min = ray_t.min;
-            interval.max = closest_so_far;
-            if (hit_sphere(ray, interval, rec, object_list->sphere[i]))
-            {
-                hit_anything = true;
-                closest_so_far = rec->t;
-                rec->object_index = i;
-                rec->material->fuzz = object_list->sphere[i]->material->fuzz;
-            }
-            i++;
-        }
-    }*/
     rec->material = malloc(sizeof(t_material));
     while (object[i])
     {
@@ -42,6 +24,16 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
                 closest_so_far = rec->t;
                 rec->object_index = i;
                 rec->material->fuzz = object[i]->quad->material->fuzz;
+            }
+        }
+        else if (object[i]->type == TRIANGLE)
+        {
+            if (hit_tri(ray, interval, rec, object[i]->tri))
+            {
+                hit_anything = true;
+                closest_so_far = rec->t;
+                rec->object_index = i;
+                rec->material->fuzz = object[i]->tri->material->fuzz;
             }
         }
         else if (object[i]->type == SPHERE)

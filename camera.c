@@ -89,6 +89,32 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wor
                 }
             }   
         }
+        else if (world[rec->object_index]->type == TRIANGLE)
+        {
+            if (world[rec->object_index]->tri->material->type == LAMBERTIAN)
+            {
+                if (world[rec->object_index]->tri->material->type == LAMBERTIAN)
+                {
+                    if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
+                    {
+                        albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
+                        r_color1 = ray_color(&scattered, rec, depth - 1, world);
+                        r_color = multi_vec_vec(albedo, r_color1);
+                        return (r_color);
+                    }
+                }
+            }
+            else if (world[rec->object_index]->tri->material->type == METAL)
+            {
+                if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
+                {
+                    albedo = vec_init(rec->material->albedo.x, rec->material->albedo.y, rec->material->albedo.z);
+                    r_color1 = ray_color(&scattered, rec, depth - 1, world);
+                    r_color = multi_vec_vec(albedo, r_color1);
+                    return (r_color);
+                }
+            }
+        }
         else if (world[rec->object_index]->type == SPHERE)
         {
             if (world[rec->object_index]->sphere->material->type == LAMBERTIAN)
@@ -113,8 +139,7 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wor
                     r_color = multi_vec_vec(albedo, r_color1);
                     return (r_color);
                 }
-            }
-            
+            } 
         }
         r_color = vec_init(0, 0, 0);
         return (r_color);

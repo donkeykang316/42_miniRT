@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-bool    is_interior(double alpha, double beta)
+bool    is_interior_quad(double alpha, double beta)
 {
     t_interval  unit_interval;
 
@@ -35,7 +35,7 @@ bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad *quad)
     planar_hitpt_vector = subtrac_vec_vec(intersection, quad->q);
     alpha = dot_vec(quad->w, cross_vec(planar_hitpt_vector, quad->v));
     beta = dot_vec(quad->w, cross_vec(quad->u, planar_hitpt_vector));
-    if (!is_interior(alpha, beta))
+    if (!is_interior_quad(alpha, beta))
         return (false);
     rec->t = t;
     rec->p = vec_init(intersection.x, intersection.y, intersection.z); 

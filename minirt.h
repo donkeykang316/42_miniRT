@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/03 00:41:54 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/03 02:56:05 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,22 @@ typedef struct  s_quad
     t_material  *material;
 }   t_quad;
 
+typedef struct  s_tri
+{
+    t_vector    q;
+    t_vector    u;
+    t_vector    v;
+    t_vector    w;
+    t_vector    normal;
+    double      d;
+    t_material  *material;
+}   t_tri;
+
 typedef struct s_object_list
 {
     t_sphere        *sphere;
     t_quad          *quad;
+    t_tri           *tri;
     t_object_type   type;
 }   t_object_list;
 
@@ -158,7 +170,12 @@ double  find_root1(double discriminant, double h, double a);
 double  find_root2(double discriminant, double h, double a);
 
 //quad
+bool    is_interior_quad(double alpha, double beta);
 bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad *quad);
+
+//triangle
+bool    is_interior_tri(double alpha, double beta);
+bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_tri *tri);
 
 //objects
 bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object);
