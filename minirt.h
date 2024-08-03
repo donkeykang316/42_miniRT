@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/03 04:45:04 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/03 16:04:02 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,13 @@ typedef struct s_sphere
     t_material *material;
 }   t_sphere;
 
+typedef struct s_cube
+{
+    t_vector    center;
+    double      side;
+    t_material  *material;
+}   t_cube;
+
 typedef struct  s_quad
 {
     t_vector    q;
@@ -152,8 +159,10 @@ typedef struct s_aabb
 //camera
 t_ray       get_ray(t_camera camera, int i, int j);
 void        write_color(t_vector pixel_color);
-t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
 void        render(t_camera camera);
+
+//ray color
+t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
 
 //camera util
 t_vector    random_in_unit_sphere(void);

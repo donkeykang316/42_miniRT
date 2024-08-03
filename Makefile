@@ -6,7 +6,7 @@
 #    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/03 04:11:22 by kaan             ###   ########.fr        #
+#    Updated: 2024/08/03 16:15:20 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS	=	main.c\
 			interval.c\
 			camera.c\
 			camera_util.c\
+			ray_color.c\
 			sphere.c\
 			quad.c\
 			triangle.c\
