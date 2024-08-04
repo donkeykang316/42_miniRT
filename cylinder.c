@@ -4,7 +4,7 @@ double  dot_vec_cyl(t_vector vec1, t_vector vec2)
 {
     double  result;
 
-    result = (vec1.x * vec2.x) + (vec1.y * vec2.y);
+    result = (vec1.x * vec2.x) + (vec1.z * vec2.z);
     return (result);
 }
 
@@ -21,9 +21,9 @@ bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cy
     double      projection_length;
 
     oc = subtrac_vec_vec(cylinder->center, ray.origin);
-    a = dot_vec_cyl(ray.direction, ray.direction) - pow(dot_vec_cyl(ray.direction, cylinder->axis), 2);
-    h = dot_vec_cyl(oc, ray.direction) - (dot_vec_cyl(oc, cylinder->axis) * dot_vec_cyl(ray.direction, cylinder->axis));
-    c = dot_vec_cyl(oc, oc) - pow(dot_vec_cyl(oc, cylinder->axis), 2) - (cylinder->radius * cylinder->radius);
+    a = dot_vec_cyl(ray.direction, ray.direction);
+    h = dot_vec_cyl(ray.direction, oc);
+    c = dot_vec_cyl(oc, oc) - (cylinder->radius * cylinder->radius);
     discriminant = (h * h) - (a * c);
     if (discriminant < 0)
         return (false);
@@ -40,8 +40,10 @@ bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cy
         return (false);
     rec->t = root;
     rec->p = vec_init(hit_point.x, hit_point.y, hit_point.z);
+    rec->normal = divi_vec_doub(subtrac_vec_vec(rec->p, cylinder->center), cylinder->radius);
     outward_normal = unit_vector(subtrac_vec_vec(hit_point, add_vec_vec(cylinder->center, multi_vec_doub(cylinder->axis, projection_length))));
     set_face_normal(ray, outward_normal, rec);
+    rec->material->albedo = vec_init(cylinder->material->albedo.x, cylinder->material->albedo.y, cylinder->material->albedo.z);
     rec->material->albedo = vec_init(cylinder->material->albedo.x, cylinder->material->albedo.y, cylinder->material->albedo.z);
     return (true);
 }

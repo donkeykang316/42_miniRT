@@ -132,11 +132,11 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wor
         else if (world[rec->object_index]->type == CYLINDER)
             return (ray_cyl(ray, rec, depth, world));
     }
-    bg_color1 = vec_init(0.0, 0.0, 0.0);
-    bg_color2 = vec_init(0.20, 0.30, 0.50);
+    /*bg_color1 = vec_init(0.0, 0.0, 0.0);
+    bg_color2 = vec_init(0.20, 0.30, 0.50);*/
 
-    /*bg_color1 = vec_init(1.0, 1.0, 1.0);
-    bg_color2 = vec_init(0.5, 0.7, 1.0);*/
+    bg_color1 = vec_init(1.0, 1.0, 1.0);
+    bg_color2 = vec_init(0.5, 0.7, 1.0);
 
     unit_direction = normalize_vec(ray->direction);
     a = 0.5 * (unit_direction.y + 1.0);
