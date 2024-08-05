@@ -17,7 +17,8 @@ t_vector    ray_quad(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **worl
     t_ray       scattered;
     t_vector    attenuation;
     
-    (void)attenuation;
+    attenuation = vec_init(0,0,0);
+
     if (world[rec->object_index]->quad->material->type == LAMBERTIAN)
     {
             if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
@@ -41,7 +42,7 @@ t_vector    ray_sphere(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wo
     t_ray       scattered;
     t_vector    attenuation;
     
-    (void)attenuation;
+    attenuation = vec_init(0,0,0);
     if (world[rec->object_index]->sphere->material->type == LAMBERTIAN)
     {
             if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
@@ -65,7 +66,7 @@ t_vector    ray_cyl(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world
     t_ray       scattered;
     t_vector    attenuation;
     
-    (void)attenuation;
+    attenuation = vec_init(0,0,0);
     if (world[rec->object_index]->cyl->material->type == LAMBERTIAN)
     {
             if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
@@ -89,7 +90,7 @@ t_vector    ray_tri(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world
     t_ray       scattered;
     t_vector    attenuation;
     
-    (void)attenuation;
+    attenuation = vec_init(0,0,0);
     if (world[rec->object_index]->tri->material->type == LAMBERTIAN)
     {
             if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
