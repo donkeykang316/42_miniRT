@@ -1,1 +1,1 @@
-cc -g sphere.c && ./a.out > img_test.ppm
+cc -g cylinder.c -lm && ./a.out > img_test.ppm

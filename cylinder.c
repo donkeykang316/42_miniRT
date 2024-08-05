@@ -1,59 +1,64 @@
 #include "minirt.h"
 
-double  dot_vec_cyl(t_vector vec1, t_vector vec2)
+void    swap_double(double *a, double *b)
 {
-    double  result;
+    double  temp;
 
-    result = (vec1.x * vec2.x) + (vec1.z * vec2.z);
-    return (result);
-}
-
-double  at_vec_cyl(t_ray ray, double t)
-{
-    double  result;
-
-    result = ray.origin.y + (t * ray.direction.y);
-    return (result);
+    temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
 bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cylinder)
 {
-    //t_vector    outward_normal;
+    t_vector    oc;
     double      a;
     double      h;
     double      c;
+    double      cad;
+    double      caoc;
     double      discriminant;
-    double      root;
-    double      hit_point;
+    double      root1;
+    double      root2;
+    double      cap_botom;
+    double      cap_top;
+    t_vector    intersection;
+    t_vector    cy_ax;
 
-    (void)rec;
-
-    a = dot_vec_cyl(ray.direction, ray.direction);
-    cylinder->center = multi_vec_int(cylinder->center, -1);
-    h = dot_vec_cyl(cylinder->center, ray.direction);
-    c = dot_vec_cyl(cylinder->center, cylinder->center) - (cylinder->radius * cylinder->radius);
+    (void)ray_t;
+    oc = subtrac_vec_vec(ray.origin, cylinder->center);
+    cad = dot_vec(cylinder->axis, ray.direction);
+    caoc = dot_vec(cylinder->axis, oc);
+    a = dot_vec(ray.direction, ray.direction) - (cad * cad);
+    h = dot_vec(oc, ray.direction) - (cad * caoc);
+    c = length_squared(oc) - (caoc * caoc) - (cylinder->radius * cylinder->radius);
     discriminant = (h * h) - (a * c);
     if (discriminant < 0)
         return (false);
-    root = (h - sqrt(discriminant)) / a;
-    hit_point = at_vec_cyl(ray, root);
-    if (hit_point < 0 || hit_point > cylinder->height)
-        return (false);
-    if (!surrounds(ray_t, root))
+    root1 = (-h - sqrt(discriminant)) / a;
+    root2 = (-h + sqrt(discriminant)) / a;
+    if (root1 > root2)
+        swap_double(&root1, &root2);
+    cap_top = caoc + root1 * cad;
+    cap_botom = caoc + root2 * cad;
+    if (cap_top < 0)
     {
-        root = (h + sqrt(discriminant)) / a;
-        hit_point = at_vec_cyl(ray, root);
-        if (hit_point < 0 || hit_point > cylinder->height)
+        if (cap_botom < 0)
             return (false);
-        if (!surrounds(ray_t, root))
-            return (false);
+        root1 = root2;
+        cap_top = cap_botom;
     }
-    /*rec->t = root;
-    rec->p = vec_init(hit_point.x, hit_point.y, hit_point.z);
-    rec->normal = divi_vec_doub(subtrac_vec_vec(rec->p, cylinder->center), cylinder->radius);
-    outward_normal = unit_vector(subtrac_vec_vec(hit_point, add_vec_vec(cylinder->center, multi_vec_doub(cylinder->axis, projection_length))));
-    set_face_normal(ray, outward_normal, rec);
-    rec->material->albedo = vec_init(cylinder->material->albedo.x, cylinder->material->albedo.y, cylinder->material->albedo.z);*/
+    if (cap_top > cylinder->height)
+    {
+        if (cap_botom > cylinder->height)
+            return (false);
+        root1 = root2;
+    }
+    rec->t = root1;
+    intersection = at_vec(ray, rec->t);
+    cy_ax = multi_vec_doub(cylinder->axis, dot_vec(subtrac_vec_vec(intersection, cylinder->center), cylinder->axis));
+    rec->p = subtrac_vec_vec(subtrac_vec_vec(intersection, cylinder->center), cy_ax);
+    rec->normal = normalize_vec(rec->p);
     rec->material->albedo = vec_init(cylinder->material->albedo.x, cylinder->material->albedo.y, cylinder->material->albedo.z);
     return (true);
 }
