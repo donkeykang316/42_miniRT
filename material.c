@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   material.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/06 12:22:06 by kaan              #+#    #+#             */
+/*   Updated: 2024/08/06 12:51:43 by kaan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material)
@@ -25,6 +37,25 @@ bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *
     scattered->direction = vec_init(reflected.x, reflected.y, reflected.z);
     attenuation = vec_init(material->albedo.x, material->albedo.y, material->albedo.z);
     return (dot_vec(scattered->direction, rec->normal) > 0);
+}
+
+bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material)
+{
+    double      ri;
+    t_vector    unit_direction;
+    t_vector    refracted;
+
+    (void)attenuation;
+    attenuation = vec_init(1.0, 1.0, 1.0);
+    if (!rec->front_face)
+        ri = 1.0 / material->ref_idx;
+    else
+        ri = material->ref_idx;
+    unit_direction = unit_vector(r_in->direction);
+    refracted = refract(unit_direction, rec->normal, ri);
+    scattered->direction = vec_init(rec->p.x, rec->p.y, rec->p.z);
+    scattered->origin = vec_init(refracted.x, refracted.y, refracted.z);
+    return (true);
 }
 
 void    set_face_normal(t_ray r, t_vector outward_normal, t_hit_rec *rec)

@@ -2,21 +2,33 @@
 
 ### Camera
 - **aspect_ratio** Aspect ratio is the ratio of the width of an image to its height
-  - `= 16.0 / 9.0`
+  - `= 1`
 - **image_width** The number of pixels horizontally across the image
   - `= 400`
 - **image_height** The number of pixels vertically across the image
   - `= image_width / aspect_ratio`
 - **samples_per_pixel** refers to the number of rays shot per pixel to gather color information (anti-aliasing)
   - `= 100`
-- **focal_length** The distance between the camera's lens and the image plane (viewport)
-  - `= 1.0`
-- **viewport_height** The physical height of the camera's viewport in world units, not pixels
-  - `= 2.0`
-- **viewport_width** The physical width of the camera's viewport in world units
-  - `= viewport_height * image_width / image_height`
+- **vfov** stands for vertical field of view. It is a critical parameter used to define how much of the scene is visible through the camera vertically and is typically measured in degrees
+  - `= 90`
+- **lookfrom**defines the point in space from which the camera is viewing the scene
+  - `= vec3()`
+- **lookat**efines the direction in which the camera is looking
+  - `= vec3()`
+- **vup**stands for "view up vector." It is a vector that defines which direction is "up" for the camera
+  - `= vec3()`
+- **theta**refers to the angle in radians that describes the vfov
+  - `= vfov * PI / 180`
+- **h** determine the size of the viewport based on the field of view
+  - `= tan(theta / 2)`
 - **center** The central point of the viewport or the image plane in the 3D space
-  - `= vec3(0, 0, 0)`
+  - `= lookfrom`
+- **focal_length** The distance between the camera's lens and the image plane (viewport)
+  - `= sqrt(dot(lookfrom - lookat))`
+- **viewport_height** The physical height of the camera's viewport in world units, not pixels
+  - `= 2 * `
+- **viewport_width** The physical width of the camera's viewport in world units
+  - `= `
 - **pixel_samples_scale** is the factor used to average the colors obtained from the multiple samples per pixel (anti-aliasing)
   - `= 1.0 / samples_per_pixel`
 - **max_depth** refers to the maximum number of times a ray is allowed to bounce or reflect within the scene before the recursion stops.

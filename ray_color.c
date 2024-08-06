@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray_color.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/06 12:23:00 by kaan              #+#    #+#             */
+/*   Updated: 2024/08/06 12:38:48 by kaan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object_list **world)
@@ -51,6 +63,11 @@ t_vector    ray_sphere(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wo
     else if (world[rec->object_index]->sphere->material->type == METAL)
     {
         if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
+            return (ray_color_util(scattered, rec, depth, world));
+    }
+    else if (world[rec->object_index]->sphere->material->type == DIELECTRIC)
+    {
+        if (scatter_dieletric(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
     else if (world[rec->object_index]->sphere->material->type == LIGHT)
@@ -133,11 +150,11 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wor
         else if (world[rec->object_index]->type == CYLINDER)
             return (ray_cyl(ray, rec, depth, world));
     }
-    /*bg_color1 = vec_init(0.0, 0.0, 0.0);
-    bg_color2 = vec_init(0.20, 0.30, 0.50);*/
+    bg_color1 = vec_init(0.0, 0.0, 0.0);
+    bg_color2 = vec_init(0.20, 0.30, 0.50);
 
-    bg_color1 = vec_init(1.0, 1.0, 1.0);
-    bg_color2 = vec_init(0.5, 0.7, 1.0);
+    /*bg_color1 = vec_init(1.0, 1.0, 1.0);
+    bg_color2 = vec_init(0.5, 0.7, 1.0);*/
 
     unit_direction = normalize_vec(ray->direction);
     a = 0.5 * (unit_direction.y + 1.0);

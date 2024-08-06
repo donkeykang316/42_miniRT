@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kseniakaremina <kseniakaremina@student.    +#+  +:+       +#+        */
+/*   By: apago <apago@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 20:04:06 by kseniakarem      ###   ########.fr       */
+/*   Updated: 2024/08/06 20:27:12 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef enum e_material_type
 {
     LAMBERTIAN,
     METAL,
+    DIELECTRIC,
     LIGHT
 }   t_material_type;
 
@@ -89,6 +90,7 @@ typedef struct s_material
 {
     t_vector        albedo;
     double          fuzz;
+    double          ref_idx;
     t_material_type type;
 }   t_material;
 
@@ -215,11 +217,13 @@ bool    scatter_light(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *
 //material
 bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
 bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
+bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
 void    set_face_normal(t_ray r, t_vector outward_normal, t_hit_rec *rec);
 
 //material util
 t_vector    reflect(t_vector vec1, t_vector vec2);
 double      fuzz(double fuzz);
+t_vector    refract(t_vector uv, t_vector n, double etai_over_etat);
 
 //interval
 double  size(t_interval *ray_t);
