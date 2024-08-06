@@ -21,7 +21,7 @@ t_ray   get_ray(t_camera camera, int i, int j)
     return (ray);
 }
 
-void    write_color(t_vector pixel_color)
+void    write_color(int fd, t_vector pixel_color)
 {
     double      r;
     double      g;
@@ -39,11 +39,11 @@ void    write_color(t_vector pixel_color)
     rbyte = (int)(256 * clamp(intensity, r));
     gbyte = (int)(256 * clamp(intensity, g));
     bbyte = (int)(256 * clamp(intensity, b));
-    printf("%d %d %d\n", rbyte, gbyte, bbyte);
+    dprintf(fd, "%d %d %d\n", rbyte, gbyte, bbyte);
 
 }
 
-void    render(t_camera camera)
+void    render(t_camera camera, t_image image)
 {
     t_vector        pixel_color;
     t_ray           ray;
@@ -61,15 +61,14 @@ void    render(t_camera camera)
 
     world = malloc(quantity * sizeof(t_object_list));
     world_init(world);
-    printf("P3\n%d %d\n255\n", (int)camera.image_width, (int)camera.image_height);
-    while (j < camera.image_height)
+    while (j < image.height)
     {
         //ft_putstr_fd("Remaining line ", 2);
         //ft_putstr_fd("--------------------------", 2);
         //ft_putnbr_fd(camera.image_height - j, 2);
         //ft_putstr_fd("\n", 2);
         i = 0;
-        while (i < camera.image_width)
+        while (i < image.width)
         {
             pixel_color = vec_init(0, 0, 0);
             sample = 0;
@@ -79,7 +78,7 @@ void    render(t_camera camera)
                 pixel_color = increment_vec_vec(pixel_color, ray_color(&ray, &rec, camera.max_depth, world));
                 sample++;
             }
-            write_color(multi_vec_doub(pixel_color, camera.pixel_samples_scale));
+            image.data[j * image.width + i] = multi_vec_doub(pixel_color, camera.pixel_samples_scale);
             i++;
         }
         j++;

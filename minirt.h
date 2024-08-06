@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*   By: kseniakaremina <kseniakaremina@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/03 17:47:21 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/06 20:04:06 by kseniakarem      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
+
+# define KEY_ESC 65307
 
 # include <unistd.h>
 # include <stdio.h>
@@ -20,6 +22,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <stdint.h>
+# include "mlx.h"
 # include "lib/get_next_line/inc/get_next_line.h"
 # include "lib/libft/inc/libft.h"
 
@@ -159,10 +162,16 @@ typedef struct s_aabb
     t_interval  z;
 }   t_aabb;
 
+typedef struct s_image {
+    int width;
+    int height;
+    t_vector* data;
+} t_image;
+
 //camera
 t_ray       get_ray(t_camera camera, int i, int j);
-void        write_color(t_vector pixel_color);
-void        render(t_camera camera);
+void        write_color(int fd, t_vector pixel_color);
+void        render(t_camera camera, t_image image);
 
 //ray color
 t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object_list **world);
@@ -178,7 +187,7 @@ t_vector    random_on_hemisphere(t_vector normal);
 double      linear_to_gamma(double linear_component);
 
 //data init
-void    camera_init(t_camera *camera);
+void    camera_init(t_camera *camera, int width, int height);
 void    world_init(t_object_list **world);
 
 //sphere
@@ -261,5 +270,25 @@ double      random_double_range(double min, double max);
 double      degrees_to_radians(double degrees);
 t_vector	random_vec(void);
 t_vector    random_vec_range(double min, double max);
+
+typedef struct s_mlx_context {
+	void				*mlx_context;
+	void				*window;
+	void				*mlx_image;
+    char*               mlx_image_data;
+	int					bits_per_px;
+	int					big_endian;
+	int					line_size;
+
+    int width;
+    int height;
+    t_image image;
+} t_mlx_context;
+
+int						on_expose(t_mlx_context *ctx);
+int						on_close_button(t_mlx_context *ctx);
+int						on_key_up(int keycode, t_mlx_context *ctx);
+int render_frame(t_mlx_context* ctx);
+int	set_pixel(t_mlx_context *ctx, int x, int y, t_vector rgb);
 
 #endif

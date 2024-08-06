@@ -3,20 +3,20 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
+#    By: kseniakaremina <kseniakaremina@student.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/03 17:08:09 by kaan             ###   ########.fr        #
+#    Updated: 2024/08/06 19:43:34 by kseniakarem      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minirt
 
 CC		=	gcc
-CFLAGS	=	-Wall -Werror -Wextra -Imlx -g
-MFLAGS  =	-lm
+CFLAGS	=	-Wall -Werror -Wextra -Ilibmlx -g
+MFLAGS  =	-lXext -lX11 -lm
 
-LIBS	=	./lib/libft/libft.a
+LIBS	=	./lib/libft/libft.a ./libmlx/libmlx.a
 
 GNL  =  ./lib/get_next_line/gnl.a
 
@@ -43,6 +43,8 @@ SRCS	=	main.c\
 			random_generator.c\
 			util.c\
 			tester.c\
+			hooks.c\
+			pixel.c\
 
 OBJS	=	$(SRCS:.c=.o)
 
@@ -52,7 +54,7 @@ $(NAME): $(OBJS)
 			make -C ./lib/libft
 			make -C ./lib/get_next_line
 			$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(GNL) -o $(NAME) $(MFLAGS)
-			./$(NAME) > img.ppm
+			./$(NAME)
 			
 clean:
 			make clean -C ./lib/libft
