@@ -6,7 +6,7 @@
 #    By: apago <apago@student.42berlin.de>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/06 20:31:26 by apago            ###   ########.fr        #
+#    Updated: 2024/08/06 20:35:01 by apago            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SRCS	=	main.c\
 			tester.c\
 			hooks.c\
 			pixel.c\
+			init_mlx.c\
 
 OBJS	=	$(SRCS:.c=.o)
 

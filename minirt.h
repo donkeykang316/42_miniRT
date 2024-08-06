@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 20:31:44 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/06 20:34:20 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,5 +294,7 @@ int						on_close_button(t_mlx_context *ctx);
 int						on_key_up(int keycode, t_mlx_context *ctx);
 int render_frame(t_mlx_context* ctx);
 int	set_pixel(t_mlx_context *ctx, int x, int y, t_vector rgb);
+void	setup_hooks(t_mlx_context *ctx);
+int	init_mlx_context(t_mlx_context *ctx, int width, int height);
 
 #endif
