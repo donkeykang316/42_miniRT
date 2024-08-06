@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   data_init.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
+/*   Updated: 2024/08/06 12:53:49 by kaan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 void    camera_init(t_camera *camera)
@@ -21,7 +33,7 @@ void    camera_init(t_camera *camera)
     if (camera->image_height < 1)
         camera->image_height = 1;
     camera->vfov = 90;
-    camera->lookfrom = vec_init(0, 5, 9);
+    camera->lookfrom = vec_init(0, 1, 7);
     camera->lookat = vec_init(0, 0, 0);
     camera->vup = vec_init(0, 10, 0);
     theta = degrees_to_radians(camera->vfov);
@@ -45,23 +57,31 @@ void    camera_init(t_camera *camera)
 
 void    world_init(t_object_list **world)
 {
-    /*world[0] = malloc(sizeof(t_object_list));
-    world[0]->sphere = NULL;
+    world[0] = malloc(sizeof(t_object_list));
+    world[0]->sphere = malloc(sizeof(t_sphere));
+    world[0]->type = SPHERE;
     world[0]->quad = NULL;
     world[0]->tri = NULL;
-    world[0]->type = CYLINDER;
-    world[0]->cyl = malloc(sizeof(t_cylinder));
-    world[0]->cyl->center = vec_init(0.0, 0.0, 0.0);
-    world[0]->cyl->axis = vec_init(0.0, 1.0, 0.0);
-    world[0]->cyl->radius = 1.0;
-    world[0]->cyl->height = 2.0;
-    world[0]->cyl->material = malloc(sizeof(t_material));
-    world[0]->cyl->material->albedo = vec_init(0.5, 0.2, 0.1);
-    world[0]->cyl->material->fuzz = 0;
-    world[0]->cyl->material->type = LAMBERTIAN;
-    world[1] = NULL;*/
+    world[1] = malloc(sizeof(t_object_list));
+    world[1]->sphere = malloc(sizeof(t_sphere));
+    world[1]->type = SPHERE;
+    world[1]->quad = NULL;
+    world[1]->tri = NULL;
+    world[0]->sphere->center = vec_init(0.0, -100.5, 2.0);
+    world[0]->sphere->radius = 100.0;
+    world[0]->sphere->material = malloc(sizeof(t_material));
+    world[0]->sphere->material->albedo = vec_init(0.8, 0.8, 0.0);
+    world[0]->sphere->material->type = LAMBERTIAN;
+    world[0]->sphere->material->fuzz = 0.0;
+    world[1]->sphere->center = vec_init(0.0, 0.0, 5.0);
+    world[1]->sphere->radius = 0.5;
+    world[1]->sphere->material = malloc(sizeof(t_material));
+    world[1]->sphere->material->albedo = vec_init(1.0, 1.0, 1.0);
+    world[1]->sphere->material->type = DIELECTRIC;
+    world[1]->sphere->material->ref_idx = 1.5;
+    world[2] = NULL;
 
-    world[0] = malloc(sizeof(t_object_list));
+    /*world[0] = malloc(sizeof(t_object_list));
     world[0]->sphere = NULL;
     world[0]->tri = NULL;
     world[0]->type = QUAD;
@@ -167,5 +187,5 @@ void    world_init(t_object_list **world)
     world[8]->cyl->material->albedo = vec_init(0.5, 0.2, 0.1);
     world[8]->cyl->material->fuzz = 0;
     world[8]->cyl->material->type = LAMBERTIAN;
-    world[9] = NULL;
+    world[9] = NULL;*/
 }
