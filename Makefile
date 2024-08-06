@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kseniakaremina <kseniakaremina@student.    +#+  +:+       +#+         #
+#    By: apago <apago@student.42berlin.de>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/06 19:43:34 by kseniakarem      ###   ########.fr        #
+#    Updated: 2024/08/06 20:31:26 by apago            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
