@@ -45,23 +45,23 @@ void    camera_init(t_camera *camera)
 
 void    world_init(t_object_list **world)
 {
-    world[0] = malloc(sizeof(t_object_list));
+    /*world[0] = malloc(sizeof(t_object_list));
     world[0]->sphere = NULL;
     world[0]->quad = NULL;
     world[0]->tri = NULL;
     world[0]->type = CYLINDER;
     world[0]->cyl = malloc(sizeof(t_cylinder));
-    world[0]->cyl->center = vec_init(0.0, 0.0, 6.0);
+    world[0]->cyl->center = vec_init(0.0, 0.0, 0.0);
     world[0]->cyl->axis = vec_init(0.0, 1.0, 0.0);
     world[0]->cyl->radius = 1.0;
-    world[0]->cyl->height = 3.0;
+    world[0]->cyl->height = 2.0;
     world[0]->cyl->material = malloc(sizeof(t_material));
     world[0]->cyl->material->albedo = vec_init(0.5, 0.2, 0.1);
     world[0]->cyl->material->fuzz = 0;
     world[0]->cyl->material->type = LAMBERTIAN;
-    world[1] = NULL;
+    world[1] = NULL;*/
 
-    /*world[0] = malloc(sizeof(t_object_list));
+    world[0] = malloc(sizeof(t_object_list));
     world[0]->sphere = NULL;
     world[0]->tri = NULL;
     world[0]->type = QUAD;
@@ -167,5 +167,5 @@ void    world_init(t_object_list **world)
     world[8]->cyl->material->albedo = vec_init(0.5, 0.2, 0.1);
     world[8]->cyl->material->fuzz = 0;
     world[8]->cyl->material->type = LAMBERTIAN;
-    world[9] = NULL;*/
+    world[9] = NULL;
 }
