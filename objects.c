@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:20 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:22:23 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/07 17:54:13 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
                 closest_so_far = rec->t;
                 rec->object_index = i;
                 rec->material->fuzz = object[i]->quad->material->fuzz;
+                rec->material->ref_idx = object[i]->quad->material->ref_idx;
             }
         }
         else if (object[i]->type == TRIANGLE)
@@ -46,6 +47,7 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
                 closest_so_far = rec->t;
                 rec->object_index = i;
                 rec->material->fuzz = object[i]->tri->material->fuzz;
+                rec->material->ref_idx = object[i]->tri->material->ref_idx;
             }
         }
         else if (object[i]->type == SPHERE)
@@ -56,6 +58,7 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
                 closest_so_far = rec->t;
                 rec->object_index = i;
                 rec->material->fuzz = object[i]->sphere->material->fuzz;
+                rec->material->ref_idx = object[i]->sphere->material->ref_idx;
             }
         }
         else if (object[i]->type == CYLINDER)
@@ -66,6 +69,7 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
                 closest_so_far = rec->t;
                 rec->object_index = i;
                 rec->material->fuzz = object[i]->cyl->material->fuzz;
+                rec->material->ref_idx = object[i]->cyl->material->ref_idx;
             }
         }
         i++;

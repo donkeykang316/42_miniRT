@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:06 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:51:43 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/07 13:30:15 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,11 @@ bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_r
 {
     double      ri;
     t_vector    unit_direction;
-    t_vector    refracted;
+    double      cos_theta;
+    double      sin_theta;
+    bool        cannot_refract;
+    t_vector    direction;
+    double      refla;
 
     (void)attenuation;
     attenuation = vec_init(1.0, 1.0, 1.0);
@@ -51,9 +55,16 @@ bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_r
     else
         ri = material->ref_idx;
     unit_direction = unit_vector(r_in->direction);
-    refracted = refract(unit_direction, rec->normal, ri);
-    scattered->direction = vec_init(rec->p.x, rec->p.y, rec->p.z);
-    scattered->origin = vec_init(refracted.x, refracted.y, refracted.z);
+    cos_theta = fmin(dot_vec(multi_vec_int(unit_direction, -1), rec->normal), 1.0);
+    sin_theta = sqrt(1.0 - cos_theta * cos_theta);
+    cannot_refract = ri * sin_theta > 1.0;
+    refla = reflectance(cos_theta, ri);
+    if (!cannot_refract || refla > random_double())
+        direction = reflect(unit_direction, rec->normal);
+    else
+        direction = refract(unit_direction, rec->normal, ri);
+    scattered->origin = vec_init(rec->p.x, rec->p.y, rec->p.z);
+    scattered->direction = vec_init(direction.x, direction.y, direction.z);
     return (true);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 22:57:26 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/07 17:47:17 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,14 @@ typedef struct s_interval
     double  max;
 }   t_interval;
 
+typedef struct s_light
+{
+    t_vector    position;
+    t_vector    direction;
+    t_vector    albedo;
+    double      intensity;
+}   t_light;
+
 typedef struct s_aabb
 {
     t_interval  x;
@@ -203,7 +211,9 @@ bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cy
 bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object);
 
 //light
+void    light_init(t_light *light, t_vector position, t_vector direction, double intensity);
 bool    scatter_light(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
+bool    hit_light(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere *light_source);
 
 //material
 bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
@@ -213,6 +223,7 @@ void    set_face_normal(t_ray r, t_vector outward_normal, t_hit_rec *rec);
 
 //material util
 t_vector    reflect(t_vector vec1, t_vector vec2);
+double  reflectance(double cosine, double ref_idx);
 double      fuzz(double fuzz);
 t_vector    refract(t_vector uv, t_vector n, double etai_over_etat);
 
@@ -253,7 +264,6 @@ double      vec_length(t_vector vec);
 t_vector    unit_vector(t_vector vec);
 t_vector    increment_vec_vec(t_vector vec_inc, t_vector vec);
 t_vector    normalize_vec(t_vector vec);
-t_vector    increment_vec_vec(t_vector vec_inc, t_vector vec);
 t_vector    cross_vec(t_vector vec1, t_vector vec2);
 
 //util

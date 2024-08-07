@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:53:49 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/07 17:52:52 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void    camera_init(t_camera *camera)
     if (camera->image_height < 1)
         camera->image_height = 1;
     camera->vfov = 90;
-    camera->lookfrom = vec_init(0, 1, 7);
+    camera->lookfrom = vec_init(0, 2, 9);
     camera->lookat = vec_init(0, 0, 0);
     camera->vup = vec_init(0, 10, 0);
     theta = degrees_to_radians(camera->vfov);
@@ -57,7 +57,7 @@ void    camera_init(t_camera *camera)
 
 void    world_init(t_object_list **world)
 {
-    world[0] = malloc(sizeof(t_object_list));
+    /*world[0] = malloc(sizeof(t_object_list));
     world[0]->sphere = malloc(sizeof(t_sphere));
     world[0]->type = SPHERE;
     world[0]->quad = NULL;
@@ -79,9 +79,9 @@ void    world_init(t_object_list **world)
     world[1]->sphere->material->albedo = vec_init(1.0, 1.0, 1.0);
     world[1]->sphere->material->type = DIELECTRIC;
     world[1]->sphere->material->ref_idx = 1.5;
-    world[2] = NULL;
+    world[2] = NULL;*/
 
-    /*world[0] = malloc(sizeof(t_object_list));
+    world[0] = malloc(sizeof(t_object_list));
     world[0]->sphere = NULL;
     world[0]->tri = NULL;
     world[0]->type = QUAD;
@@ -90,8 +90,9 @@ void    world_init(t_object_list **world)
     world[0]->quad->u = vec_init(0, 0, -4);
     world[0]->quad->v = vec_init(0, 4, 0);
     world[0]->quad->material = malloc(sizeof(t_material));
-    world[0]->quad->material->albedo = vec_init(5, 5, 5);
-    world[0]->quad->material->type = LIGHT;
+    world[0]->quad->material->albedo = vec_init(1, 0.2, 0.2);
+    world[0]->quad->material->type = LAMBERTIAN;
+    world[0]->quad->material->ref_idx = 0.0;
     world[0]->quad->material->fuzz = 0.0;
     world[1] = malloc(sizeof(t_object_list));
     world[1]->sphere = NULL;
@@ -105,6 +106,7 @@ void    world_init(t_object_list **world)
     world[1]->quad->material->albedo = vec_init(0.2, 1.0, 0.2);
     world[1]->quad->material->type = LAMBERTIAN;
     world[1]->quad->material->fuzz = 0.0;
+    world[1]->quad->material->ref_idx = 0.0;
     world[2] = malloc(sizeof(t_object_list));
     world[2]->sphere = NULL;
     world[2]->tri = NULL;
@@ -117,6 +119,7 @@ void    world_init(t_object_list **world)
     world[2]->quad->material->albedo = vec_init(0.2, 0.2, 1.0);
     world[2]->quad->material->type = LAMBERTIAN;
     world[2]->quad->material->fuzz = 0.0;
+    world[2]->quad->material->ref_idx = 0.0;
     world[3] = malloc(sizeof(t_object_list));
     world[3]->sphere = NULL;
     world[3]->quad = NULL;
@@ -129,6 +132,7 @@ void    world_init(t_object_list **world)
     world[3]->tri->material->albedo = vec_init(1.0, 0.5, 0.0);
     world[3]->tri->material->type = LAMBERTIAN;
     world[3]->tri->material->fuzz = 0.0;
+    world[3]->tri->material->ref_idx = 0.0;
     world[4] = malloc(sizeof(t_object_list));
     world[4]->sphere = malloc(sizeof(t_sphere));
     world[4]->type = SPHERE;
@@ -155,24 +159,27 @@ void    world_init(t_object_list **world)
     world[4]->sphere->material->albedo = vec_init(0.8, 0.8, 0.0);
     world[4]->sphere->material->type = LAMBERTIAN;
     world[4]->sphere->material->fuzz = 0.0;
+    world[4]->sphere->material->ref_idx = 0.0;
     world[5]->sphere->center = vec_init(0.0, 0.0, 5.0);
     world[5]->sphere->radius = 0.5;
     world[5]->sphere->material = malloc(sizeof(t_material));
     world[5]->sphere->material->albedo = vec_init(0.1, 0.2, 0.5);
     world[5]->sphere->material->type = LAMBERTIAN;
     world[5]->sphere->material->fuzz = 0.0;
+    world[5]->sphere->material->ref_idx = 0.0;
     world[6]->sphere->center = vec_init(-1.0, 0.0, 5.0);
     world[6]->sphere->radius = 0.4;
     world[6]->sphere->material = malloc(sizeof(t_material));
     world[6]->sphere->material->albedo = vec_init(0.8, 0.8, 0.8);
     world[6]->sphere->material->type = METAL;
     world[6]->sphere->material->fuzz = 0.2;
+    world[6]->sphere->material->ref_idx = 0.0;
     world[7]->sphere->center = vec_init(1.0, 0.0, 5.0);
     world[7]->sphere->radius = 0.5;
     world[7]->sphere->material = malloc(sizeof(t_material));
-    world[7]->sphere->material->albedo = vec_init(0.8, 0.6, 0.2);
-    world[7]->sphere->material->type = METAL;
-    world[7]->sphere->material->fuzz = 0.6;
+    world[7]->sphere->material->albedo = vec_init(1.0, 1.0, 1.0);
+    world[7]->sphere->material->type = DIELECTRIC;
+    world[7]->sphere->material->ref_idx = 0.5;
     world[8] = malloc(sizeof(t_object_list));
     world[8]->sphere = NULL;
     world[8]->quad = NULL;
@@ -186,6 +193,7 @@ void    world_init(t_object_list **world)
     world[8]->cyl->material = malloc(sizeof(t_material));
     world[8]->cyl->material->albedo = vec_init(0.5, 0.2, 0.1);
     world[8]->cyl->material->fuzz = 0;
+    world[8]->cyl->material->ref_idx = 0.0;
     world[8]->cyl->material->type = LAMBERTIAN;
-    world[9] = NULL;*/
+    world[9] = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:22:00 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/07 13:08:48 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,15 @@ t_vector    refract(t_vector uv, t_vector n, double etai_over_etat)
     r_out_perp = multi_vec_doub(add_vec_vec(uv, multi_vec_doub(n, cos_theta)), etai_over_etat);
     r_out_parallel = multi_vec_doub(n, -sqrt(fabs(1.0 - length_squared(r_out_perp))));
     return (add_vec_vec(r_out_perp, r_out_parallel));
+}
+
+double  reflectance(double cosine, double ref_idx)
+{
+    double r0;
+    
+    r0 = (1 - ref_idx) / (1 + ref_idx);
+    r0 = r0 * r0;
+    return (r0 + (1 - r0) * pow((1 - cosine), 5));
 }
 
 double fuzz(double fuzz)
