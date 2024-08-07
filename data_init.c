@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-void    camera_init(t_camera *camera)
+void    camera_init(t_camera *camera, int width, int height)
 {
     double      focal_length;
     t_vector    viewport_u;
@@ -26,10 +26,10 @@ void    camera_init(t_camera *camera)
     t_vector    v;
     t_vector    w;
 
-    camera->aspect_ratio = 16 / 9;
-    camera->image_width = 400;
+    camera->image_width = width;
     camera->samples_per_pixel = 100;
-    camera->image_height = (int)(camera->image_width / camera->aspect_ratio);
+    camera->image_height = height;
+    camera->aspect_ratio = (float)(width) / (float)(height);
     if (camera->image_height < 1)
         camera->image_height = 1;
     camera->vfov = 90;

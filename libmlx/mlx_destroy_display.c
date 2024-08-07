@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   mlx_destroy_display.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42berlin.de>          +#+  +:+       +#+        */
+/*   By: mg <mg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/06 12:21:43 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 20:33:35 by apago            ###   ########.fr       */
+/*   Created: 2020/10/03 18:56:35 by mg                #+#    #+#             */
+/*   Updated: 2020/10/04 01:55:35 by mg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "mlx_int.h"
 
-int	main()
+int	mlx_destroy_display(t_xvar *xvar)
 {
-	t_mlx_context   	ctx;
-
-    if (!init_mlx_context(&ctx, 400, 300)) {
-        return 1;
-    }
-	setup_hooks(&ctx);
-	mlx_loop(ctx.mlx_context);
-	return (0);
+	XCloseDisplay(xvar->display);
 }
