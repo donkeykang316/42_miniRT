@@ -12,11 +12,8 @@
 - **vfov** stands for vertical field of view. It is a critical parameter used to define how much of the scene is visible through the camera vertically and is typically measured in degrees
   - `= 90`
 - **lookfrom**defines the point in space from which the camera is viewing the scene
-  - `= vec3()`
 - **lookat**efines the direction in which the camera is looking
-  - `= vec3()`
 - **vup**stands for "view up vector." It is a vector that defines which direction is "up" for the camera
-  - `= vec3()`
 - **theta**refers to the angle in radians that describes the vfov
   - `= vfov * PI / 180`
 - **h** determine the size of the viewport based on the field of view
@@ -26,57 +23,80 @@
 - **focal_length** The distance between the camera's lens and the image plane (viewport)
   - `= sqrt(dot(lookfrom - lookat))`
 - **viewport_height** The physical height of the camera's viewport in world units, not pixels
-  - `= 2 * `
+  - `= 2.0 * h * focal_length`
 - **viewport_width** The physical width of the camera's viewport in world units
-  - `= `
+  - `= viewport_height * image_width / image_height`
+- **w, u, v** Calculate the direction vecto that points from the camera's position (lookfrom) towards the point it is looking at (lookat)
+  - `w = sqrt(dot(lookfrom - lookat, lookfrom - lookat))`
+  - `u = sqrt(dot(corss(vup - w), corss(vup - w)))`
+  - `v = corss(w, u)`
+- **viewport_u** A unit vector representing the horizontal direction in the viewport
+  - `= u * viewport_width`
+- **viewport_v** A unit vector representing the vertical direction in the viewport
+  - `= viewport_height * -v`
 - **pixel_samples_scale** is the factor used to average the colors obtained from the multiple samples per pixel (anti-aliasing)
   - `= 1.0 / samples_per_pixel`
 - **max_depth** refers to the maximum number of times a ray is allowed to bounce or reflect within the scene before the recursion stops.
   - `= 50`
-- **viewport_u** A unit vector representing the horizontal direction in the viewport
-  - `= vec3(viewport_width, 0, 0)`
-- **viewport_v** A unit vector representing the vertical direction in the viewport
-  - `= vec3(0, -viewport_height, 0)`
+- **viewport_upper_left** Coordinates of the top-left corner of a viewport in a 3D graphics application
+  - `= center - (w * focal_length  + viewport_u / 2 + viewport_v / 2)`
 - **pixel_delta_u** The horizontal step size between adjacent pixels on the viewport
   - `= viewport_u / image_width`
 - **pixel_delta_v** The vertical step size between adjacent pixels on the viewport
   - `= viewport_v / image_height`
-- **vec**
-  - `= vec3(0, 0, focal_length)`
-- **viewport_upper_left** Coordinates of the top-left corner of a viewport in a 3D graphics application
-  - `= center - (vec + (viewport_u / 2 + viewport_v / 2))`
 - **pixel00_loc** The position of the bottom-left corner pixel (often denoted as pixel (0,0)) on the viewport in world space coordinates
   - `= viewport_upper_left + (pixel_delta_u + pixel_delta_v) * 0.5`
 
-### material
-- **albedo** refers to the intrinsic reflectivity or base color of a surface
+### Ray
+- **offset** refers to a small adjustment or displacement applied to a position, it is here to achieve anti-aliasing effects
+  - `= vec3(random_nbr - 0.5, random_nbr - 0.5, 0)`
+- **pixel_sample** calculate the exact sample position (i, j) on the image plane for the current pixel
+  - `= camera.pixel00_loc + (camera.pixel_delta_u * (i + offset.x)) + (camera.pixel_delta_v * (j + offset.y))`
+- **origin** The starting point from which the ray is cast
+  - `= camera.center`
+- **direction** specifies the direction in which the ray travels from its origin
+  - `= pixel_sample - camera.center`
 
-### world
-- **sphere** Add sphere(s) to the "world"
-- **sphere_0.center** Center of the ground(sphere)
-  - `= vec3(0.0, -100.5, -1.0)`
-- **sphere_0.radius**
-   - `= 100.0`
-- **sphere_0.material.albedo**
-  - `= vec3(0.8, 0.8, 0.0)`
-- **sphere_1.center** 
-  - `= vec3(0.0, 0.0, -1.2)`
-- **sphere_1.radius** 
-  - `= 0.5`
-- **sphere_1.material.albedo**
-  - `= vec3(0.1, 0.2, 0.5)`
-- **sphere_2.center** 
-  - `= vec3(-1.0, 0.0, -1.0)`
-- **sphere_2.radius** 
-  - `= 0.5`
-- **sphere_2.material.albedo**
-  - `= vec3(0.8, 0.8, 0.8)`
-- **sphere_3.center** 
-  - `= vec3(1.0, 0.0, -1.0)`
-- **sphere_3.radius** 
-  - `= 0.5`
-- **sphere_3.material.albedo**
-  - `= vec3(0.8, 0.6, 0.2)`
+### Interval
+- **interval** define the range of distances along the ray that should be considered for intersections with objects
+- **min** sets the minimum distance along the ray to start checking for intersections, set to a small positive value to avoid self-intersection artifacts (visual errors) and skip any intersections that are too close to the origin of the ray
+  - `= 0.001`
+- **max** defines the maximum distance along the ray to check for intersections. Setting it to INFINITY means the ray will be checked for intersections with objects indefinitely far away from the ray's origi
+  - `= INFINITY`
+
+### Objects (ray intersection/hittble)
+- **Types: sphere, quad, triangle, cylinder** 
+- **sphere.center** origin of the sphere
+- **sphere.radius** the distance from its center to any point on its surface
+- **sphere.oc** The vector/offset from the sphere's center to the ray's origin
+- **sphere.a** The coefficient of the quadratic term in the ray-sphere intersection equation
+- **sphere.a** (or "b" in some other text books) determine the linear component in the quadratic equation for the intersection
+- **sphere.c** a constant term derived from the squared length of the vector oc minus the squared radius of the sphere
+- **sphere.discriminant** part of the quadratic formula used to determine the number and type of solutions (intersections). A negative discriminant indicates no real roots, meaning the ray does not intersect the sphere
+- **sphere.root** determine if the intersection points of a ray with a sphere/ray interval 
+- **quad.q** the starting corner
+- **quad.u** representing the first side. Q+u gives one of the corners adjacent to Q
+- **quad.v** representing the second side. Q+v gives the other corner adjacent to Q
+- **quad.w** constant for a given quadrilateral
+- **quad.denom** calculates the denominator for the ray-plane intersection equation (n * ray.direction), if the absolute value of this denominator is smaller than a very small constant (EPSILON 1e-8), it indicates that the ray is nearly parallel to the quad, indicating no valid intersection.
+- **quadrat.t** determines the distance from the ray's origin to the intersection point on the plane
+- **quadrat.intersection** ray intersection point
+- **quadrat.planar_hitpt_vector** a reference point from starting corner to the intersection point
+- **quadrat.alpha & beta** compute barycentric coordinates (alpha and beta) to determine if the intersection point is inside the quad
+- **triangle** similiar to quad with different barycentric coordinates determination
+- **cylinder.center** origin of the cylinder
+- **cylinder.radius** radius of the cylinder
+- **cylinder.axis** direction of the cylinder
+- **cylinder.height** tube lenth of the cylinder
+- **cylinder.oc** The vector/offset from the cylinder's center to the ray's origin
+- **cylinder.cad** Projection of ray direction onto cylinder axis
+- **cylinder.caoc** Projection of oc onto cylinder axis
+- **cylinder.a & h & c** The coefficients of the quadratic term in the ray-sphere intersection equation
+- **cylinder.discriminant** part of the quadratic formula used to determine the number and type of solutions (intersections). A negative discriminant indicates no real roots, meaning the ray does not intersect the sphere
+- **cylinder.root1 & root2** determine  the two potential intersection points
+- **cylinder.cap** Calculate the intersections on the cylinder's cap
+- **cylinder.intersection** ray intersection point
+- **cylinder.cy_ax** Calculate the projection of the intersection point onto the cylinder's axis
 
 ### hit record
 - **p** Hit point, the exact location in 3D space where the ray intersects the object
@@ -84,66 +104,11 @@
 - **t** The parameter value in the ray equation that indicates the distance from the ray's origin to the hit point
 - **front_face** A boolean indicating whether the ray hit the front face or back face of the object, important for correct lighting and shading
 
-### hit sphere
-- **center** The center point of the sphere
-- **radius** The distance from the center to any point on the surface of the sphere
-- **oc** The offset from the ray's origin to the sphere's center
-  - `= sphere.center - ray.origin`
-- **a** Dot product of the ray's direction vector with itself
-  - `= dot(ray.direction, ray.direction)`
-- **h** Half the coefficient of t in the quadratic equation derived from the sphere-ray intersection equation
-  - `= dot(ray.direction, oc)`
-- **c** It represents the constant term in the quadratic equation
-  - `= dot(oc, oc) - sphere.radius * sphere.radius` 
-- **discriminant** A value derived from the quadratic formula that indicates the nature of the roots
-  - `= h*h - a*c`
-- **root** is the square root of the discriminant, used to find the actual intersection points. It's used to find the two potential intersection points along the ray
-  - `= (h - sqrt(discriminant)) / a`
-  - `= (h + sqrt(discriminant)) / a`
-- **rec.t**
-  - `= root`
-- **rec.p**
-  - `= ray.origin + ray.direction * t`
-- **rec.normal**
-  - `= (rec.p - sphere.center) / sphere.radius`
-
-### hit objects
-- **closest_so_far**
-  - `= ray_t->max`
-
-### ray
-- **offset** refers to a small adjustment or displacement applied to a position, often used to perturb sample points within a pixel to achieve anti-aliasing effects
-  - `= vec3(random_double - 0.5, random_double - 0.5, 0)`
-- **pixel_sample** refers to a specific point or a set of points within a pixel where color calculations are performed. Multiple samples per pixel are often used in techniques like anti-aliasing to average the results and produce smoother images
-  - `= camera.pixel00_loc + (camera.pixel_delta_u * (i + offset.x)) + (camera.pixel_delta_v * (j + offset.y))`
-- **origin** The starting point from which the ray is cast
-  - `= vec3(camera.center.x, camera.center.y, camera.center.z)`
-- **direction** A vector that specifies the direction in which the ray travels from its origin
-  - `= pixel_sample - camera.center`
+### material
+- **albedo** refers to the intrinsic reflectivity or base color of a surface
 
 ### ray color
-- **interval.min** This represents the lower bound of an interval. It is used to denote the minimum valid value of a parameter, such as the parameter t in the ray equation that defines the position along the ray
-  - `= 0.001`
-- **interval.max** This represents the upper bound of an interval. It defines the maximum valid value for computations, ensuring that calculations do not exceed this bound
-  - `= INFINITY`
-- **if hit object (sphere)**
-  - **ray_color** Color of the ray
-    - `= (rec.normal + color1) * 0.5`
-- **else**
-  - **color1(1.0, 1.0, 1.0)** Represent a color(r,g,b) with all its components set to the maximum intensity (white) (0 for no intensity)
-  - **color2(0.5, 0.7, 1.0)** soft blue color for the sky
-  - **unit_direction** Normalized version of a direction vector, ensure that the vector only indicates direction without any magnitude, which is vital for calculations involving directions like lighting, reflection, and refraction
-  - **a** Blending factor to mix two colors, such as the ground color and the sky color, creating a gradient effect that simulates a sky. This is often used for backgrounds where the ground is typically lighter and the sky is blue
-    - `= 0.5 * (unit_direction.y +1.0)`
-- **ray_color**
-    - `= color1 * (1.0 - a) + color2 * a`
-
-### write color
 - **place holder**
-
-### render
-- **pixel_color** The final color assigned to a pixel after all calculations, including ray intersections, lighting, and shading, have been completed
-  - `= ray_color`
 
 ### Background Color
 - **sky**
