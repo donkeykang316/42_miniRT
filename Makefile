@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: apago <apago@student.42berlin.de>          +#+  +:+       +#+         #
+#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/06 20:35:01 by apago            ###   ########.fr        #
+#    Updated: 2024/08/07 12:15:22 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ SRCS	=	main.c\
 			tester.c\
 			hooks.c\
 			pixel.c\
-			init_mlx.c\
+			mlx_init.c\
 
 OBJS	=	$(SRCS:.c=.o)
 
@@ -54,12 +54,14 @@ all:		$(NAME)
 $(NAME): $(OBJS)
 			make -C ./lib/libft
 			make -C ./lib/get_next_line
+			make -C ./libmlx
 			$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(GNL) -o $(NAME) $(MFLAGS)
 			./$(NAME)
 			
 clean:
 			make clean -C ./lib/libft
 			make clean -C ./lib/get_next_line
+			make clean -C ./libmlx
 			rm -rf $(OBJS)
 			
 fclean:		clean
