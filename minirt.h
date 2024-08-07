@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/07 17:47:17 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/07 23:22:36 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ typedef enum e_material_type
 {
     LAMBERTIAN,
     METAL,
-    DIELECTRIC,
-    LIGHT
+    DIELECTRIC
 }   t_material_type;
 
 typedef enum e_object_type
@@ -157,7 +156,6 @@ typedef struct s_interval
 typedef struct s_light
 {
     t_vector    position;
-    t_vector    direction;
     t_vector    albedo;
     double      intensity;
 }   t_light;
@@ -189,6 +187,7 @@ double      linear_to_gamma(double linear_component);
 
 //data init
 void    camera_init(t_camera *camera);
+void    light_init(t_light *light);
 void    world_init(t_object_list **world);
 
 //sphere
@@ -209,11 +208,6 @@ bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cy
 
 //objects
 bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object);
-
-//light
-void    light_init(t_light *light, t_vector position, t_vector direction, double intensity);
-bool    scatter_light(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
-bool    hit_light(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere *light_source);
 
 //material
 bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);

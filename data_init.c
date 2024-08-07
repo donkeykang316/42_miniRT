@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/07 17:52:52 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/07 23:19:34 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,16 @@ void    camera_init(t_camera *camera)
     camera->pixel_delta_u = divi_vec_int(viewport_u, camera->image_width);
     camera->pixel_delta_v = divi_vec_int(viewport_v, camera->image_height);
     camera->pixel00_loc = add_vec_vec(viewport_upper_left, multi_vec_doub(add_vec_vec(camera->pixel_delta_u, camera->pixel_delta_v), 0.5));
+}
+
+void    light_init(t_light *light)
+{
+    t_vector position = vec_init(-2, 5, 0);
+    double intensity = 1.0;
+
+    light->position = vec_init(position.x, position.y, position.z);
+    light->intensity = intensity;
+    light->albedo = vec_init(0.0 + intensity, 0.0 + intensity, 0.0 + intensity);
 }
 
 void    world_init(t_object_list **world)

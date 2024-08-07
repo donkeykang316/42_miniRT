@@ -3,18 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
+#    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/07 14:01:34 by kaan             ###   ########.fr        #
+#    Updated: 2024/08/07 23:29:36 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minirt
 
 CC		=	gcc
-CFLAGS	=	-Wall -Werror -Wextra -Imlx -g
-MFLAGS  =	-lm
+CFLAGS	=	-Wall -Werror -Wextra -Ilibmlx -g
+MFLAGS  =	-lXext -lX11 -lm
 
 LIBS	=	./lib/libft/libft.a
 
@@ -32,7 +32,6 @@ SRCS	=	main.c\
 			triangle.c\
 			cylinder.c\
 			objects.c\
-			light.c\
 			material.c\
 			material_util.c\
 			vector_operation_1.c\
