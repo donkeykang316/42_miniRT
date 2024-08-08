@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:06 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/07 13:30:15 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 16:54:14 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_r
 
     (void)attenuation;
     attenuation = vec_init(1.0, 1.0, 1.0);
-    if (!rec->front_face)
+    if (rec->front_face)
         ri = 1.0 / material->ref_idx;
     else
         ri = material->ref_idx;
@@ -59,7 +59,7 @@ bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_r
     sin_theta = sqrt(1.0 - cos_theta * cos_theta);
     cannot_refract = ri * sin_theta > 1.0;
     refla = reflectance(cos_theta, ri);
-    if (!cannot_refract || refla > random_double())
+    if (cannot_refract || refla > random_double())
         direction = reflect(unit_direction, rec->normal);
     else
         direction = refract(unit_direction, rec->normal, ri);

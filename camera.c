@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/07 23:14:06 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 16:17:04 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void    render(t_camera camera)
     j = 0;
     sample = 0;
 
-    int quantity = 10;
+    int quantity = 11;
 
     world = malloc(quantity * sizeof(t_object_list));
     world_init(world);
