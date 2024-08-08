@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:16:34 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 14:41:15 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 18:51:27 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,33 +30,33 @@
         interval.max = closest_so_far;
         if (object[i]->type == QUAD)
         {
-            if (hit_quad(ray, interval, rec, object[i]->quad))
+            if (hit_quad(ray, interval, rec, object[i]->value.quad))
             {
-                hit_anything = hit_obj_util(rec, object[i]->quad->material->fuzz, object[i]->quad->material->ref_idx, i);
+                hit_anything = hit_obj_util(rec, object[i]->value.quad->material->fuzz, object[i]->value.quad->material->ref_idx, i);
                 closest_so_far = rec->t;
             }
         }
         else if (object[i]->type == TRIANGLE)
         {
-            if (hit_tri(ray, interval, rec, object[i]->tri))
+            if (hit_tri(ray, interval, rec, object[i]->value.triangle))
             {
-                hit_anything = hit_obj_util(rec, object[i]->tri->material->fuzz, object[i]->tri->material->ref_idx, i);
+                hit_anything = hit_obj_util(rec, object[i]->value.triangle->material->fuzz, object[i]->value.triangle->material->ref_idx, i);
                 closest_so_far = rec->t;
             }
         }
         else if (object[i]->type == SPHERE)
         {
-            if (hit_sphere(ray, interval, rec, object[i]->sphere))
+            if (hit_sphere(ray, interval, rec, object[i]->value.sphere))
             {
-                hit_anything = hit_obj_util(rec, object[i]->sphere->material->fuzz, object[i]->sphere->material->ref_idx, i);
+                hit_anything = hit_obj_util(rec, object[i]->value.sphere->material->fuzz, object[i]->value.sphere->material->ref_idx, i);
                 closest_so_far = rec->t;
             }
         }
         else if (object[i]->type == CYLINDER)
         {
-            if (hit_cylinder(ray, interval, rec, object[i]->cyl))
+            if (hit_cylinder(ray, interval, rec, object[i]->value.cyllinder))
             {
-                hit_anything = hit_obj_util(rec, object[i]->cyl->material->fuzz, object[i]->cyl->material->ref_idx, i);
+                hit_anything = hit_obj_util(rec, object[i]->value.cyllinder->material->fuzz, object[i]->value.cyllinder->material->ref_idx, i);
                 closest_so_far = rec->t;
             }
         }

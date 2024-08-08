@@ -1,1 +1,0 @@
-cc -g cylinder.c -lm && ./a.out > img_test.ppm
