@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 22:57:26 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 18:33:08 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ typedef enum e_material_type
 {
     LAMBERTIAN,
     METAL,
-    DIELECTRIC,
-    LIGHT
+    DIELECTRIC
 }   t_material_type;
 
 typedef enum e_object_type
@@ -157,6 +156,13 @@ typedef struct s_interval
     double  max;
 }   t_interval;
 
+typedef struct s_light
+{
+    t_vector    position;
+    t_vector    albedo;
+    double      intensity;
+}   t_light;
+
 typedef struct s_aabb
 {
     t_interval  x;
@@ -169,6 +175,20 @@ typedef struct s_image {
     int height;
     t_vector* data;
 } t_image;
+
+typedef struct s_mlx_context {
+	void				*mlx_context;
+	void				*window;
+	void				*mlx_image;
+    char*               mlx_image_data;
+	int					bits_per_px;
+	int					big_endian;
+	int					line_size;
+
+    int width;
+    int height;
+    t_image image;
+} t_mlx_context;
 
 //camera
 t_ray       get_ray(t_camera camera, int i, int j);
@@ -190,6 +210,7 @@ double      linear_to_gamma(double linear_component);
 
 //data init
 void    camera_init(t_camera *camera, int width, int height);
+void    light_init(t_light *light);
 void    world_init(t_object_list **world);
 
 //sphere
@@ -210,9 +231,7 @@ bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cy
 
 //objects
 bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object);
-
-//light
-bool    scatter_light(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
+bool    obj_intersec(t_hit_rec *rec, double fuzz, double ref_idx, int i);
 
 //material
 bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
@@ -222,6 +241,7 @@ void    set_face_normal(t_ray r, t_vector outward_normal, t_hit_rec *rec);
 
 //material util
 t_vector    reflect(t_vector vec1, t_vector vec2);
+double  reflectance(double cosine, double ref_idx);
 double      fuzz(double fuzz);
 t_vector    refract(t_vector uv, t_vector n, double etai_over_etat);
 
@@ -262,7 +282,6 @@ double      vec_length(t_vector vec);
 t_vector    unit_vector(t_vector vec);
 t_vector    increment_vec_vec(t_vector vec_inc, t_vector vec);
 t_vector    normalize_vec(t_vector vec);
-t_vector    increment_vec_vec(t_vector vec_inc, t_vector vec);
 t_vector    cross_vec(t_vector vec1, t_vector vec2);
 
 //util
@@ -275,19 +294,6 @@ double      degrees_to_radians(double degrees);
 t_vector	random_vec(void);
 t_vector    random_vec_range(double min, double max);
 
-typedef struct s_mlx_context {
-	void				*mlx_context;
-	void				*window;
-	void				*mlx_image;
-    char*               mlx_image_data;
-	int					bits_per_px;
-	int					big_endian;
-	int					line_size;
-
-    int width;
-    int height;
-    t_image image;
-} t_mlx_context;
 
 int						on_expose(t_mlx_context *ctx);
 int						on_close_button(t_mlx_context *ctx);

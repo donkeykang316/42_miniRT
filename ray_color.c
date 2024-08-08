@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:00 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:38:48 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 18:28:05 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ t_vector    ray_quad(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **worl
         if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
-    else if (world[rec->object_index]->quad->material->type == LIGHT)
+    else if (world[rec->object_index]->quad->material->type == DIELECTRIC)
     {
-        if (scatter_light(ray, rec, attenuation, &scattered, rec->material))
+        if (scatter_dieletric(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
     return (vec_init(0, 0, 0));
@@ -70,11 +70,6 @@ t_vector    ray_sphere(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wo
         if (scatter_dieletric(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
-    else if (world[rec->object_index]->sphere->material->type == LIGHT)
-    {
-        if (scatter_light(ray, rec, attenuation, &scattered, rec->material))
-            return (ray_color_util(scattered, rec, depth, world));
-    }
     return (vec_init(0, 0, 0));
 }
 
@@ -94,9 +89,9 @@ t_vector    ray_cyl(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world
         if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
-    else if (world[rec->object_index]->cyl->material->type == LIGHT)
+    else if (world[rec->object_index]->cyl->material->type == DIELECTRIC)
     {
-        if (scatter_light(ray, rec, attenuation, &scattered, rec->material))
+        if (scatter_dieletric(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
     return (vec_init(0, 0, 0));
@@ -118,9 +113,9 @@ t_vector    ray_tri(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world
         if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
-    else if (world[rec->object_index]->tri->material->type == LIGHT)
+    else if (world[rec->object_index]->tri->material->type == DIELECTRIC)
     {
-        if (scatter_light(ray, rec, attenuation, &scattered, rec->material))
+        if (scatter_dieletric(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
     return (vec_init(0, 0, 0));
@@ -129,11 +124,11 @@ t_vector    ray_tri(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world
 t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world)
 {
     t_vector    r_color;
-    t_vector    bg_color1;
-    t_vector    bg_color2;
-    t_vector    unit_direction;
     t_interval  interval;
     double       a;
+    t_light     light;
+    t_vector    light_direction;
+    t_ray       light_ray;
 
     if (depth <= 0)
         return (vec_init(0, 0, 0));
@@ -150,14 +145,16 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wor
         else if (world[rec->object_index]->type == CYLINDER)
             return (ray_cyl(ray, rec, depth, world));
     }
-    bg_color1 = vec_init(0.0, 0.0, 0.0);
-    bg_color2 = vec_init(0.20, 0.30, 0.50);
-
-    /*bg_color1 = vec_init(1.0, 1.0, 1.0);
-    bg_color2 = vec_init(0.5, 0.7, 1.0);*/
-
-    unit_direction = normalize_vec(ray->direction);
-    a = 0.5 * (unit_direction.y + 1.0);
-    r_color = add_vec_vec(multi_vec_doub(bg_color1, (1.0 - a)), multi_vec_doub(bg_color2, a));
+    light_init(&light);
+    light_direction = normalize_vec(subtrac_vec_vec(light.position, rec->p));
+    light_ray.origin = add_vec_vec(rec->p, vec_init(0, 0, 0));
+    light_ray.direction = vec_init(light_direction.x, light_direction.y, light_direction.z);
+    if (hit_objects(light_ray, interval, rec, world))
+        return (vec_init(0.0, 0.0, 0.0));
+    a =  length_squared(light_direction);
+    if (a < 0.0)
+        a = 0.0;
+    r_color = multi_vec_doub(light.albedo, a);
+    //r_color = vec_init(0.1, 0.1, 0.1);
     return (r_color);
 }

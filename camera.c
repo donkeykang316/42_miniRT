@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:21:04 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 18:31:13 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void    write_color(int fd, t_vector pixel_color)
     gbyte = (int)(256 * clamp(intensity, g));
     bbyte = (int)(256 * clamp(intensity, b));
     dprintf(fd, "%d %d %d\n", rbyte, gbyte, bbyte);
-
 }
 
 void    render(t_camera camera, t_image image)
@@ -69,7 +68,7 @@ void    render(t_camera camera, t_image image)
     j = 0;
     sample = 0;
 
-    int quantity = 10;
+    int quantity = 11;
 
     world = malloc(quantity * sizeof(t_object_list));
     world_init(world);

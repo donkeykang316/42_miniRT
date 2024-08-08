@@ -5,23 +5,62 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/06 12:21:33 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:21:37 by kaan             ###   ########.fr       */
+/*   Created: 2024/08/08 14:16:34 by kaan              #+#    #+#             */
+/*   Updated: 2024/08/08 14:41:15 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool    scatter_light(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material)
+/*bool    obj_shadow(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object)
 {
-    t_vector    scatter_direction;
+    bool            hit_anything;
+    t_interval      interval;
+    double          closest_so_far;
+    int             i;
 
-    (void)attenuation;
-    (void)scattered;
-    (void)r_in;
-    scatter_direction = add_vec_vec(rec->normal, random_unit_vector());
-    scattered->origin = vec_init(rec->p.x, rec->p.y, rec->p.z);
-    scattered->direction = vec_init(scatter_direction.x, scatter_direction.y, scatter_direction.z);
-    attenuation = vec_init(material->albedo.x, material->albedo.y, material->albedo.z);
-    return (true);
-}
+    (void)rec;
+    hit_anything = false;
+    closest_so_far = ray_t.max;
+    i = 0;
+    rec->material = malloc(sizeof(t_material));
+    while (object[i])
+    {
+        interval.min = ray_t.min;
+        interval.max = closest_so_far;
+        if (object[i]->type == QUAD)
+        {
+            if (hit_quad(ray, interval, rec, object[i]->quad))
+            {
+                hit_anything = hit_obj_util(rec, object[i]->quad->material->fuzz, object[i]->quad->material->ref_idx, i);
+                closest_so_far = rec->t;
+            }
+        }
+        else if (object[i]->type == TRIANGLE)
+        {
+            if (hit_tri(ray, interval, rec, object[i]->tri))
+            {
+                hit_anything = hit_obj_util(rec, object[i]->tri->material->fuzz, object[i]->tri->material->ref_idx, i);
+                closest_so_far = rec->t;
+            }
+        }
+        else if (object[i]->type == SPHERE)
+        {
+            if (hit_sphere(ray, interval, rec, object[i]->sphere))
+            {
+                hit_anything = hit_obj_util(rec, object[i]->sphere->material->fuzz, object[i]->sphere->material->ref_idx, i);
+                closest_so_far = rec->t;
+            }
+        }
+        else if (object[i]->type == CYLINDER)
+        {
+            if (hit_cylinder(ray, interval, rec, object[i]->cyl))
+            {
+                hit_anything = hit_obj_util(rec, object[i]->cyl->material->fuzz, object[i]->cyl->material->ref_idx, i);
+                closest_so_far = rec->t;
+            }
+        }
+        i++;
+    }
+    return (hit_anything);
+}*/

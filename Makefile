@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
+#    By: apago <apago@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/07 12:15:22 by kaan             ###   ########.fr        #
+#    Updated: 2024/08/08 18:33:51 by apago            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,6 @@ SRCS	=	main.c\
 			triangle.c\
 			cylinder.c\
 			objects.c\
-			light.c\
 			material.c\
 			material_util.c\
 			vector_operation_1.c\

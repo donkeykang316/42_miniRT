@@ -6,11 +6,19 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:20 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:22:23 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 15:24:46 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+bool    obj_intersec(t_hit_rec *rec, double fuzz, double ref_idx, int i)
+{
+    rec->object_index = i;
+    rec->material->fuzz = fuzz;
+    rec->material->ref_idx = ref_idx;
+    return (true);
+}
 
 bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object)
 {
@@ -32,40 +40,32 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
         {
             if (hit_quad(ray, interval, rec, object[i]->quad))
             {
-                hit_anything = true;
+                hit_anything = obj_intersec(rec, object[i]->quad->material->fuzz, object[i]->quad->material->ref_idx, i);
                 closest_so_far = rec->t;
-                rec->object_index = i;
-                rec->material->fuzz = object[i]->quad->material->fuzz;
             }
         }
         else if (object[i]->type == TRIANGLE)
         {
             if (hit_tri(ray, interval, rec, object[i]->tri))
             {
-                hit_anything = true;
+                hit_anything = obj_intersec(rec, object[i]->tri->material->fuzz, object[i]->tri->material->ref_idx, i);
                 closest_so_far = rec->t;
-                rec->object_index = i;
-                rec->material->fuzz = object[i]->tri->material->fuzz;
             }
         }
         else if (object[i]->type == SPHERE)
         {
             if (hit_sphere(ray, interval, rec, object[i]->sphere))
             {
-                hit_anything = true;
+                hit_anything = obj_intersec(rec, object[i]->sphere->material->fuzz, object[i]->sphere->material->ref_idx, i);
                 closest_so_far = rec->t;
-                rec->object_index = i;
-                rec->material->fuzz = object[i]->sphere->material->fuzz;
             }
         }
         else if (object[i]->type == CYLINDER)
         {
             if (hit_cylinder(ray, interval, rec, object[i]->cyl))
             {
-                hit_anything = true;
+                hit_anything = obj_intersec(rec, object[i]->cyl->material->fuzz, object[i]->cyl->material->ref_idx, i);
                 closest_so_far = rec->t;
-                rec->object_index = i;
-                rec->material->fuzz = object[i]->cyl->material->fuzz;
             }
         }
         i++;

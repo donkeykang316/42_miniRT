@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42berlin.de>          +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:43 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 20:33:35 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/08 18:32:37 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	main()
+int	main(void)
 {
 	t_mlx_context   	ctx;
 
