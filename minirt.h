@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:18:55 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/08 19:28:17 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,9 +197,6 @@ void        render(t_camera camera, t_image image);
 
 //ray color
 t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object *world);
-t_vector    ray_quad(t_ray *ray, t_hit_rec *rec, int depth, t_object *world);
-t_vector    ray_sphere(t_ray *ray, t_hit_rec *rec, int depth, t_object *world);
-t_vector    ray_tri(t_ray *ray, t_hit_rec *rec, int depth, t_object *world);
 t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object *world);
 
 //camera util
