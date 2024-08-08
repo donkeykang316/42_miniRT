@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 18:20:34 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 18:31:13 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void    render(t_camera camera, t_image image)
 
     world = malloc(quantity * sizeof(t_object_list));
     world_init(world);
-    printf("P3\n%d %d\n255\n", (int)camera.image_width, (int)camera.image_height);
     while (j < image.height)
     {
         //ft_putstr_fd("Remaining line ", 2);

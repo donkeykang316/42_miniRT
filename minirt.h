@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 18:27:34 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 18:33:08 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,7 +293,6 @@ double      random_double_range(double min, double max);
 double      degrees_to_radians(double degrees);
 t_vector	random_vec(void);
 t_vector    random_vec_range(double min, double max);
-
 
 
 int						on_expose(t_mlx_context *ctx);
