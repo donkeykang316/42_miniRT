@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   file_check.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/06 12:21:43 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:31:48 by kaan             ###   ########.fr       */
+/*   Created: 2024/08/08 19:00:06 by kaan              #+#    #+#             */
+/*   Updated: 2024/08/08 19:12:22 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "parser.h"
 
-int	main(int ac, char **av)
+int	is_rt_file(char *path)
 {
-	//t_mlx_context   	ctx;
+	int	len;
 
-	if (ac != 2)
-		error_msg("Usage: ./minirt [scene.rt]");
-	else if (open_file(av[1]))
-		printf("parser success\n");
-	else
-		error_msg("Failed to open file");
-    /*if (!init_mlx_context(&ctx, 400, 300)) {
-        return 1;
-    }
-	setup_hooks(&ctx);
-	mlx_loop(ctx.mlx_context);*/
+	len = ft_strlen(path) - 3;
+	if (len > 3)
+		return (ft_strncmp(path + len, ".rt", 3) == 0);
 	return (0);
 }

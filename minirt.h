@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 18:33:08 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/08 19:10:46 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include "mlx.h"
 # include "lib/get_next_line/inc/get_next_line.h"
 # include "lib/libft/inc/libft.h"
+# include "parser/parser.h"
 
 #include "tester.h"
 
@@ -294,7 +295,7 @@ double      degrees_to_radians(double degrees);
 t_vector	random_vec(void);
 t_vector    random_vec_range(double min, double max);
 
-
+//mlx
 int						on_expose(t_mlx_context *ctx);
 int						on_close_button(t_mlx_context *ctx);
 int						on_key_up(int keycode, t_mlx_context *ctx);
@@ -302,5 +303,11 @@ int render_frame(t_mlx_context* ctx);
 int	set_pixel(t_mlx_context *ctx, int x, int y, t_vector rgb);
 void	setup_hooks(t_mlx_context *ctx);
 int	init_mlx_context(t_mlx_context *ctx, int width, int height);
+
+//parser
+
+
+//error
+int    error_msg(char *msg);
 
 #endif
