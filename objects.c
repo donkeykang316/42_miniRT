@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   objects.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:20 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 15:24:46 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 19:20:35 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool    obj_intersec(t_hit_rec *rec, double fuzz, double ref_idx, int i)
     return (true);
 }
 
-bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object)
+bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object *world)
 {
     bool            hit_anything;
     t_interval      interval;
@@ -32,39 +32,40 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list *
     closest_so_far = ray_t.max;
     i = 0;
     rec->material = malloc(sizeof(t_material));
-    while (object[i])
+    while (world[i].type)
     {
         interval.min = ray_t.min;
         interval.max = closest_so_far;
-        if (object[i]->type == QUAD)
+        t_material material = world[i].material;
+        if (world[i].type == QUAD)
         {
-            if (hit_quad(ray, interval, rec, object[i]->quad))
+            if (hit_quad(ray, interval, rec, world[i].value.quad, material))
             {
-                hit_anything = obj_intersec(rec, object[i]->quad->material->fuzz, object[i]->quad->material->ref_idx, i);
+                hit_anything = obj_intersec(rec, material.fuzz, material.ref_idx, i);
                 closest_so_far = rec->t;
             }
         }
-        else if (object[i]->type == TRIANGLE)
+        else if (world[i].type == TRIANGLE)
         {
-            if (hit_tri(ray, interval, rec, object[i]->tri))
+            if (hit_tri(ray, interval, rec, world[i].value.triangle, material))
             {
-                hit_anything = obj_intersec(rec, object[i]->tri->material->fuzz, object[i]->tri->material->ref_idx, i);
+                hit_anything = obj_intersec(rec, material.fuzz, material.ref_idx, i);
                 closest_so_far = rec->t;
             }
         }
-        else if (object[i]->type == SPHERE)
+        else if (world[i].type == SPHERE)
         {
-            if (hit_sphere(ray, interval, rec, object[i]->sphere))
+            if (hit_sphere(ray, interval, rec, world[i].value.sphere, material))
             {
-                hit_anything = obj_intersec(rec, object[i]->sphere->material->fuzz, object[i]->sphere->material->ref_idx, i);
+                hit_anything = obj_intersec(rec, material.fuzz, material.ref_idx, i);
                 closest_so_far = rec->t;
             }
         }
-        else if (object[i]->type == CYLINDER)
+        else if (world[i].type == CYLINDER)
         {
-            if (hit_cylinder(ray, interval, rec, object[i]->cyl))
+            if (hit_cylinder(ray, interval, rec, world[i].value.cyllinder, material))
             {
-                hit_anything = obj_intersec(rec, object[i]->cyl->material->fuzz, object[i]->cyl->material->ref_idx, i);
+                hit_anything = obj_intersec(rec, material.fuzz, material.ref_idx, i);
                 closest_so_far = rec->t;
             }
         }

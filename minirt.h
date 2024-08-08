@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 18:33:08 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/08 19:18:55 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@
 # include "lib/get_next_line/inc/get_next_line.h"
 # include "lib/libft/inc/libft.h"
 
-#include "tester.h"
-
 // linear congruential generator constants
 #define A 1664525
 #define C 1013904223
@@ -45,8 +43,24 @@ typedef enum e_material_type
     DIELECTRIC
 }   t_material_type;
 
+typedef struct s_vector
+{
+    double  x;
+    double  y;
+    double  z;
+}   t_vector;
+
+typedef struct s_material
+{
+    t_vector        albedo;
+    double          fuzz;
+    double          ref_idx;
+    t_material_type type;
+}   t_material;
+
 typedef enum e_object_type
 {
+    TYPE_NONE,
     SPHERE,
     QUAD,
     TRIANGLE,
@@ -54,12 +68,52 @@ typedef enum e_object_type
     CYLINDER
 }   t_object_type;
 
-typedef struct s_vector
+typedef struct s_sphere
 {
-    double  x;
-    double  y;
-    double  z;
-}   t_vector;
+    t_vector    center;
+    double      radius;
+}   t_sphere;
+
+typedef struct s_cylinder
+{
+    t_vector    center;
+    t_vector    axis;
+    double      radius;
+    double      height;
+}   t_cylinder;
+
+typedef struct  s_quad
+{
+    t_vector    q;
+    t_vector    u;
+    t_vector    v;
+    t_vector    w;
+    t_vector    normal;
+    double      d;
+}   t_quad;
+
+typedef struct  s_triangle
+{
+    t_vector    q;
+    t_vector    u;
+    t_vector    v;
+    t_vector    w;
+    t_vector    normal;
+    double      d;
+}   t_triangle;
+
+
+typedef struct s_shape {
+    t_object_type type;
+    union {
+        t_cylinder cyllinder;
+        t_triangle triangle;
+        t_quad quad;
+        t_sphere sphere;
+    } value;
+    t_material material;
+    t_vector color;
+} t_object;
 
 typedef struct s_camera
 {
@@ -85,13 +139,6 @@ typedef struct s_ray
     t_vector    direction;
 }   t_ray;
 
-typedef struct s_material
-{
-    t_vector        albedo;
-    double          fuzz;
-    double          ref_idx;
-    t_material_type type;
-}   t_material;
 
 typedef struct s_hit_rec
 {
@@ -102,53 +149,6 @@ typedef struct s_hit_rec
     bool        front_face;
     int         object_index;
 }   t_hit_rec;
-
-typedef struct s_sphere
-{
-    t_vector    center;
-    double      radius;
-    t_material *material;
-}   t_sphere;
-
-typedef struct s_cylinder
-{
-    t_vector    center;
-    t_vector    axis;
-    double      radius;
-    double      height;
-    t_material  *material;
-}   t_cylinder;
-
-typedef struct  s_quad
-{
-    t_vector    q;
-    t_vector    u;
-    t_vector    v;
-    t_vector    w;
-    t_vector    normal;
-    double      d;
-    t_material  *material;
-}   t_quad;
-
-typedef struct  s_tri
-{
-    t_vector    q;
-    t_vector    u;
-    t_vector    v;
-    t_vector    w;
-    t_vector    normal;
-    double      d;
-    t_material  *material;
-}   t_tri;
-
-typedef struct s_object_list
-{
-    t_sphere        *sphere;
-    t_quad          *quad;
-    t_tri           *tri;
-    t_cylinder      *cyl;
-    t_object_type   type;
-}   t_object_list;
 
 typedef struct s_interval
 {
@@ -196,11 +196,11 @@ void        write_color(int fd, t_vector pixel_color);
 void        render(t_camera camera, t_image image);
 
 //ray color
-t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object_list **world);
-t_vector    ray_quad(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
-t_vector    ray_sphere(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
-t_vector    ray_tri(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
-t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
+t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object *world);
+t_vector    ray_quad(t_ray *ray, t_hit_rec *rec, int depth, t_object *world);
+t_vector    ray_sphere(t_ray *ray, t_hit_rec *rec, int depth, t_object *world);
+t_vector    ray_tri(t_ray *ray, t_hit_rec *rec, int depth, t_object *world);
+t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object *world);
 
 //camera util
 t_vector    random_in_unit_sphere(void);
@@ -211,26 +211,26 @@ double      linear_to_gamma(double linear_component);
 //data init
 void    camera_init(t_camera *camera, int width, int height);
 void    light_init(t_light *light);
-void    world_init(t_object_list **world);
+t_object*    world_init();
 
 //sphere
-bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere *sphere);
+bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere, t_material material);
 double  find_root1(double discriminant, double h, double a);
 double  find_root2(double discriminant, double h, double a);
 
 //quad
 bool    is_interior_quad(double alpha, double beta);
-bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad *quad);
+bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad quad, t_material material);
 
 //triangle
 bool    is_interior_tri(double alpha, double beta);
-bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_tri *tri);
+bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_triangle tri, t_material material);
 
 //cylinder
-bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cylinder);
+bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cylinder, t_material material);
 
 //objects
-bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object);
+bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object *world);
 bool    obj_intersec(t_hit_rec *rec, double fuzz, double ref_idx, int i);
 
 //material

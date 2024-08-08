@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ray_color.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:00 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 18:28:05 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 19:11:06 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object_list **world)
+t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object *world)
 {
     t_vector    r_color;
     t_vector    albedo;
@@ -24,24 +24,24 @@ t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object_
     return (r_color);
 }
 
-t_vector    ray_quad(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world)
+t_vector    ray_quad(t_ray *ray, t_hit_rec *rec, int depth, t_object *world)
 {
     t_ray       scattered;
     t_vector    attenuation;
-    
+
     attenuation = vec_init(0,0,0);
 
-    if (world[rec->object_index]->quad->material->type == LAMBERTIAN)
+    if (world[rec->object_index].material.type == LAMBERTIAN)
     {
             if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
                 return (ray_color_util(scattered, rec, depth, world));
     }
-    else if (world[rec->object_index]->quad->material->type == METAL)
+    else if (world[rec->object_index].material.type == METAL)
     {
         if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
-    else if (world[rec->object_index]->quad->material->type == DIELECTRIC)
+    else if (world[rec->object_index].material.type == DIELECTRIC)
     {
         if (scatter_dieletric(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
@@ -49,23 +49,23 @@ t_vector    ray_quad(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **worl
     return (vec_init(0, 0, 0));
 }
 
-t_vector    ray_sphere(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world)
+t_vector    ray_sphere(t_ray *ray, t_hit_rec *rec, int depth, t_object *world)
 {
     t_ray       scattered;
     t_vector    attenuation;
-    
+
     attenuation = vec_init(0,0,0);
-    if (world[rec->object_index]->sphere->material->type == LAMBERTIAN)
+    if (world[rec->object_index].material.type == LAMBERTIAN)
     {
             if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
                 return (ray_color_util(scattered, rec, depth, world));
     }
-    else if (world[rec->object_index]->sphere->material->type == METAL)
+    else if (world[rec->object_index].material.type == METAL)
     {
         if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
-    else if (world[rec->object_index]->sphere->material->type == DIELECTRIC)
+    else if (world[rec->object_index].material.type == DIELECTRIC)
     {
         if (scatter_dieletric(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
@@ -73,23 +73,23 @@ t_vector    ray_sphere(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wo
     return (vec_init(0, 0, 0));
 }
 
-t_vector    ray_cyl(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world)
+t_vector    ray_cyl(t_ray *ray, t_hit_rec *rec, int depth, t_object *world)
 {
     t_ray       scattered;
     t_vector    attenuation;
-    
+
     attenuation = vec_init(0,0,0);
-    if (world[rec->object_index]->cyl->material->type == LAMBERTIAN)
+    if (world[rec->object_index].material.type == LAMBERTIAN)
     {
             if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
                 return (ray_color_util(scattered, rec, depth, world));
     }
-    else if (world[rec->object_index]->cyl->material->type == METAL)
+    else if (world[rec->object_index].material.type == METAL)
     {
         if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
-    else if (world[rec->object_index]->cyl->material->type == DIELECTRIC)
+    else if (world[rec->object_index].material.type == DIELECTRIC)
     {
         if (scatter_dieletric(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
@@ -97,23 +97,23 @@ t_vector    ray_cyl(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world
     return (vec_init(0, 0, 0));
 }
 
-t_vector    ray_tri(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world)
+t_vector    ray_tri(t_ray *ray, t_hit_rec *rec, int depth, t_object *world)
 {
     t_ray       scattered;
     t_vector    attenuation;
-    
+
     attenuation = vec_init(0,0,0);
-    if (world[rec->object_index]->tri->material->type == LAMBERTIAN)
+    if (world[rec->object_index].material.type == LAMBERTIAN)
     {
             if (scatter_lambertian(ray, rec, attenuation, &scattered, rec->material))
                 return (ray_color_util(scattered, rec, depth, world));
     }
-    else if (world[rec->object_index]->tri->material->type == METAL)
+    else if (world[rec->object_index].material.type == METAL)
     {
         if (scatter_metal(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
-    else if (world[rec->object_index]->tri->material->type == DIELECTRIC)
+    else if (world[rec->object_index].material.type == DIELECTRIC)
     {
         if (scatter_dieletric(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
@@ -121,7 +121,7 @@ t_vector    ray_tri(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world
     return (vec_init(0, 0, 0));
 }
 
-t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world)
+t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object *world)
 {
     t_vector    r_color;
     t_interval  interval;
@@ -136,13 +136,13 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **wor
     interval.max = INFINITY;
     if (hit_objects(*ray, interval, rec, world))
     {
-        if (world[rec->object_index]->type == QUAD)
+        if (world[rec->object_index].type == QUAD)
             return (ray_quad(ray, rec, depth, world));
-        else if (world[rec->object_index]->type == TRIANGLE)
+        else if (world[rec->object_index].type == TRIANGLE)
             return (ray_tri(ray, rec, depth, world));
-        else if (world[rec->object_index]->type == SPHERE)
+        else if (world[rec->object_index].type == SPHERE)
             return (ray_sphere(ray, rec, depth, world));
-        else if (world[rec->object_index]->type == CYLINDER)
+        else if (world[rec->object_index].type == CYLINDER)
             return (ray_cyl(ray, rec, depth, world));
     }
     light_init(&light);
