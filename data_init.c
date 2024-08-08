@@ -6,13 +6,13 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 17:03:14 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 18:22:19 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void    camera_init(t_camera *camera)
+void    camera_init(t_camera *camera, int width, int height)
 {
     double      focal_length;
     t_vector    viewport_u;
@@ -26,10 +26,10 @@ void    camera_init(t_camera *camera)
     t_vector    v;
     t_vector    w;
 
-    camera->aspect_ratio = 1;
-    camera->image_width = 400;
+    camera->image_width = width;
     camera->samples_per_pixel = 100;
-    camera->image_height = (int)(camera->image_width / camera->aspect_ratio);
+    camera->image_height = height;
+    camera->aspect_ratio = (float)(width) / (float)(height);
     if (camera->image_height < 1)
         camera->image_height = 1;
     camera->vfov = 90;
@@ -175,7 +175,7 @@ void    world_init(t_object_list **world)
     world[6]->cyl = NULL;
     world[7] = malloc(sizeof(t_object_list));
     world[7]->type = SPHERE;
-    world[7]->sphere = sphere_init(vec_init(1.0, 0.0, 5.0), 0.5, vec_init(1.0, 1.0, 1.0), LAMBERTIAN);
+    world[7]->sphere = sphere_init(vec_init(1.0, 0.0, 5.0), 0.5, vec_init(1.0, 1.0, 1.0), METAL);
     world[7]->quad = NULL;
     world[7]->tri = NULL;
     world[7]->cyl = NULL;
@@ -187,7 +187,7 @@ void    world_init(t_object_list **world)
     world[8]->sphere = NULL;
     world[9] = malloc(sizeof(t_object_list));
     world[9]->type = SPHERE;
-    world[9]->sphere = sphere_init(vec_init(0.0, 3.0, 5.0), 1.0, vec_init(1.0, 1.0, 1.0), LAMBERTIAN);
+    world[9]->sphere = sphere_init(vec_init(0.0, 3.0, 0.0), 1.0, vec_init(1.0, 1.0, 1.0), LAMBERTIAN);
     world[9]->quad = NULL;
     world[9]->tri = NULL;
     world[9]->cyl = NULL;
