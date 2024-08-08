@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:00 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:33:22 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/08 19:58:42 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object 
     t_vector    albedo;
     t_vector    r_col_tmp;
 
-    albedo = rec->material->albedo;
+    albedo = rec->material.albedo;
     r_col_tmp = ray_color(&scattered, rec, depth - 1, world);
     r_color = multi_vec_vec(albedo, r_col_tmp);
     return (r_color);

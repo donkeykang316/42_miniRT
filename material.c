@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   material.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:06 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 16:54:14 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/08 19:54:21 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material)
+bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material)
 {
     t_vector    scatter_direction;
 
@@ -27,19 +27,19 @@ bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_
     return (true);
 }
 
-bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material)
+bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material)
 {
     t_vector    reflected;
 
     (void)attenuation;
-    reflected = add_vec_vec(unit_vector(reflect(r_in->direction, rec->normal)), multi_vec_doub(random_unit_vector(), fuzz(material->fuzz)));
+    reflected = add_vec_vec(unit_vector(reflect(r_in->direction, rec->normal)), multi_vec_doub(random_unit_vector(), fuzz(material.fuzz)));
     scattered->origin = vec_init(rec->p.x, rec->p.y, rec->p.z);
     scattered->direction = vec_init(reflected.x, reflected.y, reflected.z);
-    attenuation = vec_init(material->albedo.x, material->albedo.y, material->albedo.z);
+    attenuation = vec_init(material.albedo.x, material.albedo.y, material.albedo.z);
     return (dot_vec(scattered->direction, rec->normal) > 0);
 }
 
-bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material)
+bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material)
 {
     double      ri;
     t_vector    unit_direction;
@@ -52,9 +52,9 @@ bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_r
     (void)attenuation;
     attenuation = vec_init(1.0, 1.0, 1.0);
     if (rec->front_face)
-        ri = 1.0 / material->ref_idx;
+        ri = 1.0 / material.ref_idx;
     else
-        ri = material->ref_idx;
+        ri = material.ref_idx;
     unit_direction = unit_vector(r_in->direction);
     cos_theta = fmin(dot_vec(multi_vec_int(unit_direction, -1), rec->normal), 1.0);
     sin_theta = sqrt(1.0 - cos_theta * cos_theta);

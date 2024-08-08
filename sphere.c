@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:07 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:34:02 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/08 19:56:45 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ double  find_root2(double discriminant, double h, double a)
     return (root);
 }
 
-bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere, t_material material)
+bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere)
 {
     t_vector    oc;
     t_vector    outward_normal;
@@ -62,6 +62,5 @@ bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere,
     rec->normal = divi_vec_doub(subtrac_vec_vec(rec->p, sphere.center), sphere.radius);
     outward_normal = divi_vec_doub(subtrac_vec_vec(rec->p, sphere.center), sphere.radius);
     set_face_normal(ray, outward_normal, rec);
-    rec->material->albedo = vec_init(material.albedo.x, material.albedo.y, material.albedo.z);
     return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:14 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:17:23 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/08 19:57:19 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool    is_interior_tri(double alpha, double beta)
     return (true);
 }
 
-bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_triangle tri, t_material material)
+bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_triangle tri)
 {
     t_vector    n;
     double      denom;
@@ -47,9 +47,6 @@ bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_triangle tri, t_m
         return (false);
     rec->t = t;
     rec->p = vec_init(intersection.x, intersection.y, intersection.z);
-    rec->material->albedo = vec_init(material.albedo.x, material.albedo.y, material.albedo.z);
-    rec->material->fuzz = material.fuzz;
-    rec->material->type = material.type;
     set_face_normal(ray, tri.normal, rec);
     return (true);
 }

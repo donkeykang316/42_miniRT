@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:30 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:16:34 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/08 19:57:08 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool    is_interior_quad(double alpha, double beta)
     return (true);
 }
 
-bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad quad, t_material material)
+bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad quad)
 {
     t_vector    n;
     double      denom;
@@ -51,9 +51,6 @@ bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad quad, t_mat
         return (false);
     rec->t = t;
     rec->p = vec_init(intersection.x, intersection.y, intersection.z);
-    rec->material->albedo = vec_init(material.albedo.x, material.albedo.y, material.albedo.z);
-    rec->material->fuzz = material.fuzz;
-    rec->material->type = material.type;
     set_face_normal(ray, quad.normal, rec);
     return (true);
 }

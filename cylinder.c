@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:11 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:18:23 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/08 19:57:33 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void    swap_double(double *a, double *b)
     *b = temp;
 }
 
-bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cylinder, t_material material)
+bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cylinder)
 {
     t_vector    oc;
     double      a;
@@ -71,6 +71,5 @@ bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cyl
     cy_ax = multi_vec_doub(cylinder.axis, dot_vec(subtrac_vec_vec(intersection, cylinder.center), cylinder.axis));
     rec->p = subtrac_vec_vec(subtrac_vec_vec(intersection, cylinder.center), cy_ax);
     rec->normal = normalize_vec(rec->p);
-    rec->material->albedo = vec_init(material.albedo.x, material.albedo.y, material.albedo.z);
     return (true);
 }

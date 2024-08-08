@@ -6,18 +6,24 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:20 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:34:43 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/08 19:57:55 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool    obj_intersec(t_hit_rec *rec, double fuzz, double ref_idx, int i)
-{
-    rec->object_index = i;
-    rec->material->fuzz = fuzz;
-    rec->material->ref_idx = ref_idx;
-    return (true);
+bool hit_object(t_ray ray, t_hit_rec *rec, t_object *world, int object_index, t_interval interval) {
+    t_object object = world[object_index];
+
+    if (object.type == QUAD)
+        return hit_quad(ray, interval, rec, object.value.quad);
+    if (object.type == TRIANGLE)
+        return hit_tri(ray, interval, rec, object.value.triangle);
+    if (object.type == SPHERE)
+        return hit_sphere(ray, interval, rec, object.value.sphere);
+    if (object.type == CYLINDER)
+        return hit_cylinder(ray, interval, rec, object.value.cyllinder);
+    return false;
 }
 
 bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object *world)
@@ -27,47 +33,20 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object *world
     double          closest_so_far;
     int             i;
 
-    (void)rec;
     hit_anything = false;
     closest_so_far = ray_t.max;
     i = 0;
-    rec->material = malloc(sizeof(t_material));
     while (world[i].type)
     {
         interval.min = ray_t.min;
         interval.max = closest_so_far;
         t_material material = world[i].material;
-        if (world[i].type == QUAD)
+        if (hit_object(ray, rec, world, i, interval))
         {
-            if (hit_quad(ray, interval, rec, world[i].value.quad, material))
-            {
-                hit_anything = obj_intersec(rec, material.fuzz, material.ref_idx, i);
-                closest_so_far = rec->t;
-            }
-        }
-        else if (world[i].type == TRIANGLE)
-        {
-            if (hit_tri(ray, interval, rec, world[i].value.triangle, material))
-            {
-                hit_anything = obj_intersec(rec, material.fuzz, material.ref_idx, i);
-                closest_so_far = rec->t;
-            }
-        }
-        else if (world[i].type == SPHERE)
-        {
-            if (hit_sphere(ray, interval, rec, world[i].value.sphere, material))
-            {
-                hit_anything = obj_intersec(rec, material.fuzz, material.ref_idx, i);
-                closest_so_far = rec->t;
-            }
-        }
-        else if (world[i].type == CYLINDER)
-        {
-            if (hit_cylinder(ray, interval, rec, world[i].value.cyllinder, material))
-            {
-                hit_anything = obj_intersec(rec, material.fuzz, material.ref_idx, i);
-                closest_so_far = rec->t;
-            }
+            hit_anything = true;
+            rec->object_index = i;
+            rec->material = material;
+            closest_so_far = rec->t;
         }
         i++;
     }

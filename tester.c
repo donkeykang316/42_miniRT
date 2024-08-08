@@ -156,7 +156,7 @@ void    print_rec(t_hit_rec rec, int fd)
     ft_putstr_fd("normal:\n", fd);
     print_vector(rec.normal, fd);
     ft_putstr_fd("material:\n", fd);
-    print_material(*rec.material, fd);
+    print_material(rec.material, fd);
     ft_putstr_fd("t: ", fd);
     ft_putdouble_fd(rec.t, fd);
     ft_putstr_fd("\nfront_face: ", fd);

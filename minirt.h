@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:28:17 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/08 19:58:24 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ typedef struct s_hit_rec
 {
     t_vector    p;
     t_vector    normal;
-    t_material *material;
+    t_material  material;
     double      t;
     bool        front_face;
     int         object_index;
@@ -211,29 +211,29 @@ void    light_init(t_light *light);
 t_object*    world_init();
 
 //sphere
-bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere, t_material material);
+bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere);
 double  find_root1(double discriminant, double h, double a);
 double  find_root2(double discriminant, double h, double a);
 
 //quad
 bool    is_interior_quad(double alpha, double beta);
-bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad quad, t_material material);
+bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad quad);
 
 //triangle
 bool    is_interior_tri(double alpha, double beta);
-bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_triangle tri, t_material material);
+bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_triangle tri);
 
 //cylinder
-bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cylinder, t_material material);
+bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cylinder);
 
 //objects
 bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object *world);
 bool    obj_intersec(t_hit_rec *rec, double fuzz, double ref_idx, int i);
 
 //material
-bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
-bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
-bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
+bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material);
+bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material);
+bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material);
 void    set_face_normal(t_ray r, t_vector outward_normal, t_hit_rec *rec);
 
 //material util
