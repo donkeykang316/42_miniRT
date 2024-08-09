@@ -6,14 +6,33 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:33:50 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/09 22:12:09 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/09 23:47:30 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
+int    acl_counter(char alph)
+{
+	static int	a = 0;
+	static int	c = 0;
+	static int	l = 0;
+
+    if (alph == 'A')
+		a++;
+	else if (alph == 'C')
+		c++;
+	else if (alph == 'L')
+		l++;
+	if (a > 1 || c > 1 || l > 1)
+		return (error_msg("Ambient, Camera and Light can only be defined once"));
+    return (0);
+}
+
 int	input_valid(char *line)
 {
+	if (acl_counter(line[0]))
+		return (1);
 	if (ft_strncmp(line, "A", 1) == 0)
 		return (ambient_valid(line));
 	else if (ft_strncmp(line, "C", 1) == 0)
@@ -28,6 +47,8 @@ int	input_valid(char *line)
 		return (sphere_valid(line));
 	else if (ft_strncmp(line, "cy", 2) == 0)
 		return (cylinder_valid(line));
+	else if (ft_strncmp(line, " ", 1) != 0)
+		return (error_msg("invalid input"));
 	return (-1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:57:00 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/09 22:58:46 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/09 23:40:29 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,6 @@ bool	is_rt_file(char *path)
 	return (true);
 }
 
-int file_valid(char *file)
-{
-    int fd;
-
-    fd = open(file, O_RDONLY);
-    if (fd < 0)
-        return (error_msg("Failed to open file"));
-    if (!is_rt_file(file))
-        return (error_msg("Invalid file extension"));
-    if (read_file(fd))
-        return (0);
-    return (0);
-}
-
 char    *line_cleaner(char *line)
 {
     int     i;
@@ -49,8 +35,6 @@ char    *line_cleaner(char *line)
     }
     return (line); 
 }
-
-//int acl_duplitcate()
 
 int read_file(int fd)
 {
@@ -74,9 +58,20 @@ int read_file(int fd)
     if (!i)
         return (error_msg("Empty file"));
     if (ret == 1)
-    {
-        printf("Error on line %d\n", ret);
         return (ret);
-    }
+    return (0);
+}
+
+int file_valid(char *file)
+{
+    int fd;
+
+    fd = open(file, O_RDONLY);
+    if (fd < 0)
+        return (error_msg("Failed to open file"));
+    if (!is_rt_file(file))
+        return (error_msg("Invalid file extension"));
+    if (read_file(fd))
+        return (1);
     return (0);
 }
