@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   parser_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/08 18:48:14 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/09 22:50:31 by kaan             ###   ########.fr       */
+/*   Created: 2024/08/09 18:56:01 by kaan              #+#    #+#             */
+/*   Updated: 2024/08/09 18:56:11 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "parser.h"
 
-int    error_msg(char *msg)
+void	free_double(char **double_str)
 {
-    ft_putstr_fd("Error: ", 2);
-    ft_putstr_fd(msg, 2);
-    ft_putstr_fd("\n", 2);
-    return (1);
+	int	i;
+
+	i = 0;
+	if (double_str == NULL)
+		return ;
+	while (double_str[i] != NULL)
+	{
+		free(double_str[i]);
+		i++;
+	}
+	free(double_str);
 }

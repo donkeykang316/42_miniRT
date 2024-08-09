@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
+#    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/08 19:39:04 by kaan             ###   ########.fr        #
+#    Updated: 2024/08/09 21:44:59 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,9 +46,14 @@ SRCS	=	main.c\
 			pixel.c\
 			mlx_init.c\
 			error.c\
+			parser/file_check.c\
+			parser/file_input_valid_0.c\
+			parser/file_input_valid_1.c\
+			parser/file_input_util.c\
+			parser/nbr_valid.c\
 			parser/parser.c\
 			parser/parser_util.c\
-			parser/file_check.c\
+			parser/parser_free.c\
 
 OBJS	=	$(SRCS:.c=.o)
 

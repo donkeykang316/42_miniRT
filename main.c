@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:43 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:31:48 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/09 22:55:02 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		error_msg("Usage: ./minirt [scene.rt]");
-	else if (open_file(av[1]))
+	printf("file valid: %d\n", file_valid(av[1]));
+	if (file_valid(av[1]) == 0)
 		printf("parser success\n");
 	else
-		error_msg("Failed to open file");
+		exit(1);
     /*if (!init_mlx_context(&ctx, 400, 300)) {
         return 1;
     }
