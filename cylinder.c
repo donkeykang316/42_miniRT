@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:11 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:57:33 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 13:28:10 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cyl
             return (false);
         root1 = root2;
     }
-    rec->t = root1;
-    intersection = at_vec(ray, rec->t);
+    rec->hit_distance = root1;
+    intersection = at_vec(ray, rec->hit_distance);
     cy_ax = multi_vec_doub(cylinder.axis, dot_vec(subtrac_vec_vec(intersection, cylinder.center), cylinder.axis));
-    rec->p = subtrac_vec_vec(subtrac_vec_vec(intersection, cylinder.center), cy_ax);
-    rec->normal = normalize_vec(rec->p);
+    rec->hit_point = subtrac_vec_vec(subtrac_vec_vec(intersection, cylinder.center), cy_ax);
+    rec->normal = normalize_vec(rec->hit_point);
     return (true);
 }

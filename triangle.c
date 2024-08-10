@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:14 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:57:19 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 13:28:10 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_triangle tri)
     beta = dot_vec(tri.w, cross_vec(tri.u, planar_hitpt_vector));
     if (!is_interior_tri(alpha, beta))
         return (false);
-    rec->t = t;
-    rec->p = vec_init(intersection.x, intersection.y, intersection.z);
+    rec->hit_distance = t;
+    rec->hit_point = vec_init(intersection.x, intersection.y, intersection.z);
     set_face_normal(ray, tri.normal, rec);
     return (true);
 }

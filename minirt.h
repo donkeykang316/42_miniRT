@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:58:24 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 13:34:21 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,10 @@ typedef struct s_ray
 
 typedef struct s_hit_rec
 {
-    t_vector    p;
+    t_vector    hit_point;
     t_vector    normal;
     t_material  material;
-    double      t;
+    double      hit_distance;
     bool        front_face;
     int         object_index;
 }   t_hit_rec;

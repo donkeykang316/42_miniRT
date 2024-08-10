@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:20 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:57:55 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 13:34:06 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object *world
             hit_anything = true;
             rec->object_index = i;
             rec->material = material;
-            closest_so_far = rec->t;
+            closest_so_far = rec->hit_distance;
         }
         i++;
     }

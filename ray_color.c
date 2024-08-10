@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:00 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 13:23:36 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 13:34:36 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_vector    ray_scatter(t_ray *ray, t_hit_rec *rec, int depth, t_object *world)
         if (scatter_dieletric(ray, rec, attenuation, &scattered, rec->material))
             return (ray_color_util(scattered, rec, depth, world));
     }
-    return (vec_init(0, 0, 0));
+    return vec_init(0,0,0);
 }
 
 t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object *world)

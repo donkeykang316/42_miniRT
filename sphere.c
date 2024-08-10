@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:07 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:56:45 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 13:28:10 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere)
         if (!surrounds(ray_t, root))
             return (false);
     }
-    rec->t = root;
-    rec->p = at_vec(ray, rec->t);
-    rec->normal = divi_vec_doub(subtrac_vec_vec(rec->p, sphere.center), sphere.radius);
-    outward_normal = divi_vec_doub(subtrac_vec_vec(rec->p, sphere.center), sphere.radius);
+    rec->hit_distance = root;
+    rec->hit_point = at_vec(ray, rec->hit_distance);
+    rec->normal = divi_vec_doub(subtrac_vec_vec(rec->hit_point, sphere.center), sphere.radius);
+    outward_normal = divi_vec_doub(subtrac_vec_vec(rec->hit_point, sphere.center), sphere.radius);
     set_face_normal(ray, outward_normal, rec);
     return (true);
 }
