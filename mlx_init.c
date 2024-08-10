@@ -27,6 +27,7 @@ int	init_mlx_context(t_mlx_context *ctx, int width, int height)
     ctx->samples = 0;
     init_image(&ctx->image, ctx->width, ctx->height);
     init_image(&ctx->sum, ctx->width, ctx->height);
+    camera_init(&ctx->camera, width, height);
 	mlx_put_image_to_window(ctx->mlx_context, ctx->window, ctx->mlx_image,
 		0, 0);
     return 1;
@@ -49,8 +50,7 @@ void display_image(t_mlx_context* ctx) {
 }
 
 int render_frame(t_mlx_context* ctx) {
-    t_camera    camera;
-    camera_init(&camera, ctx->width, ctx->height);
+    t_camera camera = ctx->camera;
 
     if (ctx->samples >= camera.samples_per_pixel) {
         return 0;
