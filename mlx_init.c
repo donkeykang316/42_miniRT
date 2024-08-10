@@ -24,7 +24,11 @@ int	init_mlx_context(t_mlx_context *ctx, int width, int height)
 	ctx->mlx_context = mlx;
 	ctx->window = mlx_new_window(mlx, width, height, "MiniRT");
     init_mlx_image(ctx);
+    ctx->samples = 0;
     init_image(&ctx->image, ctx->width, ctx->height);
+    init_image(&ctx->sum, ctx->width, ctx->height);
+	mlx_put_image_to_window(ctx->mlx_context, ctx->window, ctx->mlx_image,
+		0, 0);
     return 1;
 }
 
@@ -44,33 +48,40 @@ t_vector trim_color(t_vector color) {
 }
 
 void display_image(t_mlx_context* ctx) {
-    int fd = open("img.ppm", O_WRONLY | O_TRUNC | O_CREAT, 0644);
-
-    dprintf(fd, "P3\n%d %d\n255\n", (int)ctx->width, (int)ctx->height);
     int y = 0;
     while(y < ctx->height) {
         int x = 0;
         while(x < ctx->width) {
             set_pixel(ctx, x, y, trim_color(ctx->image.data[y * ctx->width + x]));
-            write_color(fd, ctx->image.data[y * ctx->width + x]);
             x++;
         }
         y++;
     }
-    close(fd);
 	mlx_put_image_to_window(ctx->mlx_context, ctx->window, ctx->mlx_image,
 		0, 0);
+    mlx_flush(ctx->mlx_context);
 }
 
 int render_frame(t_mlx_context* ctx) {
     t_camera    camera;
-
     camera_init(&camera, ctx->width, ctx->height);
-    printf("rendering frame...\n");
-    render(camera, ctx->image);
-    printf("rendered\n");
+
+    if (ctx->samples >= camera.samples_per_pixel) {
+        return 0;
+    }
+
+    t_image image = ctx->image;
+
+    ctx->samples++;
+    render(camera, image);
+
+    for(int i = 0; i < image.width*image.height; i++) {
+        ctx->sum.data[i] = add_vec_vec(ctx->sum.data[i], image.data[i]);
+        ctx->image.data[i] = divi_vec_int(ctx->sum.data[i], ctx->samples);
+    }
     display_image(ctx);
-    return 1;
+
+    return ctx->samples < camera.samples_per_pixel;
 }
 
 void	setup_hooks(t_mlx_context *ctx)
@@ -78,6 +89,7 @@ void	setup_hooks(t_mlx_context *ctx)
 	mlx_do_key_autorepeaton(ctx->mlx_context);
 	mlx_hook(ctx->window, 2, 1, &on_key_up, ctx);
 	mlx_expose_hook(ctx->window, &on_expose, ctx);
+    mlx_loop_hook(ctx->mlx_context, render_frame, ctx);
 	mlx_hook(ctx->window, 17, 0, &on_close_button, ctx);
 	mlx_clear_window(ctx->mlx_context, ctx->window);
 }

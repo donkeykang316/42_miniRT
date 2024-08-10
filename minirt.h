@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 13:41:31 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 15:09:28 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,8 @@ typedef struct s_mlx_context {
     int width;
     int height;
     t_image image;
+    t_image sum;
+    int samples;
 } t_mlx_context;
 
 //camera

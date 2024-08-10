@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:32:10 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 14:28:23 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,9 @@ void    render(t_camera camera, t_image image)
     t_hit_rec       rec;
     int             i;
     int             j;
-    int             sample;
 
     i = 0;
     j = 0;
-    sample = 0;
 
     // int quantity = 11;
 
@@ -80,15 +78,9 @@ void    render(t_camera camera, t_image image)
         i = 0;
         while (i < image.width)
         {
-            pixel_color = vec_init(0, 0, 0);
-            sample = 0;
-            while (sample < camera.samples_per_pixel)
-            {
-                ray = get_ray(camera, i, j);
-                pixel_color = increment_vec_vec(pixel_color, ray_color(&ray, &rec, camera.max_depth, world));
-                sample++;
-            }
-            image.data[j * image.width + i] = multi_vec_doub(pixel_color, camera.pixel_samples_scale);
+            ray = get_ray(camera, i, j);
+            pixel_color = ray_color(&ray, &rec, camera.max_depth, world);
+            image.data[j * image.width + i] = pixel_color;
             i++;
         }
         j++;
