@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
+#    By: apago <apago@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/10 15:33:42 by kaan             ###   ########.fr        #
+#    Updated: 2024/08/10 16:23:14 by apago            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME	=	minirt
 
 CC		=	gcc
-CFLAGS	=	-Wall -Werror -Wextra -Ilibmlx -g
+CFLAGS	=	-O2 -Wall -Werror -Wextra -Ilibmlx -g
 MFLAGS  =	-lXext -lX11 -lm
 
 LIBS	=	./lib/libft/libft.a ./libmlx/libmlx.a

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 14:59:59 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 16:23:23 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,29 @@ t_ray   get_ray(t_camera camera, int i, int j)
     return (ray);
 }
 
-void    write_color(int fd, t_vector pixel_color)
-{
+t_vector gamma_correct(t_vector pixel_color) {
+
     double      r;
     double      g;
     double      b;
-    int         rbyte;
-    int         gbyte;
-    int         bbyte;
     t_interval  intensity;
+    t_vector result;
 
     r = linear_to_gamma(pixel_color.x);
     g = linear_to_gamma(pixel_color.y);
     b = linear_to_gamma(pixel_color.z);
     intensity.min = 0.000;
     intensity.max = 0.999;
-    rbyte = (int)(256 * clamp(intensity, r));
-    gbyte = (int)(256 * clamp(intensity, g));
-    bbyte = (int)(256 * clamp(intensity, b));
-    dprintf(fd, "%d %d %d\n", rbyte, gbyte, bbyte);
+    result.x = clamp(intensity, r);
+    result.y = clamp(intensity, g);
+    result.z = clamp(intensity, b);
+    return result;
+}
+
+void    write_color(int fd, t_vector pixel_color)
+{
+    t_vector rgb = gamma_correct(pixel_color);
+    dprintf(fd, "%d %d %d\n", (int)(rgb.x * 256), (int)(rgb.y * 256), (int)(rgb.z * 256));
 }
 
 void    render(t_camera camera, t_image image)
@@ -62,11 +66,9 @@ void    render(t_camera camera, t_image image)
     t_hit_rec       rec;
     int             i;
     int             j;
-    int             sample;
 
     i = 0;
     j = 0;
-    sample = 0;
 
     // int quantity = 11;
 
@@ -80,15 +82,9 @@ void    render(t_camera camera, t_image image)
         i = 0;
         while (i < image.width)
         {
-            pixel_color = vec_init(0, 0, 0);
-            sample = 0;
-            while (sample < camera.samples_per_pixel)
-            {
-                ray = get_ray(camera, i, j);
-                pixel_color = increment_vec_vec(pixel_color, ray_color(&ray, &rec, camera.max_depth, world));
-                sample++;
-            }
-            image.data[j * image.width + i] = multi_vec_doub(pixel_color, camera.pixel_samples_scale);
+            ray = get_ray(camera, i, j);
+            pixel_color = ray_color(&ray, &rec, camera.max_depth, world);
+            image.data[j * image.width + i] = pixel_color;
             i++;
         }
         j++;
