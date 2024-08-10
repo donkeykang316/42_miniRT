@@ -59,28 +59,13 @@ void    print_vector(t_vector v, int fd)
 void    print_camera(t_camera camera, int fd)
 {
     ft_putstr_fd("camera:\n", fd);
-    ft_putstr_fd("aspect_ratio: ", fd);
-    ft_putdouble_fd(camera.aspect_ratio, fd);
-    ft_putstr_fd("\nimage_width: ", fd);
-    ft_putnbr_fd(camera.image_width, fd);
-    ft_putstr_fd("\nsamples_per_pixel: ", fd);
-    ft_putnbr_fd(camera.samples_per_pixel, fd);
-    ft_putstr_fd("\nimage_height: ", fd);
-    ft_putnbr_fd(camera.image_height, fd);
-    ft_putstr_fd("\npixel_samples_scale: ", fd);
-    ft_putdouble_fd(camera.pixel_samples_scale, fd);
-    ft_putstr_fd("\nmax_depth: ", fd);
-    ft_putnbr_fd(camera.max_depth, fd);
-    ft_putstr_fd("\npixel_delta_u:\n", fd);
-    print_vector(camera.pixel_delta_u, fd);
-    ft_putstr_fd("pixel_delta_v:\n", fd);
-    print_vector(camera.pixel_delta_v, fd);
-    ft_putstr_fd("center:\n", fd);
-    print_vector(camera.center, fd);
-    ft_putstr_fd("pixel00_loc:\n", fd);
-    print_vector(camera.pixel00_loc, fd);
-    ft_putchar_fd('\n', fd);
-
+    ft_putstr_fd("lookfrom:\n", fd);
+    print_vector(camera.lookfrom, fd);
+    ft_putstr_fd("lookat:\n", fd);
+    print_vector(camera.lookat, fd);
+    ft_putstr_fd("vfov: ", fd);
+    ft_putdouble_fd(camera.vfov, fd);
+    ft_putstr_fd("\n", fd);
 }
 
 void    print_sphere(t_sphere sphere, int fd)
@@ -106,6 +91,33 @@ void    print_quad(t_quad quad, int fd)
     print_material(*quad.material, fd);
 }
 
+void    print_tri(t_tri tri, int fd)
+{
+    ft_putstr_fd("tri:\n", fd);
+    ft_putstr_fd("q:\n", fd);
+    print_vector(tri.q, fd);
+    ft_putstr_fd("u:\n", fd);
+    print_vector(tri.u, fd);
+    ft_putstr_fd("v:\n", fd);
+    print_vector(tri.v, fd);
+    ft_putstr_fd("material:\n", fd);
+    print_material(*tri.material, fd);
+}
+
+void    print_cylinder(t_cylinder cyl, int fd)
+{
+    ft_putstr_fd("center:\n", fd);
+    print_vector(cyl.center, fd);
+    ft_putstr_fd("axis:\n", fd);
+    print_vector(cyl.axis, fd);
+    ft_putstr_fd("radius: ", fd);
+    ft_putdouble_fd(cyl.radius, fd);
+    ft_putstr_fd("\nheight: ", fd);
+    ft_putdouble_fd(cyl.height, fd);
+    ft_putstr_fd("\nmaterial:\n", fd);
+    print_material(*cyl.material, fd);
+}
+
 void    print_material(t_material material, int fd)
 {
     ft_putstr_fd("albedo:\n", fd);
@@ -123,20 +135,19 @@ void    print_material(t_material material, int fd)
 
 void    print_world(t_object_list **world, int fd)
 {
-    ft_putstr_fd("world:\n", fd);
-    int i = 0;
+    int i;
+
+    i = 0;
     while (world[i])
     {
         if (world[i]->type == SPHERE)
-        {
-            ft_putstr_fd("sphere:\n", fd);
             print_sphere(*world[i]->sphere, fd);
-        }
         else if (world[i]->type == QUAD)
-        {
-            ft_putstr_fd("quad:\n", fd);
             print_quad(*world[i]->quad, fd);
-        }
+        else if (world[i]->type == TRIANGLE)
+            print_tri(*world[i]->tri, fd);
+        else if (world[i]->type == CYLINDER)
+            print_cylinder(*world[i]->cyl, fd);
         i++;
     }
 }
@@ -166,4 +177,32 @@ void    print_rec(t_hit_rec rec, int fd)
     ft_putstr_fd("\nobject_index: ", fd);
     ft_putnbr_fd(rec.object_index, fd);
     ft_putchar_fd('\n', fd);
+}
+
+void    print_light(t_light light, int fd)
+{
+    ft_putstr_fd("light:\n", fd);
+    ft_putstr_fd("position:\n", fd);
+    print_vector(light.position, fd);
+    ft_putstr_fd("intensity:\n", fd);
+    ft_putdouble_fd(light.intensity, fd);
+}
+
+void    print_amblight(t_amblight amblight, int fd)
+{
+    ft_putstr_fd("amblight:\n", fd);
+    ft_putstr_fd("intensity:\n", fd);
+    ft_putdouble_fd(amblight.intensity, fd);
+}
+
+void    print_parser(t_parser *parser, int fd)
+{
+    ft_putstr_fd("parser:\n", fd);
+    ft_putstr_fd("count: ", fd);
+    ft_putnbr_fd(parser->count, fd);
+    ft_putstr_fd("\n", fd);
+    print_amblight(*parser->amblight, fd);
+    print_camera(*parser->camera, fd);
+    print_light(*parser->light, fd);
+    print_world(parser->object_list, fd);
 }

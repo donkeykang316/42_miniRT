@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:33:50 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/09 23:47:30 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 05:37:56 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int    acl_counter(char alph)
     return (0);
 }
 
-int	input_valid(char *line)
+int	input_valid(char *line, int *nbr)
 {
 	if (acl_counter(line[0]))
 		return (1);
@@ -40,13 +40,13 @@ int	input_valid(char *line)
 	else if (ft_strncmp(line, "L", 1) == 0)
 		return (light_valid(line));
 	else if (ft_strncmp(line, "pl", 2) == 0)
-		return (plane_valid(line));
+		return (plane_valid(line, nbr));
 	else if (ft_strncmp(line, "tr", 2) == 0)
-		return (plane_valid(line));
+		return (plane_valid(line, nbr));
 	else if (ft_strncmp(line, "sp", 2) == 0)
-		return (sphere_valid(line));
+		return (sphere_valid(line, nbr));
 	else if (ft_strncmp(line, "cy", 2) == 0)
-		return (cylinder_valid(line));
+		return (cylinder_valid(line, nbr));
 	else if (ft_strncmp(line, " ", 1) != 0)
 		return (error_msg("invalid input"));
 	return (-1);
@@ -111,31 +111,6 @@ int	light_valid(char *line)
 		return (doubleptr_error(token, "Light intensity must be a number"));
 	if (ft_atof(token[2]) < 0 || ft_atof(token[2]) > 1)
 		return (doubleptr_error(token, "Light intensity must be between 0.0 and 1.0"));
-	if (color_valid(token[3]))
-	{
-		free_double(token);
-		return (1);
-	}
-	free_double(token);
-	return (0);
-}
-
-int	sphere_valid(char *line)
-{
-	char		**token;
-
-	token = ft_split(line, ' ');
-	if (!param_nbr_valid(token, 4))
-		return (doubleptr_error(token, "Sphere must have 3 parameters"));
-	if (coord_valid(token[1]))
-	{
-		free_double(token);
-		return (1);
-	}
-	if (!ft_isfloat(token[2]))
-		return (doubleptr_error(token, "Sphere radius must be a number"));
-	if (ft_atof(token[2]) < 0)
-		return (doubleptr_error(token, "Sphere radius must be positive"));
 	if (color_valid(token[3]))
 	{
 		free_double(token);

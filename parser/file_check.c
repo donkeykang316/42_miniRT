@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:57:00 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 02:41:15 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 05:35:06 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char    *line_cleaner(char *line)
     return (line); 
 }
 
-int read_file(int fd)
+int read_file(int fd, int *nbr)
 {
     char    *line;
     int     ret;
@@ -50,7 +50,7 @@ int read_file(int fd)
         if (!line)
             break ;
         line = line_cleaner(line);
-        ret = input_valid(line);
+        ret = input_valid(line, nbr);
         free(line);
         if (ret != -1)
             i++;
@@ -62,7 +62,7 @@ int read_file(int fd)
     return (0);
 }
 
-int file_valid(char *file)
+int file_valid(char *file, int *nbr)
 {
     int fd;
 
@@ -71,7 +71,7 @@ int file_valid(char *file)
         return (error_msg("Failed to open file"));
     if (!is_rt_file(file))
         return (error_msg("Invalid file extension"));
-    if (read_file(fd))
+    if (read_file(fd, nbr))
         return (1);
     close(fd);
     return (0);

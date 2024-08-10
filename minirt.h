@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 03:18:32 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 05:48:37 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ typedef enum e_object_type
     SPHERE,
     QUAD,
     TRIANGLE,
-    CUBE,
     CYLINDER
 }   t_object_type;
+
+typedef struct s_parser t_parser;
 
 typedef struct s_vector
 {
