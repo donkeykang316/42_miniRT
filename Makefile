@@ -3,12 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
+#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/10 06:23:54 by kaan             ###   ########.fr        #
+#    Updated: 2024/08/10 15:33:42 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+.DEFAULT_TARGET := all
 
 NAME	=	minirt
 
@@ -41,7 +43,6 @@ SRCS	=	main.c\
 			vector_operation_5.c\
 			random_generator.c\
 			util.c\
-			tester.c\
 			hooks.c\
 			pixel.c\
 			mlx_init.c\
@@ -65,7 +66,12 @@ $(NAME): $(OBJS)
 			make -C ./lib/get_next_line
 			make -C ./libmlx
 			$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(GNL) -o $(NAME) $(MFLAGS)
-#			./$(NAME)
+
+test: all
+	./$(NAME)
+
+debug: re
+	valgrind ./$(NAME)
 			
 clean:
 			make clean -C ./lib/libft

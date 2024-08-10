@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:56:01 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 13:40:55 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 16:18:04 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,10 @@ void	parser_free(t_parser *parser)
 	{
 		while (i < parser->object_nbr)
 		{
-			if (parser->object_list[i]->type == SPHERE)
-			{
-				free(parser->object_list[i]->sphere->material);
-				free(parser->object_list[i]->sphere);
-			}
-			else if (parser->object_list[i]->type == QUAD)
-			{
-				free(parser->object_list[i]->quad->material);
-				free(parser->object_list[i]->quad);
-			}
-			else if (parser->object_list[i]->type == TRIANGLE)
-			{
-				free(parser->object_list[i]->tri->material);
-				free(parser->object_list[i]->tri);
-			}
-			else if (parser->object_list[i]->type == CYLINDER)
-			{
-				free(parser->object_list[i]->cyl->material);
-				free(parser->object_list[i]->cyl);
-			}
-			free(parser->object_list[i]);
+			free(parser->object[i]);
 			i++;
 		}
-		free(parser->object_list);
+		free(parser->object);
 	}
 	free(parser);
 }

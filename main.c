@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:43 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 14:44:09 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 16:14:57 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,15 @@ void	parser_init(t_parser *parser)
 		parser_free(parser);
 		exit(error_msg("Error: No object found"));
 	}
-	parser->object_list = malloc(sizeof(t_object_list) * parser->object_nbr);
+	parser->object = malloc(sizeof(t_object) * parser->object_nbr + 1);
 	while (i < parser->object_nbr)
 	{
-		parser->object_list[i] = malloc(sizeof(t_object_list));
-		if (parser->object_list[i] == NULL)
+		parser->object[i] = malloc(sizeof(t_object));
+		if (parser->object[i] == NULL)
 			exit(error_msg("Error: Malloc failed"));
 		i++;
 	}
+	parser->object[i] = NULL;
 }
 
 int	main(int ac, char **av)
@@ -44,6 +45,8 @@ int	main(int ac, char **av)
 	if (ac != 2)
 		error_msg("Usage: ./minirt [scene.rt]");
 	parser = malloc(sizeof(t_parser));
+	if (parser == NULL)
+		exit(error_msg("Error: Malloc failed"));
 	parser->object_nbr = 0;
 	if (file_valid(av[1], &(parser->object_nbr)) == 0)
 	{
@@ -68,3 +71,4 @@ int	main(int ac, char **av)
 	}
 	return (0);
 }
+

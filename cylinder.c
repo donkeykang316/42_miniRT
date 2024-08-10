@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:11 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:21:12 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 13:28:10 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void    swap_double(double *a, double *b)
     *b = temp;
 }
 
-bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cylinder)
+bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cylinder)
 {
     t_vector    oc;
     double      a;
@@ -38,12 +38,12 @@ bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cy
     t_vector    cy_ax;
 
     (void)ray_t;
-    oc = subtrac_vec_vec(ray.origin, cylinder->center);
-    cad = dot_vec(cylinder->axis, ray.direction);
-    caoc = dot_vec(cylinder->axis, oc);
+    oc = subtrac_vec_vec(ray.origin, cylinder.center);
+    cad = dot_vec(cylinder.axis, ray.direction);
+    caoc = dot_vec(cylinder.axis, oc);
     a = dot_vec(ray.direction, ray.direction) - (cad * cad);
     h = dot_vec(oc, ray.direction) - (cad * caoc);
-    c = length_squared(oc) - (caoc * caoc) - (cylinder->radius * cylinder->radius);
+    c = length_squared(oc) - (caoc * caoc) - (cylinder.radius * cylinder.radius);
     discriminant = (h * h) - (a * c);
     if (discriminant < 0)
         return (false);
@@ -60,17 +60,16 @@ bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cy
         root1 = root2;
         cap_top = cap_botom;
     }
-    if (cap_top > cylinder->height)
+    if (cap_top > cylinder.height)
     {
-        if (cap_botom > cylinder->height)
+        if (cap_botom > cylinder.height)
             return (false);
         root1 = root2;
     }
-    rec->t = root1;
-    intersection = at_vec(ray, rec->t);
-    cy_ax = multi_vec_doub(cylinder->axis, dot_vec(subtrac_vec_vec(intersection, cylinder->center), cylinder->axis));
-    rec->p = subtrac_vec_vec(subtrac_vec_vec(intersection, cylinder->center), cy_ax);
-    rec->normal = normalize_vec(rec->p);
-    rec->material->albedo = vec_init(cylinder->material->albedo.x, cylinder->material->albedo.y, cylinder->material->albedo.z);
+    rec->hit_distance = root1;
+    intersection = at_vec(ray, rec->hit_distance);
+    cy_ax = multi_vec_doub(cylinder.axis, dot_vec(subtrac_vec_vec(intersection, cylinder.center), cylinder.axis));
+    rec->hit_point = subtrac_vec_vec(subtrac_vec_vec(intersection, cylinder.center), cy_ax);
+    rec->normal = normalize_vec(rec->hit_point);
     return (true);
 }

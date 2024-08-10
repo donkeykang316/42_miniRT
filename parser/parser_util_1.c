@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 05:59:06 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 14:47:28 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 15:49:40 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,14 @@ void    sphere_parse(t_parser *parser, char *line)
     char    **position;
     char    **color;
 
-    parser->object_list[parser->count]->sphere = malloc(sizeof(t_sphere));
     tokens = ft_split(line, ' ');
     position = ft_split(tokens[1], ',');
-    parser->object_list[parser->count]->type = SPHERE;
-    parser->object_list[parser->count]->sphere->center = vec_init(ft_atof(position[0]), ft_atof(position[1]), ft_atof(position[2]));
-    parser->object_list[parser->count]->sphere->radius = ft_atof(tokens[2]);
+    parser->object[parser->count]->type = SPHERE;
+    parser->object[parser->count]->value.sphere.center = vec_init(ft_atof(position[0]), ft_atof(position[1]), ft_atof(position[2]));
+    parser->object[parser->count]->value.sphere.radius = ft_atof(tokens[2]);
     color = ft_split(tokens[3], ',');
-    parser->object_list[parser->count]->sphere->material = malloc(sizeof(t_material));
-    parser->object_list[parser->count]->sphere->material->albedo = vec_init(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+    parser->object[parser->count]->material.type = LAMBERTIAN;
+    parser->object[parser->count]->material.albedo = vec_init(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
     free_double(tokens);
     free_double(position);
     free_double(color);
@@ -40,16 +39,15 @@ void    quad_parse(t_parser *parser, char *line)
     char    **normal;
     char    **color;
 
-    parser->object_list[parser->count]->quad = malloc(sizeof(t_quad));
     tokens = ft_split(line, ' ');
     position = ft_split(tokens[1], ',');
-    parser->object_list[parser->count]->type = QUAD;
-    parser->object_list[parser->count]->quad->q = vec_init(ft_atof(position[0]), ft_atof(position[1]), ft_atof(position[2]));
+    parser->object[parser->count]->type = QUAD;
+    parser->object[parser->count]->value.quad.q = vec_init(ft_atof(position[0]), ft_atof(position[1]), ft_atof(position[2]));
     normal = ft_split(tokens[2], ',');
-    parser->object_list[parser->count]->quad->u = vec_init(ft_atof(normal[0]), ft_atof(normal[1]), ft_atof(normal[2]));
+    parser->object[parser->count]->value.quad.u = vec_init(ft_atof(normal[0]), ft_atof(normal[1]), ft_atof(normal[2]));
     color = ft_split(tokens[3], ',');
-    parser->object_list[parser->count]->quad->material = malloc(sizeof(t_material));
-    parser->object_list[parser->count]->quad->material->albedo = vec_init(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+    parser->object[parser->count]->material.type = LAMBERTIAN;
+    parser->object[parser->count]->material.albedo = vec_init(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
     free_double(tokens);
     free_double(position);
     free_double(normal);
@@ -64,16 +62,15 @@ void    tri_parse(t_parser *parser, char *line)
     char    **normal;
     char    **color;
 
-    parser->object_list[parser->count]->tri = malloc(sizeof(t_tri));
     tokens = ft_split(line, ' ');
     position = ft_split(tokens[1], ',');
-    parser->object_list[parser->count]->type = TRIANGLE;
-    parser->object_list[parser->count]->tri->q = vec_init(ft_atof(position[0]), ft_atof(position[1]), ft_atof(position[2]));
+    parser->object[parser->count]->type = TRIANGLE;
+    parser->object[parser->count]->value.triangle.q = vec_init(ft_atof(position[0]), ft_atof(position[1]), ft_atof(position[2]));
     normal = ft_split(tokens[2], ',');
-    parser->object_list[parser->count]->tri->u = vec_init(ft_atof(normal[0]), ft_atof(normal[1]), ft_atof(normal[2]));
+    parser->object[parser->count]->value.triangle.u = vec_init(ft_atof(normal[0]), ft_atof(normal[1]), ft_atof(normal[2]));
     color = ft_split(tokens[3], ',');
-    parser->object_list[parser->count]->tri->material = malloc(sizeof(t_material));
-    parser->object_list[parser->count]->tri->material->albedo = vec_init(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+    parser->object[parser->count]->material.type = LAMBERTIAN;
+    parser->object[parser->count]->material.albedo = vec_init(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
     free_double(tokens);
     free_double(position);
     free_double(normal);
@@ -88,18 +85,17 @@ void    cylinder_parse(t_parser *parser, char *line)
     char    **normal;
     char    **color;
 
-    parser->object_list[parser->count]->cyl = malloc(sizeof(t_cylinder));
     tokens = ft_split(line, ' ');
     position = ft_split(tokens[1], ',');
-    parser->object_list[parser->count]->type = CYLINDER;
-    parser->object_list[parser->count]->cyl->center = vec_init(ft_atof(position[0]), ft_atof(position[1]), ft_atof(position[2]));
+    parser->object[parser->count]->type = CYLINDER;
+    parser->object[parser->count]->value.cyllinder.center = vec_init(ft_atof(position[0]), ft_atof(position[1]), ft_atof(position[2]));
     normal = ft_split(tokens[2], ',');
-    parser->object_list[parser->count]->cyl->axis = vec_init(ft_atof(normal[0]), ft_atof(normal[1]), ft_atof(normal[2]));
-    parser->object_list[parser->count]->cyl->radius = ft_atof(tokens[3]);
-    parser->object_list[parser->count]->cyl->height = ft_atof(tokens[4]);
+    parser->object[parser->count]->value.cyllinder.axis = vec_init(ft_atof(normal[0]), ft_atof(normal[1]), ft_atof(normal[2]));
+    parser->object[parser->count]->value.cyllinder.radius = ft_atof(tokens[3]);
+    parser->object[parser->count]->value.cyllinder.height = ft_atof(tokens[4]);
     color = ft_split(tokens[5], ',');
-    parser->object_list[parser->count]->cyl->material = malloc(sizeof(t_material));
-    parser->object_list[parser->count]->cyl->material->albedo = vec_init(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+    parser->object[parser->count]->material.type = LAMBERTIAN;
+    parser->object[parser->count]->material.albedo = vec_init(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
     free_double(tokens);
     free_double(position);
     free_double(normal);

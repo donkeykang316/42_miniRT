@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:07:07 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 14:46:09 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 15:48:26 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 typedef struct  s_amblight t_amblight;
 typedef struct  s_camera t_camera;
 typedef struct  s_light t_light;
-typedef struct  s_object_list t_object_list;
+typedef struct  s_object t_object;
 typedef struct  s_sphere t_sphere;
 typedef struct  s_quad t_quad;
-typedef struct  s_tri t_tri;
+typedef struct  s_triangle t_triangle;
 typedef struct  s_cylinder t_cylinder;
 
 typedef struct  s_parser
@@ -31,7 +31,7 @@ typedef struct  s_parser
     t_amblight      *amblight;
     t_camera        *camera;
     t_light         *light;
-    t_object_list   **object_list;
+    t_object        **object;
     int             object_nbr;
     int             count;
 }   t_parser;

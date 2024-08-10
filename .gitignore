@@ -1,5 +1,5 @@
 *.a
 *.o
-/img.ppm
+*.ppm
 /minirt
 /.vscode/**

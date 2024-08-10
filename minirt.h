@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 05:48:37 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 15:36:42 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@
 # include "lib/libft/inc/libft.h"
 # include "parser/parser.h"
 
-#include "tester.h"
-
 // linear congruential generator constants
 #define A 1664525
 #define C 1013904223
@@ -38,6 +36,8 @@
 //pi
 #define PI 3.1415926535897932385
 
+int    error_msg(char *msg);
+
 //material types
 typedef enum e_material_type
 {
@@ -46,13 +46,6 @@ typedef enum e_material_type
     DIELECTRIC
 }   t_material_type;
 
-typedef enum e_object_type
-{
-    SPHERE,
-    QUAD,
-    TRIANGLE,
-    CYLINDER
-}   t_object_type;
 
 typedef struct s_parser t_parser;
 
@@ -62,6 +55,70 @@ typedef struct s_vector
     double  y;
     double  z;
 }   t_vector;
+
+typedef struct s_material
+{
+    t_vector        albedo;
+    double          fuzz;
+    double          ref_idx;
+    t_material_type type;
+}   t_material;
+
+typedef enum e_object_type
+{
+    TYPE_NONE,
+    SPHERE,
+    QUAD,
+    TRIANGLE,
+    CUBE,
+    CYLINDER
+}   t_object_type;
+
+typedef struct s_sphere
+{
+    t_vector    center;
+    double      radius;
+}   t_sphere;
+
+typedef struct s_cylinder
+{
+    t_vector    center;
+    t_vector    axis;
+    double      radius;
+    double      height;
+}   t_cylinder;
+
+typedef struct  s_quad
+{
+    t_vector    q;
+    t_vector    u;
+    t_vector    v;
+    t_vector    w;
+    t_vector    normal;
+    double      d;
+}   t_quad;
+
+typedef struct  s_triangle
+{
+    t_vector    q;
+    t_vector    u;
+    t_vector    v;
+    t_vector    w;
+    t_vector    normal;
+    double      d;
+}   t_triangle;
+
+
+typedef struct s_object {
+    t_object_type type;
+    union {
+        t_cylinder cyllinder;
+        t_triangle triangle;
+        t_quad quad;
+        t_sphere sphere;
+    } value;
+    t_material material;
+} t_object;
 
 typedef struct s_camera
 {
@@ -87,70 +144,16 @@ typedef struct s_ray
     t_vector    direction;
 }   t_ray;
 
-typedef struct s_material
-{
-    t_vector        albedo;
-    double          fuzz;
-    double          ref_idx;
-    t_material_type type;
-}   t_material;
 
 typedef struct s_hit_rec
 {
-    t_vector    p;
+    t_vector    hit_point;
     t_vector    normal;
-    t_material *material;
-    double      t;
+    t_material  material;
+    double      hit_distance;
     bool        front_face;
     int         object_index;
 }   t_hit_rec;
-
-typedef struct s_sphere
-{
-    t_vector    center;
-    double      radius;
-    t_material *material;
-}   t_sphere;
-
-typedef struct s_cylinder
-{
-    t_vector    center;
-    t_vector    axis;
-    double      radius;
-    double      height;
-    t_material  *material;
-}   t_cylinder;
-
-typedef struct  s_quad
-{
-    t_vector    q;
-    t_vector    u;
-    t_vector    v;
-    t_vector    w;
-    t_vector    normal;
-    double      d;
-    t_material  *material;
-}   t_quad;
-
-typedef struct  s_tri
-{
-    t_vector    q;
-    t_vector    u;
-    t_vector    v;
-    t_vector    w;
-    t_vector    normal;
-    double      d;
-    t_material  *material;
-}   t_tri;
-
-typedef struct s_object_list
-{
-    t_sphere        *sphere;
-    t_quad          *quad;
-    t_tri           *tri;
-    t_cylinder      *cyl;
-    t_object_type   type;
-}   t_object_list;
 
 typedef struct s_interval
 {
@@ -204,11 +207,8 @@ void        write_color(int fd, t_vector pixel_color);
 void        render(t_camera camera, t_image image);
 
 //ray color
-t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object_list **world);
-t_vector    ray_quad(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
-t_vector    ray_sphere(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
-t_vector    ray_tri(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
-t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object_list **world);
+t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object *world);
+t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object *world);
 
 //camera util
 t_vector    random_in_unit_sphere(void);
@@ -219,32 +219,32 @@ double      linear_to_gamma(double linear_component);
 //data init
 void    camera_init(t_camera *camera, int width, int height);
 void    light_init(t_light *light);
-void    world_init(t_object_list **world);
+t_object*    world_init();
 
 //sphere
-bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere *sphere);
+bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere);
 double  find_root1(double discriminant, double h, double a);
 double  find_root2(double discriminant, double h, double a);
 
 //quad
 bool    is_interior_quad(double alpha, double beta);
-bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad *quad);
+bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad quad);
 
 //triangle
 bool    is_interior_tri(double alpha, double beta);
-bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_tri *tri);
+bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_triangle tri);
 
 //cylinder
-bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder *cylinder);
+bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cylinder);
 
 //objects
-bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object_list **object);
+bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object *world);
 bool    obj_intersec(t_hit_rec *rec, double fuzz, double ref_idx, int i);
 
 //material
-bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
-bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
-bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material *material);
+bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material);
+bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material);
+bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material);
 void    set_face_normal(t_ray r, t_vector outward_normal, t_hit_rec *rec);
 
 //material util
@@ -310,11 +310,5 @@ int render_frame(t_mlx_context* ctx);
 int	set_pixel(t_mlx_context *ctx, int x, int y, t_vector rgb);
 void	setup_hooks(t_mlx_context *ctx);
 int	init_mlx_context(t_mlx_context *ctx, int width, int height);
-
-//parser
-
-
-//error
-int    error_msg(char *msg);
 
 #endif

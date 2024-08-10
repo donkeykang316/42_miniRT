@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:07 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:23:08 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 13:28:10 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ double  find_root2(double discriminant, double h, double a)
     return (root);
 }
 
-bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere *sphere)
+bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere)
 {
     t_vector    oc;
     t_vector    outward_normal;
@@ -43,10 +43,10 @@ bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere *sphere
     double      root;
 
 
-    oc = subtrac_vec_vec(sphere->center, ray.origin);
+    oc = subtrac_vec_vec(sphere.center, ray.origin);
     a = length_squared(ray.direction);
     h = dot_vec(ray.direction, oc);
-    c = length_squared(oc) - (sphere->radius * sphere->radius);
+    c = length_squared(oc) - (sphere.radius * sphere.radius);
     discriminant = (h * h) - (a * c);
     if (discriminant < 0)
         return (false);
@@ -57,11 +57,10 @@ bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere *sphere
         if (!surrounds(ray_t, root))
             return (false);
     }
-    rec->t = root;
-    rec->p = at_vec(ray, rec->t);
-    rec->normal = divi_vec_doub(subtrac_vec_vec(rec->p, sphere->center), sphere->radius);
-    outward_normal = divi_vec_doub(subtrac_vec_vec(rec->p, sphere->center), sphere->radius);
+    rec->hit_distance = root;
+    rec->hit_point = at_vec(ray, rec->hit_distance);
+    rec->normal = divi_vec_doub(subtrac_vec_vec(rec->hit_point, sphere.center), sphere.radius);
+    outward_normal = divi_vec_doub(subtrac_vec_vec(rec->hit_point, sphere.center), sphere.radius);
     set_face_normal(ray, outward_normal, rec);
-    rec->material->albedo = vec_init(sphere->material->albedo.x, sphere->material->albedo.y, sphere->material->albedo.z);
     return (true);
 }
