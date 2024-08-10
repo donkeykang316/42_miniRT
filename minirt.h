@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 15:41:26 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 16:23:41 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include "mlx.h"
 # include "lib/get_next_line/inc/get_next_line.h"
 # include "lib/libft/inc/libft.h"
+# include "parser/parser.h"
 
 // linear congruential generator constants
 #define A 1664525
@@ -35,6 +36,8 @@
 //pi
 #define PI 3.1415926535897932385
 
+int    error_msg(char *msg);
+
 //material types
 typedef enum e_material_type
 {
@@ -42,6 +45,9 @@ typedef enum e_material_type
     METAL,
     DIELECTRIC
 }   t_material_type;
+
+
+typedef struct s_parser t_parser;
 
 typedef struct s_vector
 {
@@ -103,7 +109,7 @@ typedef struct  s_triangle
 }   t_triangle;
 
 
-typedef struct s_shape {
+typedef struct s_object {
     t_object_type type;
     union {
         t_cylinder cyllinder;
@@ -161,6 +167,12 @@ typedef struct s_light
     t_vector    albedo;
     double      intensity;
 }   t_light;
+
+typedef struct  s_amblight
+{
+    double      intensity;
+    t_vector    color;
+}   t_amblight;
 
 typedef struct s_aabb
 {
@@ -294,7 +306,7 @@ double      degrees_to_radians(double degrees);
 t_vector	random_vec(void);
 t_vector    random_vec_range(double min, double max);
 
-
+//mlx
 int						on_expose(t_mlx_context *ctx);
 int						on_close_button(t_mlx_context *ctx);
 int						on_key_up(int keycode, t_mlx_context *ctx);
