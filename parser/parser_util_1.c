@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_util_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 05:59:06 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 06:31:29 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 14:47:28 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void    sphere_parse(t_parser *parser, char *line)
     char    **position;
     char    **color;
 
-    parser->object_list[parser->count] = malloc(sizeof(t_object_list));
     parser->object_list[parser->count]->sphere = malloc(sizeof(t_sphere));
     tokens = ft_split(line, ' ');
     position = ft_split(tokens[1], ',');
@@ -28,7 +27,6 @@ void    sphere_parse(t_parser *parser, char *line)
     color = ft_split(tokens[3], ',');
     parser->object_list[parser->count]->sphere->material = malloc(sizeof(t_material));
     parser->object_list[parser->count]->sphere->material->albedo = vec_init(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
-    color = ft_split(tokens[3], ',');
     free_double(tokens);
     free_double(position);
     free_double(color);
@@ -42,7 +40,6 @@ void    quad_parse(t_parser *parser, char *line)
     char    **normal;
     char    **color;
 
-    parser->object_list[parser->count] = malloc(sizeof(t_object_list));
     parser->object_list[parser->count]->quad = malloc(sizeof(t_quad));
     tokens = ft_split(line, ' ');
     position = ft_split(tokens[1], ',');
@@ -67,7 +64,6 @@ void    tri_parse(t_parser *parser, char *line)
     char    **normal;
     char    **color;
 
-    parser->object_list[parser->count] = malloc(sizeof(t_object_list));
     parser->object_list[parser->count]->tri = malloc(sizeof(t_tri));
     tokens = ft_split(line, ' ');
     position = ft_split(tokens[1], ',');
@@ -92,7 +88,6 @@ void    cylinder_parse(t_parser *parser, char *line)
     char    **normal;
     char    **color;
 
-    parser->object_list[parser->count] = malloc(sizeof(t_object_list));
     parser->object_list[parser->count]->cyl = malloc(sizeof(t_cylinder));
     tokens = ft_split(line, ' ');
     position = ft_split(tokens[1], ',');
