@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 13:15:07 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 13:42:09 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_object  quad_init(t_vector coord, t_vector normal, t_vector color, t_material 
     quad.value.quad.u = normal;
     quad.value.quad.v = vec_init(0, 4, 0);
     quad.material = material;
-    quad.color = color;
+    quad.material.albedo = color;
     return (quad);
 }
 
@@ -87,7 +87,7 @@ t_object   tri_init(t_vector coord, t_vector normal, t_vector color, t_material 
     tri.value.triangle.u = normal;
     tri.value.triangle.v = vec_init(1, 0, 4);
     tri.material = material;
-    tri.color = color;
+    tri.material.albedo = color;
     return (tri);
 }
 
@@ -99,7 +99,7 @@ t_object    sphere_init(t_vector center, double diameter, t_vector color, t_mate
     sphere.value.sphere.center = center;
     sphere.value.sphere.radius = diameter;
     sphere.material = material;
-    sphere.color = color;
+    sphere.material.albedo = color;
     return (sphere);
 }
 
@@ -113,7 +113,7 @@ t_object  cylinder_init(t_vector center, t_vector normal, double diameter, doubl
     cylinder.value.cyllinder.radius = diameter;
     cylinder.value.cyllinder.height = height;
     cylinder.material = material;
-    cylinder.color = color;
+    cylinder.material.albedo = color;
     return (cylinder);
 }
 

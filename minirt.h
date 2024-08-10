@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 13:34:21 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 13:41:31 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ typedef struct s_shape {
         t_sphere sphere;
     } value;
     t_material material;
-    t_vector color;
 } t_object;
 
 typedef struct s_camera
