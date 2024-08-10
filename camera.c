@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 18:31:13 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/08 19:32:10 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void    render(t_camera camera, t_image image)
 {
     t_vector        pixel_color;
     t_ray           ray;
-    t_object_list   **world;
+    t_object        *world;
     t_hit_rec       rec;
     int             i;
     int             j;
@@ -68,10 +68,9 @@ void    render(t_camera camera, t_image image)
     j = 0;
     sample = 0;
 
-    int quantity = 11;
+    // int quantity = 11;
 
-    world = malloc(quantity * sizeof(t_object_list));
-    world_init(world);
+    world = world_init();
     while (j < image.height)
     {
         //ft_putstr_fd("Remaining line ", 2);
@@ -94,4 +93,5 @@ void    render(t_camera camera, t_image image)
         }
         j++;
     }
+    free(world);
 }

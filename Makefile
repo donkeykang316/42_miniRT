@@ -6,9 +6,11 @@
 #    By: apago <apago@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/08 18:33:51 by apago            ###   ########.fr        #
+#    Updated: 2024/08/10 13:10:08 by apago            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+.DEFAULT_TARGET := all
 
 NAME	=	minirt
 
@@ -55,7 +57,12 @@ $(NAME): $(OBJS)
 			make -C ./lib/get_next_line
 			make -C ./libmlx
 			$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(GNL) -o $(NAME) $(MFLAGS)
-			./$(NAME)
+
+test: all
+	./$(NAME)
+
+debug: re
+	valgrind ./$(NAME)
 			
 clean:
 			make clean -C ./lib/libft

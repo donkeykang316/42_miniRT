@@ -89,8 +89,6 @@ void    print_sphere(t_sphere sphere, int fd)
     print_vector(sphere.center, fd);
     ft_putstr_fd("radius: ", fd);
     ft_putdouble_fd(sphere.radius, fd);
-    ft_putstr_fd("\nmaterial:\n", fd);
-    print_material(*sphere.material, fd);
     ft_putchar_fd('\n', fd);
 }
 
@@ -102,8 +100,6 @@ void    print_quad(t_quad quad, int fd)
     print_vector(quad.u, fd);
     ft_putstr_fd("v:\n", fd);
     print_vector(quad.v, fd);
-    ft_putstr_fd("material:\n", fd);
-    print_material(*quad.material, fd);
 }
 
 void    print_material(t_material material, int fd)
@@ -121,7 +117,7 @@ void    print_material(t_material material, int fd)
         ft_putstr_fd("UNKNOWN\n", fd);
 }
 
-void    print_world(t_object_list **world, int fd)
+void    print_world(t_object **world, int fd)
 {
     ft_putstr_fd("world:\n", fd);
     int i = 0;
@@ -130,13 +126,15 @@ void    print_world(t_object_list **world, int fd)
         if (world[i]->type == SPHERE)
         {
             ft_putstr_fd("sphere:\n", fd);
-            print_sphere(*world[i]->sphere, fd);
+            print_sphere(world[i]->value.sphere, fd);
         }
         else if (world[i]->type == QUAD)
         {
             ft_putstr_fd("quad:\n", fd);
-            print_quad(*world[i]->quad, fd);
+            print_quad(world[i]->value.quad, fd);
         }
+        ft_putstr_fd("material:\n", fd);
+        print_material(world[i]->material, fd);
         i++;
     }
 }
@@ -154,13 +152,13 @@ void    print_rec(t_hit_rec rec, int fd)
 {
     ft_putstr_fd("rec:\n", fd);
     ft_putstr_fd("p:\n", fd);
-    print_vector(rec.p, fd);
+    print_vector(rec.hit_point, fd);
     ft_putstr_fd("normal:\n", fd);
     print_vector(rec.normal, fd);
     ft_putstr_fd("material:\n", fd);
-    print_material(*rec.material, fd);
+    print_material(rec.material, fd);
     ft_putstr_fd("t: ", fd);
-    ft_putdouble_fd(rec.t, fd);
+    ft_putdouble_fd(rec.hit_distance, fd);
     ft_putstr_fd("\nfront_face: ", fd);
     ft_putnbr_fd(rec.front_face, fd);
     ft_putstr_fd("\nobject_index: ", fd);

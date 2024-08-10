@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 18:22:19 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 13:42:09 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,131 +65,82 @@ void    light_init(t_light *light)
     light->albedo = vec_init(0.0 + intensity, 0.0 + intensity, 0.0 + intensity);
 }
 
-t_quad  *quad_init(t_vector coord, t_vector normal, t_vector color, t_material_type material)
+t_object  quad_init(t_vector coord, t_vector normal, t_vector color, t_material material)
 {
-    t_quad  *quad;
+    t_object  quad;
 
-    quad = malloc(sizeof(t_quad));
-    quad->q = vec_init(coord.x, coord.y, coord.z);
-    quad->u = vec_init(normal.x, normal.y, normal.z);
-    quad->v = vec_init(0, 4, 0);
-    quad->material = malloc(sizeof(t_material));
-    quad->material->albedo = vec_init(color.x, color.y, color.z);
-    quad->material->type = material;
-    quad->material->fuzz = 0.0;
-    quad->material->ref_idx = 0.0;
+    quad.type = QUAD;
+    quad.value.quad.q = coord;
+    quad.value.quad.u = normal;
+    quad.value.quad.v = vec_init(0, 4, 0);
+    quad.material = material;
+    quad.material.albedo = color;
     return (quad);
 }
 
-t_tri   *tri_init(t_vector coord, t_vector normal, t_vector color, t_material_type material)
+t_object   tri_init(t_vector coord, t_vector normal, t_vector color, t_material material)
 {
-    t_tri   *tri;
+    t_object   tri;
 
-    tri = malloc(sizeof(t_tri));
-    tri->q = vec_init(coord.x, coord.y, coord.z);
-    tri->u = vec_init(normal.x, normal.y, normal.z);
-    tri->v = vec_init(1, 0, 4);
-    tri->material = malloc(sizeof(t_material));
-    tri->material->albedo = vec_init(color.x, color.y, color.z);
-    tri->material->type = material;
-    tri->material->fuzz = 0.0;
-    tri->material->ref_idx = 0.0;
+    tri.type = TRIANGLE;
+    tri.value.triangle.q = coord;
+    tri.value.triangle.u = normal;
+    tri.value.triangle.v = vec_init(1, 0, 4);
+    tri.material = material;
+    tri.material.albedo = color;
     return (tri);
 }
 
-t_sphere    *sphere_init(t_vector center, double diameter, t_vector color, t_material_type material)
+t_object    sphere_init(t_vector center, double diameter, t_vector color, t_material material)
 {
-    t_sphere    *sphere;
+    t_object  sphere;
 
-    sphere = malloc(sizeof(t_sphere));
-    sphere->center = vec_init(center.x, center.y, center.z);
-    sphere->radius = diameter;
-    sphere->material = malloc(sizeof(t_material));
-    sphere->material->albedo = vec_init(color.x, color.y, color.z);
-    sphere->material->type = material;
-    sphere->material->fuzz = 0.0;
-    sphere->material->ref_idx = 1.5;
+    sphere.type = SPHERE;
+    sphere.value.sphere.center = center;
+    sphere.value.sphere.radius = diameter;
+    sphere.material = material;
+    sphere.material.albedo = color;
     return (sphere);
 }
 
-t_cylinder  *cylinder_init(t_vector center, t_vector normal, double diameter, double height, t_vector color, t_material_type material)
+t_object  cylinder_init(t_vector center, t_vector normal, double diameter, double height, t_vector color, t_material material)
 {
-    t_cylinder  *cylinder;
+    t_object  cylinder;
 
-    cylinder = malloc(sizeof(t_cylinder));
-    cylinder->center = vec_init(center.x, center.y, center.z);
-    cylinder->axis = vec_init(normal.x, normal.y, normal.z);
-    cylinder->radius = diameter;
-    cylinder->height = height;
-    cylinder->material = malloc(sizeof(t_material));
-    cylinder->material->albedo = vec_init(color.x, color.y, color.z);
-    cylinder->material->type = material;
-    cylinder->material->fuzz = 0.0;
-    cylinder->material->ref_idx = 0.0;
+    cylinder.type = CYLINDER;
+    cylinder.value.cyllinder.center = center;
+    cylinder.value.cyllinder.axis = normal;
+    cylinder.value.cyllinder.radius = diameter;
+    cylinder.value.cyllinder.height = height;
+    cylinder.material = material;
+    cylinder.material.albedo = color;
     return (cylinder);
 }
 
-void    world_init(t_object_list **world)
+t_material material_init(t_material_type type) {
+    t_material res;
+    res.type = type;
+    res.albedo = vec_init(0.5,0.5,0.5);
+    res.fuzz = 0.1;
+    res.ref_idx = 0.5;
+    return res;
+}
+
+t_object*    world_init()
 {
-    world[0] = malloc(sizeof(t_object_list));
-    world[0]->type = QUAD;
-    world[0]->quad = quad_init(vec_init(-3,-2, 5), vec_init(0, 0, -4), vec_init(1, 0.2, 0.2), LAMBERTIAN);
-    world[0]->sphere = NULL;
-    world[0]->tri = NULL;
-    world[0]->cyl = NULL;
-    world[1] = malloc(sizeof(t_object_list));
-    world[1]->type = QUAD;
-    world[1]->quad = quad_init(vec_init(-2,-2, 0), vec_init(4, 0, 0), vec_init(0.2, 1.0, 0.2), LAMBERTIAN);
-    world[1]->sphere = NULL;
-    world[1]->tri = NULL;
-    world[1]->cyl = NULL;
-    world[2] = malloc(sizeof(t_object_list));
-    world[2]->type = QUAD;
-    world[2]->quad = quad_init(vec_init(3,-2, 1), vec_init(0, 0, 4), vec_init(0.2, 0.2, 1.0), LAMBERTIAN);
-    world[2]->sphere = NULL;
-    world[2]->tri = NULL;
-    world[2]->cyl = NULL;
-    world[3] = malloc(sizeof(t_object_list));
-    world[3]->type = TRIANGLE;
-    world[3]->tri = tri_init(vec_init(0, 1, 2), vec_init(-1, 0, 4), vec_init(1.0, 0.5, 0.0), LAMBERTIAN);
-    world[3]->sphere = NULL;
-    world[3]->quad = NULL;
-    world[3]->cyl = NULL;
-    world[4] = malloc(sizeof(t_object_list));    
-    world[4]->type = SPHERE;
-    world[4]->sphere = sphere_init(vec_init(0.0, -100.5, 2.0), 100.0, vec_init(0.8, 0.8, 0.0), LAMBERTIAN);
-    world[4]->quad = NULL;
-    world[4]->tri = NULL;
-    world[4]->cyl = NULL;
-    world[5] = malloc(sizeof(t_object_list));
-    world[5]->type = SPHERE;
-    world[5]->sphere = sphere_init(vec_init(0.0, 0.0, 5.0), 0.5, vec_init(0.1, 0.2, 0.5), LAMBERTIAN);
-    world[5]->quad = NULL;
-    world[5]->tri = NULL;
-    world[5]->cyl = NULL;
-    world[6] = malloc(sizeof(t_object_list));
-    world[6]->type = SPHERE;
-    world[6]->sphere = sphere_init(vec_init(-1.0, 0.0, 5.0), 0.4, vec_init(0.8, 0.8, 0.8), METAL);
-    world[6]->quad = NULL;
-    world[6]->tri = NULL;
-    world[6]->cyl = NULL;
-    world[7] = malloc(sizeof(t_object_list));
-    world[7]->type = SPHERE;
-    world[7]->sphere = sphere_init(vec_init(1.0, 0.0, 5.0), 0.5, vec_init(1.0, 1.0, 1.0), METAL);
-    world[7]->quad = NULL;
-    world[7]->tri = NULL;
-    world[7]->cyl = NULL;
-    world[8] = malloc(sizeof(t_object_list));
-    world[8]->type = CYLINDER;
-    world[8]->cyl = cylinder_init(vec_init(3.0, 0.0, 3.0), vec_init(0.0, 1.0, 0.0), 1.0, 1.0, vec_init(0.5, 0.2, 0.1), LAMBERTIAN);
-    world[8]->quad = NULL;
-    world[8]->tri = NULL;
-    world[8]->sphere = NULL;
-    world[9] = malloc(sizeof(t_object_list));
-    world[9]->type = SPHERE;
-    world[9]->sphere = sphere_init(vec_init(0.0, 3.0, 0.0), 1.0, vec_init(1.0, 1.0, 1.0), LAMBERTIAN);
-    world[9]->quad = NULL;
-    world[9]->tri = NULL;
-    world[9]->cyl = NULL;
-    world[10] = NULL;
+    t_material lambertian = material_init(LAMBERTIAN);
+    t_material metal = material_init(METAL);
+
+    t_object* world = calloc(11, sizeof(t_object));
+    world[0] = quad_init(vec_init(-3,-2, 5), vec_init(0, 0, -4), vec_init(1, 0.2, 0.2), lambertian);
+    world[1] = quad_init(vec_init(-2,-2, 0), vec_init(4, 0, 0), vec_init(0.2, 1.0, 0.2), lambertian);
+    world[2] = quad_init(vec_init(3,-2, 1), vec_init(0, 0, 4), vec_init(0.2, 0.2, 1.0), lambertian);
+    world[3] = tri_init(vec_init(0, 1, 2), vec_init(-1, 0, 4), vec_init(1.0, 0.5, 0.0), lambertian);
+    world[4] = sphere_init(vec_init(0.0, -100.5, 2.0), 100.0, vec_init(0.8, 0.8, 0.0), lambertian);
+    world[5] = sphere_init(vec_init(0.0, 0.0, 5.0), 0.5, vec_init(0.1, 0.2, 0.5), lambertian);
+    world[6] = sphere_init(vec_init(-1.0, 0.0, 5.0), 0.4, vec_init(0.8, 0.8, 0.8), metal);
+    world[7] = sphere_init(vec_init(1.0, 0.0, 5.0), 0.5, vec_init(1.0, 1.0, 1.0), metal);
+    world[8] = cylinder_init(vec_init(3.0, 0.0, 3.0), vec_init(0.0, 1.0, 0.0), 1.0, 1.0, vec_init(0.5, 0.2, 0.1), lambertian);
+    world[9] = sphere_init(vec_init(0.0, 3.0, 0.0), 1.0, vec_init(1.0, 1.0, 1.0), lambertian);
+    return world;
 }
