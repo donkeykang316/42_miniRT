@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:07:07 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/09 22:45:49 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 03:46:16 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,23 @@
 
 # include "../minirt.h"
 
+typedef struct  s_parser
+{
+    char            *category;
+    double          *param;
+    int             idx;
+}   t_parser;
+
 //parser
+void parser(char *file);
+void    parse_input(int fd);
+void    parse_line(char *line, t_parser *parser);
+void    parse_to(char *line, char *to);
+
 
 //file check
-bool	is_rt_file(char *path);
 int file_valid(char *file);
+bool	is_rt_file(char *path);
 int read_file(int fd);
 char    *line_cleaner(char *line);
 

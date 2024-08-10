@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 19:10:46 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 03:18:32 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,12 @@ typedef struct s_light
     t_vector    albedo;
     double      intensity;
 }   t_light;
+
+typedef struct  s_amblight
+{
+    double      intensity;
+    t_vector    color;
+}   t_amblight;
 
 typedef struct s_aabb
 {

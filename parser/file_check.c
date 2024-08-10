@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:57:00 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/09 23:40:29 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 02:41:15 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ int file_valid(char *file)
         return (error_msg("Invalid file extension"));
     if (read_file(fd))
         return (1);
+    close(fd);
     return (0);
 }

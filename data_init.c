@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/08 18:22:19 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 03:18:52 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ void    camera_init(t_camera *camera, int width, int height)
     camera->pixel_delta_u = divi_vec_int(viewport_u, camera->image_width);
     camera->pixel_delta_v = divi_vec_int(viewport_v, camera->image_height);
     camera->pixel00_loc = add_vec_vec(viewport_upper_left, multi_vec_doub(add_vec_vec(camera->pixel_delta_u, camera->pixel_delta_v), 0.5));
+}
+
+void    ambient_init(t_amblight *ambient)
+{
+    ambient->intensity = 0.1;
+    ambient->color = vec_init(0.0 + ambient->intensity, 0.0 + ambient->intensity, 0.0 + ambient->intensity);
 }
 
 void    light_init(t_light *light)

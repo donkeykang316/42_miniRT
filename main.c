@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:43 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/09 23:07:51 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/10 03:48:02 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 int	main(int ac, char **av)
 {
 	//t_mlx_context   	ctx;
+	t_parser		*parser;
 
 	if (ac != 2)
 		error_msg("Usage: ./minirt [scene.rt]");
 	if (file_valid(av[1]) == 0)
-		printf("file is valid\n");
+		parser(av[1]);
 	else
 		exit(1);
     /*if (!init_mlx_context(&ctx, 400, 300)) {

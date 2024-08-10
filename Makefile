@@ -6,7 +6,7 @@
 #    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/09 21:44:59 by kaan             ###   ########.fr        #
+#    Updated: 2024/08/10 02:54:57 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,6 @@ SRCS	=	main.c\
 			parser/file_input_util.c\
 			parser/nbr_valid.c\
 			parser/parser.c\
-			parser/parser_util.c\
 			parser/parser_free.c\
 
 OBJS	=	$(SRCS:.c=.o)
