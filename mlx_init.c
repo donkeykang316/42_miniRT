@@ -32,27 +32,13 @@ int	init_mlx_context(t_mlx_context *ctx, int width, int height)
     return 1;
 }
 
-double clamp_double(double x, double low, double high) {
-    if (x < low)
-        return low;
-    if (x > high)
-        return high;
-    return x;
-}
-
-t_vector trim_color(t_vector color) {
-    color.x = clamp_double(color.x, 0, 1);
-    color.y = clamp_double(color.y, 0, 1);
-    color.z = clamp_double(color.z, 0, 1);
-    return color;
-}
-
 void display_image(t_mlx_context* ctx) {
     int y = 0;
     while(y < ctx->height) {
         int x = 0;
         while(x < ctx->width) {
-            set_pixel(ctx, x, y, trim_color(ctx->image.data[y * ctx->width + x]));
+            t_vector color = gamma_correct(ctx->image.data[y * ctx->width + x]);
+            set_pixel(ctx, x, y, color);
             x++;
         }
         y++;

@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 14:28:23 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 15:28:15 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,29 @@ t_ray   get_ray(t_camera camera, int i, int j)
     return (ray);
 }
 
-void    write_color(int fd, t_vector pixel_color)
-{
+t_vector gamma_correct(t_vector pixel_color) {
+
     double      r;
     double      g;
     double      b;
-    int         rbyte;
-    int         gbyte;
-    int         bbyte;
     t_interval  intensity;
+    t_vector result;
 
     r = linear_to_gamma(pixel_color.x);
     g = linear_to_gamma(pixel_color.y);
     b = linear_to_gamma(pixel_color.z);
     intensity.min = 0.000;
     intensity.max = 0.999;
-    rbyte = (int)(256 * clamp(intensity, r));
-    gbyte = (int)(256 * clamp(intensity, g));
-    bbyte = (int)(256 * clamp(intensity, b));
-    dprintf(fd, "%d %d %d\n", rbyte, gbyte, bbyte);
+    result.x = clamp(intensity, r);
+    result.y = clamp(intensity, g);
+    result.z = clamp(intensity, b);
+    return result;
+}
+
+void    write_color(int fd, t_vector pixel_color)
+{
+    t_vector rgb = gamma_correct(pixel_color);
+    dprintf(fd, "%d %d %d\n", (int)(rgb.x * 256), (int)(rgb.y * 256), (int)(rgb.z * 256));
 }
 
 void    render(t_camera camera, t_image image)

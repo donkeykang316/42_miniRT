@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 15:09:28 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/10 15:27:51 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,7 @@ typedef struct s_mlx_context {
 t_ray       get_ray(t_camera camera, int i, int j);
 void        write_color(int fd, t_vector pixel_color);
 void        render(t_camera camera, t_image image);
+t_vector gamma_correct(t_vector pixel_color);
 
 //ray color
 t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object *world);
