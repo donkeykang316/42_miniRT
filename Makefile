@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: apago <apago@student.42.fr>                +#+  +:+       +#+         #
+#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/10 13:10:08 by apago            ###   ########.fr        #
+#    Updated: 2024/08/10 15:33:42 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,10 +43,19 @@ SRCS	=	main.c\
 			vector_operation_5.c\
 			random_generator.c\
 			util.c\
-			tester.c\
 			hooks.c\
 			pixel.c\
 			mlx_init.c\
+			error.c\
+			parser/file_check.c\
+			parser/file_input_valid_0.c\
+			parser/file_input_valid_1.c\
+			parser/file_input_util.c\
+			parser/nbr_valid.c\
+			parser/parser.c\
+			parser/parser_util_0.c\
+			parser/parser_util_1.c\
+			parser/parser_free.c\
 
 OBJS	=	$(SRCS:.c=.o)
 

@@ -1,41 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/21 12:33:22 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/09 17:22:25 by kaan             ###   ########.fr       */
+/*   Created: 2024/08/08 18:48:14 by kaan              #+#    #+#             */
+/*   Updated: 2024/08/09 22:50:31 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/libft.h"
+#include "minirt.h"
 
-char	*ft_strjoin(char *s1, char *s2)
+int    error_msg(char *msg)
 {
-	char	*new;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	if (!s1)
-	{
-		s1 = malloc(1 * sizeof(char));
-		s1[0] = '\0';
-	}
-	new = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!new)
-		return (NULL);
-	while (s1[i] != '\0')
-	{
-		new[i] = s1[i];
-		i++;
-	}
-	while (s2[j] != '\0')
-		new[i++] = s2[j++];
-	new[i] = '\0';
-	free(s1);
-	return (new);
+    ft_putstr_fd("Error: ", 2);
+    ft_putstr_fd(msg, 2);
+    ft_putstr_fd("\n", 2);
+    return (1);
 }
