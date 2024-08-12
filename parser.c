@@ -306,6 +306,36 @@ int parse_cylinder(char** _scene, t_world* world, int* total) {
     return parsed;
 }
 
+
+int parse_triangle(char** _scene, t_world* world, int* total) {
+    char* scene = *_scene;
+    int parsed = 0;
+    t_object obj;
+    obj.type = TRIANGLE;
+    obj.material.fuzz = 0.1;
+    obj.material.ref_idx = 0.5;
+    obj.material.type = LAMBERTIAN;
+
+    if (!parse_string(&scene, "tr", &parsed))
+        return 0;
+    if (!parse_space(&scene, &parsed))
+        return 0;
+    if (!parse_vector(&scene, &obj.value.triangle.q, &parsed))
+        return 0;
+    if (!parse_space(&scene, &parsed))
+        return 0;
+    if (!parse_vector(&scene, &obj.value.triangle.u, &parsed))
+        return 0;
+    if (!parse_space(&scene, &parsed))
+        return 0;
+    if (!parse_color(&scene, &obj.material.albedo, &parsed))
+        return 0;
+    add_object(world, obj);
+    *total += parsed;
+    *_scene += parsed;
+    return parsed;
+}
+
 int parse_world(char* scene, t_world* world) {
     int parsed = 0;
     ft_memset(world, 0, sizeof(t_world));
@@ -321,6 +351,8 @@ int parse_world(char* scene, t_world* world) {
         if (parse_sphere(&scene, world, &parsed))
             continue;
         if (parse_cylinder(&scene, world, &parsed))
+            continue;
+        if (parse_triangle(&scene, world, &parsed))
             continue;
         if (*scene == 0)
             break;
