@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: apago <apago@student.42.fr>                +#+  +:+       +#+         #
+#    By: andrei <andrei@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/10 16:23:14 by apago            ###   ########.fr        #
+#    Updated: 2024/08/12 15:52:24 by andrei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME	=	minirt
 
 CC		=	gcc
 CFLAGS	=	-O2 -Wall -Werror -Wextra -Ilibmlx -g
-MFLAGS  =	-lXext -lX11 -lm
+MFLAGS  =	-L /usr/X11R6/lib -lXext -lX11 -lm
 
 LIBS	=	./lib/libft/libft.a ./libmlx/libmlx.a
 
@@ -68,7 +68,7 @@ $(NAME): $(OBJS)
 			$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(GNL) -o $(NAME) $(MFLAGS)
 
 test: all
-	./$(NAME)
+	./$(NAME) ./scene/valid.rt
 
 debug: re
 	valgrind ./$(NAME)
