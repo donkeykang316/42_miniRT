@@ -97,9 +97,9 @@ int parse_color(char** scene, t_vector* clr, int* total) {
         return 0;
     if (!parse_byte(&sc, &rgb[2], &parsed))
         return 0;
-    clr->x = rgb[0];
-    clr->y = rgb[1];
-    clr->z = rgb[2];
+    clr->x = rgb[0] / 255.;
+    clr->y = rgb[1] / 255.;
+    clr->z = rgb[2] / 255.;
 
     *scene += parsed;
     *total += parsed;
@@ -148,7 +148,6 @@ int parse_ambient_light(char** _scene, t_amblight* light, int* total) {
 int parse_camera(char** _scene, t_camera* camera, int* total) {
     char* scene = *_scene;
     int parsed = 0;
-    double hfov;
     t_vector orientation;
 
     if (!parse_char(&scene, 'C', &parsed))
@@ -163,10 +162,9 @@ int parse_camera(char** _scene, t_camera* camera, int* total) {
         return 0;
     if (!parse_space(&scene, &parsed))
         return 0;
-    if (!parse_double(&scene, &hfov, &parsed))
+    if (!parse_double(&scene, &camera->hfov, &parsed))
         return 0;
     camera->aspect_ratio = 16./9.;
-    camera->vfov = hfov / camera->aspect_ratio;
     if (vec_length(orientation) != 1.)
         return 0;
     camera->lookat = orientation;
@@ -240,8 +238,8 @@ int parse_sphere(char** _scene, t_world* world, int* total) {
     double diameter;
     t_object obj;
     obj.type = SPHERE;
-    obj.material.fuzz = 0;
-    obj.material.ref_idx = 0;
+    obj.material.fuzz = 0.1;
+    obj.material.ref_idx = 0.5;
     obj.material.type = LAMBERTIAN;
 
     if (!parse_string(&scene, "sp", &parsed))
@@ -273,8 +271,8 @@ int parse_cylinder(char** _scene, t_world* world, int* total) {
     double diameter;
     t_object obj;
     obj.type = CYLINDER;
-    obj.material.fuzz = 0;
-    obj.material.ref_idx = 0;
+    obj.material.fuzz = 0.1;
+    obj.material.ref_idx = 0.5;
     obj.material.type = LAMBERTIAN;
 
     if (!parse_string(&scene, "cy", &parsed))

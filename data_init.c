@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/12 16:12:19 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/12 20:04:07 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ void    camera_init(t_camera *camera, int width, int height)
     camera->aspect_ratio = (float)(width) / (float)(height);
     if (camera->image_height < 1)
         camera->image_height = 1;
-    camera->vfov = 90;
+    camera->hfov = 90;
     camera->lookfrom = vec_init(0, 2, 9);
     camera->lookat = vec_init(0, 0, 0);
     camera->vup = vec_init(0, 10, 0);
-    theta = degrees_to_radians(camera->vfov);
+    theta = degrees_to_radians(camera->hfov / camera->aspect_ratio);
     h = tan(theta / 2);
     camera->center = camera->lookfrom;
     focal_length = vec_length(subtrac_vec_vec(camera->lookfrom, camera->lookat));

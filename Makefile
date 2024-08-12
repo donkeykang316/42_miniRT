@@ -6,7 +6,7 @@
 #    By: andrei <andrei@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/12 17:07:31 by andrei           ###   ########.fr        #
+#    Updated: 2024/08/12 19:56:59 by andrei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ SRCS	=	main.c\
 			mlx_init.c\
 			error.c\
 			parser.c\
+			print.c\
 
 OBJS	=	$(SRCS:.c=.o)
 

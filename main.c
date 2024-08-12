@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:43 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/12 18:11:13 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/12 20:10:35 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,13 @@ int	main(int ac, char **av)
 	if (!parse_world(text, &world))
 		exit(error_msg("Parsing error"));
 	free(text);
+	print_world(&world);
 
 	if (!init_mlx_context(&ctx, 400, 300)) {
 		return 1;
 	}
+	// ctx.camera = world.camera;
+	ctx.world = &world;
 	setup_hooks(&ctx);
 	mlx_loop(ctx.mlx_context);
 	

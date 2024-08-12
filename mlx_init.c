@@ -49,6 +49,18 @@ void display_image(t_mlx_context* ctx) {
     mlx_flush(ctx->mlx_context);
 }
 
+void debug_info(t_mlx_context* ctx) {
+    t_vector coords = ctx->camera.center;
+    char* s = ft_calloc(1024, sizeof(char));
+    sprintf(s, "camera coords: x=%f y=%f z=%f", coords.x, coords.y, coords.z);
+    mlx_string_put(ctx->mlx_context, ctx->window, 1, 10, 0xff0000, s);
+    ft_memset(s, 0, 1024);
+    t_vector direction = subtrac_vec_vec(ctx->camera.lookat, ctx->camera.lookfrom);
+    sprintf(s, "camera direction: x=%f y=%f z=%f", direction.x, direction.y, direction.z);
+    mlx_string_put(ctx->mlx_context, ctx->window, 1, 20, 0xff0000, s);
+    free(s);
+}
+
 int render_frame(t_mlx_context* ctx) {
     t_camera camera = ctx->camera;
 
@@ -59,13 +71,14 @@ int render_frame(t_mlx_context* ctx) {
     t_image image = ctx->image;
 
     ctx->samples++;
-    render(camera, image);
+    render(ctx->world, camera, image);
 
     for(int i = 0; i < image.width*image.height; i++) {
         ctx->sum.data[i] = add_vec_vec(ctx->sum.data[i], image.data[i]);
         ctx->image.data[i] = divi_vec_int(ctx->sum.data[i], ctx->samples);
     }
     display_image(ctx);
+    debug_info(ctx);
 
     return ctx->samples < camera.samples_per_pixel;
 }
