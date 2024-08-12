@@ -29,4 +29,7 @@ void print_world(t_world* world) {
             printf("\t\t[unknown]\n");
         print_material(world->objects[i].material);
     }
+    t_vector vp = world->camera.view_point;
+    t_vector dir = world->camera.direction;
+    printf("\t[camera]\n\t\tviewpoint=(%f,%f,%f)\n\t\tdirection=(%f,%f,%f)\n\t\thfov=%f\n", vp.x, vp.y, vp.z, dir.x, dir.y, dir.z, world->camera.hfov);
 }

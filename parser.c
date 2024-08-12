@@ -145,29 +145,24 @@ int parse_ambient_light(char** _scene, t_amblight* light, int* total) {
     return parsed;
 }
 
-int parse_camera(char** _scene, t_camera* camera, int* total) {
+int parse_camera(char** _scene, t_camera_spec* camera, int* total) {
     char* scene = *_scene;
     int parsed = 0;
-    t_vector orientation;
 
     if (!parse_char(&scene, 'C', &parsed))
         return 0;
     if (!parse_space(&scene, &parsed))
         return 0;
-    if (!parse_vector(&scene, &camera->center, &parsed))
+    if (!parse_vector(&scene, &camera->view_point, &parsed))
         return 0;
     if (!parse_space(&scene, &parsed))
         return 0;
-    if (!parse_vector(&scene, &orientation, &parsed))
+    if (!parse_vector(&scene, &camera->direction, &parsed))
         return 0;
     if (!parse_space(&scene, &parsed))
         return 0;
     if (!parse_double(&scene, &camera->hfov, &parsed))
         return 0;
-    camera->aspect_ratio = 16./9.;
-    if (vec_length(orientation) != 1.)
-        return 0;
-    camera->lookat = orientation;
     *total += parsed;
     *_scene += parsed;
     return parsed;

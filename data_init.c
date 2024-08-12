@@ -6,13 +6,13 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/12 21:17:21 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/12 21:38:51 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void    camera_init(t_camera *camera, int width, int height)
+void    camera_init(t_camera *camera, t_camera_spec spec, int width, int height)
 {
     double      focal_length;
     t_vector    viewport_u;
@@ -25,24 +25,23 @@ void    camera_init(t_camera *camera, int width, int height)
     t_vector    u;
     t_vector    v;
     t_vector    w;
-
+ 
     camera->image_width = width;
     camera->samples_per_pixel = 100;
     camera->image_height = height;
     camera->aspect_ratio = (float)(width) / (float)(height);
     if (camera->image_height < 1)
         camera->image_height = 1;
-    camera->hfov = 90;
-    camera->lookfrom = vec_init(0, 2, 9);
-    camera->lookat = vec_init(0, 0, 0);
+    camera->hfov = spec.hfov;
+    camera->lookfrom = spec.view_point;
     camera->vup = vec_init(0, 10, 0);
     theta = degrees_to_radians(camera->hfov / camera->aspect_ratio);
     h = tan(theta / 2);
     camera->center = camera->lookfrom;
-    focal_length = vec_length(subtrac_vec_vec(camera->lookfrom, camera->lookat));
+    focal_length = vec_length(spec.direction);
     viewport_height = 2.0 * h * focal_length;
     viewport_width = viewport_height * (double)(camera->image_width / camera->image_height);
-    w = unit_vector(subtrac_vec_vec(camera->lookfrom, camera->lookat));
+    w = unit_vector(subtrac_vec_vec(vec_init(0,0,0),spec.direction));
     u = unit_vector(cross_vec(camera->vup, w));
     v = cross_vec(w, u);
     viewport_u = multi_vec_doub(u, viewport_width);

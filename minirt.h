@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/12 19:57:45 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/12 21:23:58 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ typedef struct s_camera
     int         max_depth;
     double      hfov;
     t_vector    lookfrom;
-    t_vector    lookat;
     t_vector    vup;
     t_vector    pixel_delta_u;
     t_vector    pixel_delta_v;
@@ -186,13 +185,19 @@ typedef struct s_image {
     t_vector* data;
 } t_image;
 
+typedef struct s_camera_spec {
+    t_vector view_point;
+    t_vector direction;
+    double hfov;
+} t_camera_spec;
+
 typedef struct s_world {
     int point_lights_len;
     int objects_len;
     t_light* point_lights;
     t_amblight ambient_light;
     t_object* objects;
-    t_camera camera;
+    t_camera_spec camera;
 } t_world;
 
 int parse_world(char* scene, t_world* world);
@@ -232,7 +237,7 @@ t_vector    random_on_hemisphere(t_vector normal);
 double      linear_to_gamma(double linear_component);
 
 //data init
-void    camera_init(t_camera *camera, int width, int height);
+void    camera_init(t_camera *camera, t_camera_spec spec, int width, int height);
 void    light_init(t_light *light);
 t_object*    world_init();
 
