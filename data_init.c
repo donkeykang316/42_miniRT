@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/12 20:04:07 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/12 21:17:21 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,71 +76,4 @@ t_object  quad_init(t_vector coord, t_vector normal, t_vector color, t_material 
     quad.material = material;
     quad.material.albedo = color;
     return (quad);
-}
-
-t_object   tri_init(t_vector coord, t_vector normal, t_vector color, t_material material)
-{
-    t_object   tri;
-
-    tri.type = TRIANGLE;
-    tri.value.triangle.q = coord;
-    tri.value.triangle.u = normal;
-    tri.value.triangle.v = vec_init(1, 0, 4);
-    tri.material = material;
-    tri.material.albedo = color;
-    return (tri);
-}
-
-t_object    sphere_init(t_vector center, double diameter, t_vector color, t_material material)
-{
-    t_object  sphere;
-
-    sphere.type = SPHERE;
-    sphere.value.sphere.center = center;
-    sphere.value.sphere.radius = diameter;
-    sphere.material = material;
-    sphere.material.albedo = color;
-    return (sphere);
-}
-
-t_object  cylinder_init(t_vector center, t_vector normal, double diameter, double height, t_vector color, t_material material)
-{
-    t_object  cylinder;
-
-    cylinder.type = CYLINDER;
-    cylinder.value.cyllinder.center = center;
-    cylinder.value.cyllinder.axis = normal;
-    cylinder.value.cyllinder.radius = diameter;
-    cylinder.value.cyllinder.height = height;
-    cylinder.material = material;
-    cylinder.material.albedo = color;
-    return (cylinder);
-}
-
-t_material material_init(t_material_type type) {
-    t_material res;
-    res.type = type;
-    res.albedo = vec_init(0.5,0.5,0.5);
-    res.fuzz = 0.1;
-    res.ref_idx = 0.5;
-    return res;
-}
-
-t_object*    world_init()
-{
-    t_material lambertian = material_init(LAMBERTIAN);
-    t_material metal = material_init(METAL);
-
-    t_object* world = calloc(11, sizeof(t_object));
-    world[0] = quad_init(vec_init(-3,-2, 5), vec_init(0, 0, -4), vec_init(1, 0.2, 0.2), lambertian);
-    world[1] = quad_init(vec_init(-2,-2, 0), vec_init(4, 0, 0), vec_init(0.2, 1.0, 0.2), lambertian);
-    world[2] = quad_init(vec_init(3,-2, 1), vec_init(0, 0, 4), vec_init(0.2, 0.2, 1.0), lambertian);
-    world[3] = tri_init(vec_init(0, 1, 2), vec_init(-1, 0, 4), vec_init(1.0, 0.5, 0.0), lambertian);
-    world[4] = sphere_init(vec_init(0.0, -100.5, 2.0), 100.0, vec_init(0.8, 0.8, 0.0), lambertian);
-    world[5] = sphere_init(vec_init(0.0, 0.0, 5.0), 0.5, vec_init(0.1, 0.2, 0.5), lambertian);
-    world[6] = sphere_init(vec_init(-1.0, 0.0, 5.0), 0.4, vec_init(0.8, 0.8, 0.8), metal);
-    world[7] = sphere_init(vec_init(1.0, 0.0, 5.0), 0.5, vec_init(1.0, 1.0, 1.0), metal);
-    world[8] = cylinder_init(vec_init(3.0, 0.0, 3.0), vec_init(0.0, 1.0, 0.0), 1.0, 1.0, vec_init(0.5, 0.2, 0.1), lambertian);
-    world[9] = sphere_init(vec_init(0.0, 3.0, 0.0), 1.0, vec_init(1.0, 1.0, 1.0), lambertian);
-    return world;
 }
