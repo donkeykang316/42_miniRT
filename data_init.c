@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 16:23:31 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/12 16:12:19 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void    light_init(t_light *light)
 
     light->position = vec_init(position.x, position.y, position.z);
     light->intensity = intensity;
-    light->albedo = vec_init(0.0 + intensity, 0.0 + intensity, 0.0 + intensity);
+    light->color = vec_init(0.0 + intensity, 0.0 + intensity, 0.0 + intensity);
 }
 
 t_object  quad_init(t_vector coord, t_vector normal, t_vector color, t_material material)

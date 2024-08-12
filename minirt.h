@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 16:23:41 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/12 17:57:55 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include "mlx.h"
 # include "lib/get_next_line/inc/get_next_line.h"
 # include "lib/libft/inc/libft.h"
-# include "parser/parser.h"
 
 // linear congruential generator constants
 #define A 1664525
@@ -164,7 +163,7 @@ typedef struct s_interval
 typedef struct s_light
 {
     t_vector    position;
-    t_vector    albedo;
+    t_vector    color;
     double      intensity;
 }   t_light;
 
@@ -186,6 +185,17 @@ typedef struct s_image {
     int height;
     t_vector* data;
 } t_image;
+
+typedef struct s_world {
+    int point_lights_len;
+    int objects_len;
+    t_light* point_lights;
+    t_amblight ambient_light;
+    t_object* objects;
+    t_camera camera;
+} t_world;
+
+int parse_world(char* scene, t_world* world);
 
 typedef struct s_mlx_context {
 	void				*mlx_context;
