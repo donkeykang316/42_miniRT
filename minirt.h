@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 16:23:41 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/12 21:23:58 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include "mlx.h"
 # include "lib/get_next_line/inc/get_next_line.h"
 # include "lib/libft/inc/libft.h"
-# include "parser/parser.h"
 
 // linear congruential generator constants
 #define A 1664525
@@ -128,9 +127,8 @@ typedef struct s_camera
     int         image_height;
     double      pixel_samples_scale;
     int         max_depth;
-    double      vfov;
+    double      hfov;
     t_vector    lookfrom;
-    t_vector    lookat;
     t_vector    vup;
     t_vector    pixel_delta_u;
     t_vector    pixel_delta_v;
@@ -164,7 +162,7 @@ typedef struct s_interval
 typedef struct s_light
 {
     t_vector    position;
-    t_vector    albedo;
+    t_vector    color;
     double      intensity;
 }   t_light;
 
@@ -187,6 +185,23 @@ typedef struct s_image {
     t_vector* data;
 } t_image;
 
+typedef struct s_camera_spec {
+    t_vector view_point;
+    t_vector direction;
+    double hfov;
+} t_camera_spec;
+
+typedef struct s_world {
+    int point_lights_len;
+    int objects_len;
+    t_light* point_lights;
+    t_amblight ambient_light;
+    t_object* objects;
+    t_camera_spec camera;
+} t_world;
+
+int parse_world(char* scene, t_world* world);
+
 typedef struct s_mlx_context {
 	void				*mlx_context;
 	void				*window;
@@ -202,17 +217,18 @@ typedef struct s_mlx_context {
     t_image sum;
     int samples;
     t_camera camera;
+    t_world* world;
 } t_mlx_context;
 
 //camera
 t_ray       get_ray(t_camera camera, int i, int j);
 void        write_color(int fd, t_vector pixel_color);
-void        render(t_camera camera, t_image image);
+void        render(t_world* world, t_camera camera, t_image image);
 t_vector gamma_correct(t_vector pixel_color);
 
 //ray color
-t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_object *world);
-t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_object *world);
+t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_world *world);
+t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_world *world);
 
 //camera util
 t_vector    random_in_unit_sphere(void);
@@ -221,9 +237,11 @@ t_vector    random_on_hemisphere(t_vector normal);
 double      linear_to_gamma(double linear_component);
 
 //data init
-void    camera_init(t_camera *camera, int width, int height);
+void    camera_init(t_camera *camera, t_camera_spec spec, int width, int height);
 void    light_init(t_light *light);
 t_object*    world_init();
+
+void print_world(t_world* world);
 
 //sphere
 bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere);
@@ -242,7 +260,7 @@ bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_triangle tri);
 bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cylinder);
 
 //objects
-bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_object *world);
+bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_world *world);
 bool    obj_intersec(t_hit_rec *rec, double fuzz, double ref_idx, int i);
 
 //material

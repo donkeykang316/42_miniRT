@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 16:23:23 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/12 19:44:03 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,10 @@ void    write_color(int fd, t_vector pixel_color)
     dprintf(fd, "%d %d %d\n", (int)(rgb.x * 256), (int)(rgb.y * 256), (int)(rgb.z * 256));
 }
 
-void    render(t_camera camera, t_image image)
+void    render(t_world* world, t_camera camera, t_image image)
 {
     t_vector        pixel_color;
     t_ray           ray;
-    t_object        *world;
     t_hit_rec       rec;
     int             i;
     int             j;
@@ -70,15 +69,8 @@ void    render(t_camera camera, t_image image)
     i = 0;
     j = 0;
 
-    // int quantity = 11;
-
-    world = world_init();
     while (j < image.height)
     {
-        //ft_putstr_fd("Remaining line ", 2);
-        //ft_putstr_fd("--------------------------", 2);
-        //ft_putnbr_fd(camera.image_height - j, 2);
-        //ft_putstr_fd("\n", 2);
         i = 0;
         while (i < image.width)
         {
@@ -89,5 +81,4 @@ void    render(t_camera camera, t_image image)
         }
         j++;
     }
-    free(world);
 }
