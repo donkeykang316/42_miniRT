@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:00 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/12 18:24:09 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/12 22:15:58 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,6 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_world *world)
     // if (a < 0.0)
     //     a = 0.0;
     // r_color = multi_vec_doub(light.albedo, a);
-    r_color = vec_init(0.9, 0.9, 0.9);
+    r_color = vec_init(0.2, 0.2, 0.2);
     return (r_color);
 }

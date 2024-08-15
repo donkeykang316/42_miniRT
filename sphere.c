@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:07 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 13:28:10 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/15 18:11:55 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ double  find_root2(double discriminant, double h, double a)
     return (root);
 }
 
-bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere)
+bool    hit_sphere(t_ray ray, t_interval interval, t_hit_rec *hit, t_sphere sphere)
 {
     t_vector    oc;
     t_vector    outward_normal;
@@ -51,16 +51,16 @@ bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere)
     if (discriminant < 0)
         return (false);
     root = find_root1(discriminant, h, a);
-    if (!surrounds(ray_t, root))
+    if (!surrounds(interval, root))
     {
         root = find_root2(discriminant, h, a);
-        if (!surrounds(ray_t, root))
+        if (!surrounds(interval, root))
             return (false);
     }
-    rec->hit_distance = root;
-    rec->hit_point = at_vec(ray, rec->hit_distance);
-    rec->normal = divi_vec_doub(subtrac_vec_vec(rec->hit_point, sphere.center), sphere.radius);
-    outward_normal = divi_vec_doub(subtrac_vec_vec(rec->hit_point, sphere.center), sphere.radius);
-    set_face_normal(ray, outward_normal, rec);
+    hit->hit_distance = root;
+    hit->hit_point = at_vec(ray, hit->hit_distance);
+    hit->normal = divi_vec_doub(subtrac_vec_vec(hit->hit_point, sphere.center), sphere.radius);
+    outward_normal = divi_vec_doub(subtrac_vec_vec(hit->hit_point, sphere.center), sphere.radius);
+    set_face_normal(ray, outward_normal, hit);
     return (true);
 }
