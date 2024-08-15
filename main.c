@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:43 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/12 21:49:19 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/12 21:49:57 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int	main(int ac, char **av)
 	if (!init_mlx_context(&ctx, 800, 600)) {
 		return 1;
 	}
-	// ctx.camera = world.camera;
 	setup_hooks(&ctx);
 	mlx_loop(ctx.mlx_context);
 	

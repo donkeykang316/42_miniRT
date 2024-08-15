@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/12 19:44:03 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/15 18:17:29 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_ray   get_ray(t_camera camera, int i, int j)
 
     offset = sample_square();
     pixel_sample = add_vec_vec(camera.pixel00_loc, add_vec_vec(multi_vec_doub(camera.pixel_delta_u, (i + offset.x)), multi_vec_doub(camera.pixel_delta_v, (j + offset.y))));
-    ray.origin = vec_init(camera.center.x, camera.center.y, camera.center.z);
+    ray.origin = camera.center;
     ray.direction = subtrac_vec_vec(pixel_sample, ray.origin);
     return (ray);
 }
@@ -68,6 +68,9 @@ void    render(t_world* world, t_camera camera, t_image image)
 
     i = 0;
     j = 0;
+
+    world->camera.view_point = camera.center;
+    camera_init(&camera, world->camera, camera.image_width, camera.image_height);
 
     while (j < image.height)
     {
