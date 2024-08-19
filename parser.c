@@ -1,5 +1,14 @@
 #include "minirt.h"
 
+t_material default_material() {
+    t_material mat;
+    mat.type = METAL;
+    mat.albedo = vec_init(0,0,0);
+    mat.fuzz = 1.0;
+    mat.ref_idx = 0;
+    return mat;
+}
+
 int parse_space(char** scene, int* total) {
     int parsed = 0;
     while(isspace((*scene)[parsed])) {
@@ -233,9 +242,7 @@ int parse_sphere(char** _scene, t_world* world, int* total) {
     double diameter;
     t_object obj;
     obj.type = SPHERE;
-    obj.material.fuzz = 0.1;
-    obj.material.ref_idx = 0.5;
-    obj.material.type = LAMBERTIAN;
+    obj.material = default_material();
 
     if (!parse_string(&scene, "sp", &parsed))
         return 0;
@@ -266,9 +273,7 @@ int parse_cylinder(char** _scene, t_world* world, int* total) {
     double diameter;
     t_object obj;
     obj.type = CYLINDER;
-    obj.material.fuzz = 0.1;
-    obj.material.ref_idx = 0.5;
-    obj.material.type = LAMBERTIAN;
+    obj.material = default_material();
 
     if (!parse_string(&scene, "cy", &parsed))
         return 0;
@@ -306,9 +311,7 @@ int parse_plane(char** _scene, t_world* world, int* total) {
     int parsed = 0;
     t_object obj;
     obj.type = PLANE;
-    obj.material.fuzz = 0.1;
-    obj.material.ref_idx = 0.5;
-    obj.material.type = LAMBERTIAN;
+    obj.material = default_material();
 
     if (!parse_string(&scene, "pl", &parsed))
         return 0;
@@ -335,9 +338,7 @@ int parse_triangle(char** _scene, t_world* world, int* total) {
     int parsed = 0;
     t_object obj;
     obj.type = TRIANGLE;
-    obj.material.fuzz = 0.1;
-    obj.material.ref_idx = 0.5;
-    obj.material.type = LAMBERTIAN;
+    obj.material = default_material();
 
     if (!parse_string(&scene, "tr", &parsed))
         return 0;

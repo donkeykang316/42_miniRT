@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/16 13:53:48 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/19 17:56:57 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void    render(t_world* world, t_camera camera, t_image image)
 
     world->camera.view_point = camera.center;
     camera_init(&camera, world->camera, camera.image_width, camera.image_height);
-    camera.max_depth = 2;
+    camera.max_depth = 100;
 
     while (j < image.height)
     {
