@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:20 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/15 18:40:28 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/20 00:02:59 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_world *world)
             closest_so_far = rec->hit_distance;
         }
         i++;
+    }
+    if (hit_anything) {
+        rec->total_hit_distance += rec->hit_distance;
     }
     return (hit_anything);
 }

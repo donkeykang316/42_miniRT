@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/19 17:56:57 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/20 00:16:17 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,20 @@ void    render(t_world* world, t_camera camera, t_image image)
 
     world->camera.view_point = camera.center;
     camera_init(&camera, world->camera, camera.image_width, camera.image_height);
-    camera.max_depth = 100;
+    camera.max_depth = 1;
 
     while (j < image.height)
     {
         i = 0;
         while (i < image.width)
         {
-            rec.hit_distance = INFINITY;
             ray = get_ray(camera, i, j);
+            rec.hit_distance = INFINITY;
+            rec.total_hit_distance = 0;
+            rec.normal = ray.direction;
+            rec.hit_point = ray.origin;
+            rec.material.type = METAL;
+            rec.material.fuzz = 0.004;
             pixel_color = ray_color(&ray, &rec, camera.max_depth, world);
 
             // distance debug
@@ -96,7 +101,7 @@ void    render(t_world* world, t_camera camera, t_image image)
 
             // pixel_color = multi_vec_vec(unit_vector(rec.hit_point),unit_vector(rec.hit_point));
 
-            image.data[j * image.width + i] = pixel_color;
+            image.data[j * image.width + i] = add_vec_vec(image.data[j * image.width + i], pixel_color);
             i++;
         }
         j++;

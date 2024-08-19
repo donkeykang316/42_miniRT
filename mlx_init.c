@@ -25,7 +25,6 @@ int	init_mlx_context(t_mlx_context *ctx, int width, int height)
 	ctx->window = mlx_new_window(mlx, width, height, "MiniRT");
     init_mlx_image(ctx);
     ctx->samples = 0;
-    init_image(&ctx->image, ctx->width, ctx->height);
     init_image(&ctx->sum, ctx->width, ctx->height);
     camera_init(&ctx->camera, ctx->world->camera, ctx->width, ctx->height);
 	mlx_put_image_to_window(ctx->mlx_context, ctx->window, ctx->mlx_image,
@@ -38,7 +37,7 @@ void display_image(t_mlx_context* ctx) {
     while(y < ctx->height) {
         int x = 0;
         while(x < ctx->width) {
-            t_vector color = gamma_correct(ctx->image.data[y * ctx->width + x]);
+            t_vector color = gamma_correct(divi_vec_doub(ctx->sum.data[y * ctx->width + x], ctx->samples));
             set_pixel(ctx, x, y, color);
             x++;
         }
@@ -68,15 +67,11 @@ int render_frame(t_mlx_context* ctx) {
         return 0;
     }
 
-    t_image image = ctx->image;
+    t_image image = ctx->sum;
 
     ctx->samples++;
     render(ctx->world, camera, image);
 
-    for(int i = 0; i < image.width*image.height; i++) {
-        ctx->sum.data[i] = add_vec_vec(ctx->sum.data[i], image.data[i]);
-        ctx->image.data[i] = divi_vec_int(ctx->sum.data[i], ctx->samples);
-    }
     display_image(ctx);
     debug_info(ctx);
 

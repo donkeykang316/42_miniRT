@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   material_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/07 13:08:48 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/20 00:09:11 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_vector    reflect(t_vector vec1, t_vector vec2)
 {
-    return (subtrac_vec_vec(vec1, multi_vec_doub(vec2, 2 * dot_vec(vec1, vec2))));
+    return subtrac_vec_vec(vec1, multi_vec_doub(projection(vec1, vec2), 2));
 }
 
 t_vector    refract(t_vector uv, t_vector n, double etai_over_etat)

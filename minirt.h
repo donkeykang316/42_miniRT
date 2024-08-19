@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/19 18:38:21 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/19 23:02:17 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,10 @@ typedef struct s_hit_rec
     t_vector    normal;
     t_material  material;
     double      hit_distance;
+    double      total_hit_distance;
     bool        front_face;
     int         object_index;
+    t_vector    last_hit_direction;
 }   t_hit_rec;
 
 typedef struct s_interval
@@ -220,7 +222,6 @@ typedef struct s_mlx_context {
 
     int width;
     int height;
-    t_image image;
     t_image sum;
     int samples;
     t_camera camera;
@@ -280,7 +281,10 @@ bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_r
 void    set_face_normal(t_ray r, t_vector outward_normal, t_hit_rec *rec);
 
 // light
-bool hit_point_light(t_vector source, t_hit_rec* hit, t_light* light, t_world* world);
+t_vector lighting(t_hit_rec hit, t_world* world, t_vector incident_direction);
+t_vector ambient_light(t_amblight light);
+
+t_vector projection(t_vector of, t_vector onto);
 
 //material util
 t_vector    reflect(t_vector vec1, t_vector vec2);

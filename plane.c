@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 18:26:44 by andrei            #+#    #+#             */
-/*   Updated: 2024/08/19 17:14:06 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/19 21:45:38 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ double projection_length(t_vector of, t_vector onto) {
 }
 
 t_vector projection(t_vector of, t_vector onto) {
-    return multi_vec_doub(normalize_vec(onto), projection_length(of, onto));
+    return multi_vec_doub(onto, projection_length(of, onto));
 }
 
 bool    hit_plane(t_ray ray, t_interval interval, t_hit_rec *hit, t_plane plane) {
