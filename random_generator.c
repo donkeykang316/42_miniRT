@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   random_generator.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:38 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:22:52 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/15 21:26:32 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ unsigned int	ft_rand(void)
 {
 	static unsigned int	seed = 1;
 
-	seed = (A * seed + C) % M;
+	seed = A * seed + C;
 	return (seed);
 }
 

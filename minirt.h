@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/12 21:23:58 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/15 18:40:46 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ typedef enum e_object_type
     QUAD,
     TRIANGLE,
     CUBE,
-    CYLINDER
+    CYLINDER,
+    PLANE
 }   t_object_type;
 
 typedef struct s_sphere
@@ -78,6 +79,11 @@ typedef struct s_sphere
     t_vector    center;
     double      radius;
 }   t_sphere;
+
+typedef struct s_plane {
+    t_vector point;
+    t_vector normal;
+} t_plane;
 
 typedef struct s_cylinder
 {
@@ -115,6 +121,7 @@ typedef struct s_object {
         t_triangle triangle;
         t_quad quad;
         t_sphere sphere;
+        t_plane plane;
     } value;
     t_material material;
 } t_object;
@@ -258,6 +265,9 @@ bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_triangle tri);
 
 //cylinder
 bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cylinder);
+
+//plane
+bool    hit_plane(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_plane plane);
 
 //objects
 bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_world *world);

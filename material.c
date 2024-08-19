@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   material.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:06 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 15:18:32 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/15 21:30:28 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_
     (void)scattered;
     (void)r_in;
     scatter_direction = add_vec_vec(rec->normal, random_unit_vector());
-    scattered->origin = vec_init(rec->hit_point.x, rec->hit_point.y, rec->hit_point.z);
-    scattered->direction = vec_init(scatter_direction.x, scatter_direction.y, scatter_direction.z);
+    scattered->origin = rec->hit_point;
+    scattered->direction = scatter_direction;
     // attenuation = vec_init(material->albedo.x, material->albedo.y, material->albedo.z);
     return (true);
 }

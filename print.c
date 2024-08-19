@@ -17,6 +17,16 @@ void print_cylinder(t_object cylinder) {
     printf("\t\t[cylinder]\n\t\t\tcenter=(%.2f, %.2f, %.2f)\n\t\t\taxis=(%.2f, %.2f, %.2f)\n", 
         center.x, center.y, center.z, axis.x, axis.y, axis.z);
 }
+void print_plane(t_object plane) {
+    t_vector point = plane.value.plane.point;
+    t_vector normal = plane.value.plane.normal;
+    printf("\t\t[plane]\n\t\t\tpoint=(%.2f, %.2f, %.2f)\n\t\t\tnormal=(%.2f, %.2f, %.2f)\n", 
+        point.x, point.y, point.z, normal.x, normal.y, normal.z);
+}
+
+void print_ambient_light(t_amblight light) {
+    printf("\t[ambient light]\n\t\tcolor=(%.2f, %.2f, %.2f)\n\t\tintensity=%f\n", light.color.x, light.color.y, light.color.z, light.intensity);
+}
 
 void print_world(t_world* world) {
     printf("[world]\n\t[objects]\n");
@@ -25,10 +35,13 @@ void print_world(t_world* world) {
             print_sphere(world->objects[i]);
         else if (world->objects[i].type == CYLINDER)
             print_cylinder(world->objects[i]);
+        else if (world->objects[i].type == PLANE)
+            print_plane(world->objects[i]);
         else 
             printf("\t\t[unknown]\n");
         print_material(world->objects[i].material);
     }
+    print_ambient_light(world->ambient_light);
     t_vector vp = world->camera.view_point;
     t_vector dir = world->camera.direction;
     printf("\t[camera]\n\t\tviewpoint=(%f,%f,%f)\n\t\tdirection=(%f,%f,%f)\n\t\thfov=%f\n", vp.x, vp.y, vp.z, dir.x, dir.y, dir.z, world->camera.hfov);

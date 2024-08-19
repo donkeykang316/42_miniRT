@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:20 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/12 18:22:26 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/15 18:40:28 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ bool hit_object(t_ray ray, t_hit_rec *rec, t_object object, t_interval interval)
         return hit_sphere(ray, interval, rec, object.value.sphere);
     if (object.type == CYLINDER)
         return hit_cylinder(ray, interval, rec, object.value.cyllinder);
+    if (object.type == PLANE)
+        return hit_plane(ray, interval, rec, object.value.plane);
     return false;
 }
 
