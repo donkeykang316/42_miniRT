@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/15 21:09:23 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/16 13:53:48 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void    render(t_world* world, t_camera camera, t_image image)
 
     world->camera.view_point = camera.center;
     camera_init(&camera, world->camera, camera.image_width, camera.image_height);
-    camera.max_depth = 1;
+    camera.max_depth = 2;
 
     while (j < image.height)
     {
@@ -87,12 +87,14 @@ void    render(t_world* world, t_camera camera, t_image image)
             pixel_color = ray_color(&ray, &rec, camera.max_depth, world);
 
             // distance debug
-            // double t = fabs(atan(rec.hit_distance)/PI*2);
+            // double t = fabs(atan(fmin(rec.hit_distance,100))/atan(100));
             // double d = (rec.hit_distance - floor(10*rec.hit_distance)/10)*10;
-            // pixel_color = vec_init(d*0.5+t*0.5,t,t);
+            // pixel_color = vec_init(t,t,t);
 
             // normal debug
-            pixel_color = contrast(dot_vec(vec_init(1,0,0), rec.normal)/vec_length(rec.normal));
+            // pixel_color = contrast(dot_vec(vec_init(0,0,1), rec.normal)/vec_length(rec.normal));
+
+            // pixel_color = multi_vec_vec(unit_vector(rec.hit_point),unit_vector(rec.hit_point));
 
             image.data[j * image.width + i] = pixel_color;
             i++;
