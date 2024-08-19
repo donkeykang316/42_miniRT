@@ -52,10 +52,12 @@ int parse_decimal(char** scene, int* dst, int* total) {
     return parsed;
 }
 
-double make_double(int whole, int fraction) {
+double make_double(int whole, int fraction, int position) {
     double f = fraction;
-    while(f > 1.)
+    while(position > 0) {
         f /= 10.;
+        position--;
+    }
     return (double)(whole) + f;
 }
 
@@ -66,12 +68,14 @@ int parse_double(char** scene, double* flt, int* total) {
     char* sc = *scene;
 
     int minus = parse_char(&sc, '-', &parsed);
+    int decimal_places = 0;
     parse_decimal(&sc, &whole, &parsed);
-    if (parse_char(&sc, '.', &parsed))
-        parse_decimal(&sc, &fraction, &parsed);
+    if (parse_char(&sc, '.', &parsed)) {
+        decimal_places = parse_decimal(&sc, &fraction, &parsed);
+    }
     if (!(parsed - minus) || ((parsed - minus) == 1 && (*scene)[minus] == '.'))
         return 0;
-    *flt = make_double(whole, fraction);
+    *flt = make_double(whole, fraction, decimal_places);
     if (minus)
         *flt = -*flt;
     *scene += parsed;

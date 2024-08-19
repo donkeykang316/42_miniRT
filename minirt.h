@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/15 18:40:46 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/19 18:38:21 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,6 +278,9 @@ bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *
 bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material);
 bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material);
 void    set_face_normal(t_ray r, t_vector outward_normal, t_hit_rec *rec);
+
+// light
+bool hit_point_light(t_vector source, t_hit_rec* hit, t_light* light, t_world* world);
 
 //material util
 t_vector    reflect(t_vector vec1, t_vector vec2);

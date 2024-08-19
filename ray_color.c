@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:00 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/15 21:48:05 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/19 18:39:31 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,14 @@ t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_world *
     t_vector    r_col_tmp;
 
     albedo = rec->material.albedo;
+    
     r_col_tmp = ray_color(&scattered, rec, depth - 1, world);
+    for(int i = 0; i < world->point_lights_len; i++) {
+        if (hit_point_light(scattered.origin, rec, &world->point_lights[i], world)) {
+            r_col_tmp = world->point_lights[i].color;
+            break;
+        }
+    }
     r_color = multi_vec_vec(albedo, r_col_tmp);
     return (r_color);
 }
@@ -60,7 +67,9 @@ t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_world *world)
         return ambient_light(world->ambient_light);
     interval.min = 0.001;
     interval.max = INFINITY;
+
     if (hit_objects(*ray, interval, rec, world))
         return (ray_scatter(ray, rec, depth, world));
+
     return ambient_light(world->ambient_light);
 }
