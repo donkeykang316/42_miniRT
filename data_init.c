@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/20 00:16:12 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/20 16:31:29 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void    camera_init(t_camera *camera, t_camera_spec spec, int width, int height)
     t_vector    w;
  
     camera->image_width = width;
-    camera->samples_per_pixel = 1;
+    camera->samples_per_pixel = 100;
     camera->image_height = height;
     camera->aspect_ratio = (float)(width) / (float)(height);
     if (camera->image_height < 1)
