@@ -6,7 +6,7 @@
 #    By: andrei <andrei@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/19 18:26:27 by andrei           ###   ########.fr        #
+#    Updated: 2024/08/21 17:40:58 by andrei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRCS	=	main.c\
 			print.c\
 			plane.c\
 			light.c\
+			render.c\
 
 OBJS	=	$(SRCS:.c=.o)
 

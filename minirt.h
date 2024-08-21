@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/19 23:02:17 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/21 19:13:02 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,8 @@ typedef struct s_world {
     t_camera_spec camera;
 } t_world;
 
+double angle_between(t_vector a, t_vector b);
+
 int parse_world(char* scene, t_world* world);
 
 typedef struct s_mlx_context {
@@ -284,6 +286,7 @@ void    set_face_normal(t_ray r, t_vector outward_normal, t_hit_rec *rec);
 t_vector lighting(t_hit_rec hit, t_world* world, t_vector incident_direction);
 t_vector ambient_light(t_amblight light);
 
+double projection_length(t_vector of, t_vector onto);
 t_vector projection(t_vector of, t_vector onto);
 
 //material util
@@ -349,5 +352,8 @@ int render_frame(t_mlx_context* ctx);
 int	set_pixel(t_mlx_context *ctx, int x, int y, t_vector rgb);
 void	setup_hooks(t_mlx_context *ctx);
 int	init_mlx_context(t_mlx_context *ctx, int width, int height);
+
+
+t_vector    ray_trace(t_ray ray, int depth, t_world *world);
 
 #endif

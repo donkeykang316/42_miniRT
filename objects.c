@@ -6,13 +6,13 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:20 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/20 00:02:59 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/21 17:13:41 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool hit_object(t_ray ray, t_hit_rec *rec, t_object object, t_interval interval) {
+bool _hit_object(t_ray ray, t_hit_rec *rec, t_object object, t_interval interval) {
     if (object.type == QUAD)
         return hit_quad(ray, interval, rec, object.value.quad);
     if (object.type == TRIANGLE)
@@ -41,7 +41,7 @@ bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_world *world)
         interval.min = ray_t.min;
         interval.max = closest_so_far;
         t_material material = world->objects[i].material;
-        if (hit_object(ray, rec, world->objects[i], interval))
+        if (_hit_object(ray, rec, world->objects[i], interval))
         {
             hit_anything = true;
             rec->object_index = i;

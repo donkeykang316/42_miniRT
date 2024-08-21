@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/20 16:32:01 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/21 17:30:08 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void    render(t_world* world, t_camera camera, t_image image)
 {
     t_vector        pixel_color;
     t_ray           ray;
-    t_hit_rec       rec;
     int             i;
     int             j;
 
@@ -83,13 +82,7 @@ void    render(t_world* world, t_camera camera, t_image image)
         while (i < image.width)
         {
             ray = get_ray(camera, i, j);
-            rec.hit_distance = INFINITY;
-            rec.total_hit_distance = 0;
-            rec.normal = ray.direction;
-            rec.hit_point = ray.origin;
-            rec.material.type = METAL;
-            rec.material.fuzz = 0.004;
-            pixel_color = ray_color(&ray, &rec, camera.max_depth, world);
+            pixel_color = ray_trace(ray, camera.max_depth, world);
 
             // distance debug
             // double t = fabs(atan(fmin(rec.hit_distance,100))/atan(100));
