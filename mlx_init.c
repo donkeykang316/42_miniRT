@@ -57,6 +57,8 @@ void debug_info(t_mlx_context* ctx) {
     t_vector direction = ctx->world->camera.direction;
     sprintf(s, "camera direction: x=%f y=%f z=%f", direction.x, direction.y, direction.z);
     mlx_string_put(ctx->mlx_context, ctx->window, 1, 20, 0xff0000, s);
+    sprintf(s, "sampled: %d", ctx->samples);
+    mlx_string_put(ctx->mlx_context, ctx->window, 1, 30, 0xff0000, s);
     free(s);
 }
 
