@@ -28,6 +28,14 @@ void print_ambient_light(t_amblight light) {
     printf("\t[ambient light]\n\t\tcolor=(%.2f, %.2f, %.2f)\n\t\tintensity=%f\n", light.color.x, light.color.y, light.color.z, light.intensity);
 }
 
+void print_point_lights(t_world* world) {
+    printf("\t[point lights]\n");
+    for(int i = 0; i < world->point_lights_len; i++) {
+        t_light light = world->point_lights[i];
+        printf("\t\t[point light]\n\t\t\tcolor=(%.2f, %.2f, %.2f)\n\t\t\tposition=(%.2f, %.2f, %.2f)\n\t\t\tintensity=%.2f\n", light.color.x, light.color.y, light.color.z, light.position.x, light.position.y, light.position.z, light.intensity);
+    }
+}
+
 void print_world(t_world* world) {
     printf("[world]\n\t[objects]\n");
     for(int i = 0; i < world->objects_len; i++) {
@@ -42,6 +50,7 @@ void print_world(t_world* world) {
         print_material(world->objects[i].material);
     }
     print_ambient_light(world->ambient_light);
+    print_point_lights(world);
     t_vector vp = world->camera.view_point;
     t_vector dir = world->camera.direction;
     printf("\t[camera]\n\t\tviewpoint=(%f,%f,%f)\n\t\tdirection=(%f,%f,%f)\n\t\thfov=%f\n", vp.x, vp.y, vp.z, dir.x, dir.y, dir.z, world->camera.hfov);

@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/21 19:13:02 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/21 21:36:06 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,7 @@ typedef struct s_mlx_context {
     int height;
     t_image sum;
     int samples;
+    int start_time;
     t_camera camera;
     t_world* world;
 } t_mlx_context;
