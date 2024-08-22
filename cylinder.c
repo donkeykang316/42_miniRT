@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:11 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/15 18:20:59 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/23 00:28:28 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void    swap_double(double *a, double *b)
 
 bool    hit_cylinder(t_ray ray, t_interval interval, t_hit_rec *hit, t_cylinder cylinder)
 {
-    t_vector    oc;
+    t_vec    oc;
     double      a;
     double      h;
     double      c;
@@ -34,10 +34,10 @@ bool    hit_cylinder(t_ray ray, t_interval interval, t_hit_rec *hit, t_cylinder 
     double      root2;
     double      cap_botom;
     double      cap_top;
-    t_vector    intersection;
-    t_vector    cy_ax;
+    t_vec    intersection;
+    t_vec    cy_ax;
 
-    oc = subtrac_vec_vec(ray.origin, cylinder.center);
+    oc = sub_vec_vec(ray.origin, cylinder.center);
     cad = dot_vec(cylinder.axis, ray.direction);
     caoc = dot_vec(cylinder.axis, oc);
     a = dot_vec(ray.direction, ray.direction) - (cad * cad);
@@ -69,9 +69,9 @@ bool    hit_cylinder(t_ray ray, t_interval interval, t_hit_rec *hit, t_cylinder 
     if (!surrounds(interval, root1))
         return (false);
     hit->hit_distance = root1;
-    intersection = at_vec(ray, hit->hit_distance);
-    cy_ax = multi_vec_doub(cylinder.axis, dot_vec(subtrac_vec_vec(intersection, cylinder.center), cylinder.axis));
-    hit->hit_point = subtrac_vec_vec(subtrac_vec_vec(intersection, cylinder.center), cy_ax);
-    hit->normal = normalize_vec(hit->hit_point);
+    intersection = at_ray(ray, hit->hit_distance);
+    cy_ax = mul_vec_double(cylinder.axis, dot_vec(sub_vec_vec(intersection, cylinder.center), cylinder.axis));
+    hit->hit_point = sub_vec_vec(sub_vec_vec(intersection, cylinder.center), cy_ax);
+    hit->normal = normalize(hit->hit_point);
     return (true);
 }

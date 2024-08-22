@@ -3,7 +3,7 @@
 t_material default_material() {
     t_material mat;
     mat.type = METAL;
-    mat.albedo = vec_init(0,0,0);
+    mat.albedo = vec(0,0,0);
     mat.fuzz = 1.0;
     mat.ref_idx = 0;
     return mat;
@@ -95,7 +95,7 @@ int parse_byte(char** scene, int* byte, int* total) {
     return parsed;
 }
 
-int parse_color(char** scene, t_vector* clr, int* total) {
+int parse_color(char** scene, t_vec* clr, int* total) {
     int parsed = 0;
     char* sc = *scene;
     int rgb[3];
@@ -119,7 +119,7 @@ int parse_color(char** scene, t_vector* clr, int* total) {
     return parsed;
 }
 
-int parse_vector(char** scene, t_vector* vec, int* total) {
+int parse_vector(char** scene, t_vec* vec, int* total) {
     int parsed = 0;
     char* sc = *scene;
 
@@ -301,7 +301,7 @@ int parse_cylinder(char** _scene, t_world* world, int* total) {
         return 0;
     if (!parse_color(&scene, &obj.material.albedo, &parsed))
         return 0;
-    if (diameter < 0 || obj.value.cyllinder.height < 0 || vec_length(obj.value.cyllinder.axis) != 1.)
+    if (diameter < 0 || obj.value.cyllinder.height < 0 || length(obj.value.cyllinder.axis) != 1.)
         return 0;
     obj.value.cyllinder.radius = diameter / 2;
     add_object(world, obj);

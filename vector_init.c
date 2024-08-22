@@ -3,42 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   vector_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:32 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:23:33 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/23 00:28:41 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vector	*vec_ptr_init(double x, double y, double z)
+t_vec	vec(double x, double y, double z)
 {
-    t_vector *output;
-
-    output = malloc(sizeof(t_vector));
-    output->x = x;
-    output->y = y;
-    output->z = z;
-    return (output);
-}
-
-t_vector	vec_init(double x, double y, double z)
-{
-    t_vector    output;
+    t_vec    output;
 
     output.x = x;
     output.y = y;
     output.z = z;
     return (output);
-}
-
-t_vector	*vec_free_init(t_vector *vec, double x, double y, double z)
-{
-    free(vec);
-    vec = malloc(sizeof(t_vector));
-    vec->x = x;
-    vec->y = y;
-    vec->z = z;
-    return (vec);
 }

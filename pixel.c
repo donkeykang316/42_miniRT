@@ -26,7 +26,7 @@ void	fix_endian(unsigned int *data, int big_endian)
 		*data = flip_bytes(*data);
 }
 
-int	set_pixel(t_mlx_context *ctx, int x, int y, t_vector rgb)
+int	set_pixel(t_mlx_context *ctx, int x, int y, t_vec rgb)
 {
 	unsigned int	color;
 	size_t			offset;

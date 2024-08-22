@@ -11,7 +11,7 @@ int	init_mlx_image(t_mlx_context *ctx)
 void init_image(t_image* img, int width, int height) {
     img->width = width;
     img->height = height;
-    img->data = ft_calloc(width * height, sizeof(t_vector));
+    img->data = ft_calloc(width * height, sizeof(t_vec));
 }
 
 int	init_mlx_context(t_mlx_context *ctx, int width, int height)
@@ -37,7 +37,7 @@ void display_image(t_mlx_context* ctx) {
     while(y < ctx->height) {
         int x = 0;
         while(x < ctx->width) {
-            t_vector color = gamma_correct(divi_vec_doub(ctx->sum.data[y * ctx->width + x], ctx->samples));
+            t_vec color = gamma_correct(div_vec_double(ctx->sum.data[y * ctx->width + x], ctx->samples));
             set_pixel(ctx, x, y, color);
             x++;
         }
@@ -49,12 +49,12 @@ void display_image(t_mlx_context* ctx) {
 }
 
 void debug_info(t_mlx_context* ctx) {
-    t_vector coords = ctx->camera.center;
+    t_vec coords = ctx->camera.center;
     char* s = ft_calloc(1024, sizeof(char));
     sprintf(s, "camera coords: x=%f y=%f z=%f", coords.x, coords.y, coords.z);
     mlx_string_put(ctx->mlx_context, ctx->window, 1, 10, 0xff0000, s);
     ft_memset(s, 0, 1024);
-    t_vector direction = ctx->world->camera.direction;
+    t_vec direction = ctx->world->camera.direction;
     sprintf(s, "camera direction: x=%f y=%f z=%f", direction.x, direction.y, direction.z);
     mlx_string_put(ctx->mlx_context, ctx->window, 1, 20, 0xff0000, s);
     sprintf(s, "sampled: %d", ctx->samples);

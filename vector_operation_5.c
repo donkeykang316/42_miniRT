@@ -3,29 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   vector_operation_5.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:24:34 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/10 13:10:52 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/23 00:31:18 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vector    unit_vector(t_vector vec)
+t_vec    normalize(t_vec vec)
 {
-    t_vector    result;
+    t_vec    result;
 
-    result = divi_vec_doub(vec, vec_length(vec));
+    result = div_vec_double(vec, length(vec));
     return (result);
 }
 
-t_vector    normalize_vec(t_vector vec)
-{
-    double length;
-    t_vector result;
-
-    length = sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
-    result = vec_init(vec.x / length, vec.y / length, vec.z / length);
-    return (result);
-}

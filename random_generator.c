@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:38 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/15 21:26:32 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/23 00:28:28 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ double	random_double_range(double min, double max)
 	return (min + (max - min) * random_double());
 }
 
-t_vector	random_vec(void)
+t_vec	random_vec(void)
 {
-	return (vec_init(random_double(), random_double(), random_double()));
+	return (vec(random_double(), random_double(), random_double()));
 }
 
-t_vector    random_vec_range(double min, double max)
+t_vec    random_vec_range(double min, double max)
 {
-    return (vec_init(random_double_range(min, max),
+    return (vec(random_double_range(min, max),
             random_double_range(min, max),
             random_double_range(min, max)));
 }

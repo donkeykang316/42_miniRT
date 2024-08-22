@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:07 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/15 18:11:55 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/23 00:28:28 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ double  find_root2(double discriminant, double h, double a)
 
 bool    hit_sphere(t_ray ray, t_interval interval, t_hit_rec *hit, t_sphere sphere)
 {
-    t_vector    oc;
-    t_vector    outward_normal;
+    t_vec    oc;
+    t_vec    outward_normal;
     double      a;
     double      h;
     double      c;
@@ -43,7 +43,7 @@ bool    hit_sphere(t_ray ray, t_interval interval, t_hit_rec *hit, t_sphere sphe
     double      root;
 
 
-    oc = subtrac_vec_vec(sphere.center, ray.origin);
+    oc = sub_vec_vec(sphere.center, ray.origin);
     a = length_squared(ray.direction);
     h = dot_vec(ray.direction, oc);
     c = length_squared(oc) - (sphere.radius * sphere.radius);
@@ -58,9 +58,9 @@ bool    hit_sphere(t_ray ray, t_interval interval, t_hit_rec *hit, t_sphere sphe
             return (false);
     }
     hit->hit_distance = root;
-    hit->hit_point = at_vec(ray, hit->hit_distance);
-    hit->normal = divi_vec_doub(subtrac_vec_vec(hit->hit_point, sphere.center), sphere.radius);
-    outward_normal = divi_vec_doub(subtrac_vec_vec(hit->hit_point, sphere.center), sphere.radius);
+    hit->hit_point = at_ray(ray, hit->hit_distance);
+    hit->normal = div_vec_double(sub_vec_vec(hit->hit_point, sphere.center), sphere.radius);
+    outward_normal = div_vec_double(sub_vec_vec(hit->hit_point, sphere.center), sphere.radius);
     set_face_normal(ray, outward_normal, hit);
     return (true);
 }
