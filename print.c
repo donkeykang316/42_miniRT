@@ -2,8 +2,7 @@
 
 void print_material(t_material material) {
     t_vec c = material.albedo;
-    printf("\t\t\t[material]\n\t\t\t\ttype=%d\n\t\t\t\talbedo=(%.2f,%.2f,%.2f)\n", material.type, c.x, c.y, c.z);
-    printf("\t\t\t\tfuzz=%f\n\t\t\t\tref_idx=%f\n", material.fuzz, material.ref_idx);
+    printf("\t\t\t[material]\n\t\t\t\talbedo=(%.2f,%.2f,%.2f)\n", c.x, c.y, c.z);
 }
 
 void print_sphere(t_object sphere) {
@@ -39,11 +38,11 @@ void print_point_lights(t_world* world) {
 void print_world(t_world* world) {
     printf("[world]\n\t[objects]\n");
     for(int i = 0; i < world->objects_len; i++) {
-        if (world->objects[i].type == SPHERE)
+        if (world->objects[i].type == OBJECT_TYPE_SPHERE)
             print_sphere(world->objects[i]);
-        else if (world->objects[i].type == CYLINDER)
+        else if (world->objects[i].type == OBJECT_TYPE_CYLINDER)
             print_cylinder(world->objects[i]);
-        else if (world->objects[i].type == PLANE)
+        else if (world->objects[i].type == OBJECT_TYPE_PLANE)
             print_plane(world->objects[i]);
         else 
             printf("\t\t[unknown]\n");

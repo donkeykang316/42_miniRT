@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:24 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:23:25 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/23 19:13:27 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@ double  degrees_to_radians(double degrees)
 {
     double  radian;
 
-    radian = degrees * PI /180.0;
+    radian = degrees * M_PI /180.0;
     return (radian);
 }

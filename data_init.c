@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/23 00:28:28 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/23 19:13:17 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,4 @@ void    light_init(t_light *light)
     light->position = vec(position.x, position.y, position.z);
     light->intensity = intensity;
     light->color = vec(0.0 + intensity, 0.0 + intensity, 0.0 + intensity);
-}
-
-t_object  quad_init(t_vec coord, t_vec normal, t_vec color, t_material material)
-{
-    t_object  quad;
-
-    quad.type = QUAD;
-    quad.value.quad.q = coord;
-    quad.value.quad.u = normal;
-    quad.value.quad.v = vec(0, 4, 0);
-    quad.material = material;
-    quad.material.albedo = color;
-    return (quad);
 }

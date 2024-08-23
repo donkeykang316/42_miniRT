@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/23 17:32:10 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/23 19:11:05 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@
 #define M 0xFFFFFFFF
 #define EPSILON 1e-8
 
-//pi
-#define PI 3.1415926535897932385
-
 int    error_msg(char *msg);
 
 typedef struct s_vector
@@ -44,34 +41,20 @@ typedef struct s_vector
     double  z;
 }   t_vec;
 
-//material types
-typedef enum e_material_type
-{
-    LAMBERTIAN,
-    METAL,
-    DIELECTRIC
-}   t_material_type;
-
 
 typedef struct s_parser t_parser;
 
 typedef struct s_material
 {
     t_vec        albedo;
-    double          fuzz;
-    double          ref_idx;
-    t_material_type type;
 }   t_material;
 
 typedef enum e_object_type
 {
-    TYPE_NONE,
-    SPHERE,
-    QUAD,
-    TRIANGLE,
-    CUBE,
-    CYLINDER,
-    PLANE
+    OBJECT_TYPE_NONE,
+    OBJECT_TYPE_SPHERE,
+    OBJECT_TYPE_CYLINDER,
+    OBJECT_TYPE_PLANE
 }   t_object_type;
 
 typedef struct s_sphere
@@ -93,33 +76,10 @@ typedef struct s_cylinder
     double      height;
 }   t_cylinder;
 
-typedef struct  s_quad
-{
-    t_vec    q;
-    t_vec    u;
-    t_vec    v;
-    t_vec    w;
-    t_vec    normal;
-    double      d;
-}   t_quad;
-
-typedef struct  s_triangle
-{
-    t_vec    q;
-    t_vec    u;
-    t_vec    v;
-    t_vec    w;
-    t_vec    normal;
-    double      d;
-}   t_triangle;
-
-
 typedef struct s_object {
     t_object_type type;
     union {
         t_cylinder cyllinder;
-        t_triangle triangle;
-        t_quad quad;
         t_sphere sphere;
         t_plane plane;
     } value;
@@ -253,12 +213,6 @@ t_hit hit_object(t_object* object, double distance, t_vec point, t_vec normal);
 double  find_root1(double discriminant, double h, double a);
 double  find_root2(double discriminant, double h, double a);
 t_hit ray_cast_sphere(t_ray ray, t_interval interval, t_object* object);
-
-//quad
-bool    is_interior_quad(double alpha, double beta);
-
-//triangle
-bool    is_interior_tri(double alpha, double beta);
 
 //cylinder
 

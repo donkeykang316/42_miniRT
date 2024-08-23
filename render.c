@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:51:30 by andrei            #+#    #+#             */
-/*   Updated: 2024/08/23 17:31:49 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/23 19:12:54 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ t_hit hit_object(t_object* object, double distance, t_vec point, t_vec normal) {
 }
 
 t_hit ray_cast_at(t_ray ray, t_interval interval, t_object* object) {
-    if (object->type == SPHERE)
+    if (object->type == OBJECT_TYPE_SPHERE)
         return ray_cast_sphere(ray, interval, object);
-    if (object->type == PLANE)
+    if (object->type == OBJECT_TYPE_PLANE)
         return ray_cast_plane(ray, interval, object);
     return no_hit();
 } 
@@ -92,7 +92,7 @@ t_vec lighting_color(t_ray ray, t_hit hit, t_world* world) {
         }
 
         const double r_px = 0.1; // FIXME
-        double intensity = pow(r_px, 2) / (length_squared(light_ray.direction)) * 255.*tan(light->intensity*PI/2);
+        double intensity = pow(r_px, 2) / (length_squared(light_ray.direction)) * 255.*tan(light->intensity*M_PI/2);
         double point_brdf = brdf(vec_neg(light_ray.direction), vec_neg(ray.direction), hit.normal);
         res = add_vec_vec(res, mul_vec_double(mul_vec_vec(mul_vec_double(hit.object->material.albedo, point_brdf), light->color), intensity));
     }

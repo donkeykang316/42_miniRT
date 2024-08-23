@@ -2,10 +2,7 @@
 
 t_material default_material() {
     t_material mat;
-    mat.type = METAL;
     mat.albedo = vec(0,0,0);
-    mat.fuzz = 1.0;
-    mat.ref_idx = 0;
     return mat;
 }
 
@@ -245,7 +242,7 @@ int parse_sphere(char** _scene, t_world* world, int* total) {
     int parsed = 0;
     double diameter;
     t_object obj;
-    obj.type = SPHERE;
+    obj.type = OBJECT_TYPE_SPHERE;
     obj.material = default_material();
 
     if (!parse_string(&scene, "sp", &parsed))
@@ -276,7 +273,7 @@ int parse_cylinder(char** _scene, t_world* world, int* total) {
     int parsed = 0;
     double diameter;
     t_object obj;
-    obj.type = CYLINDER;
+    obj.type = OBJECT_TYPE_CYLINDER;
     obj.material = default_material();
 
     if (!parse_string(&scene, "cy", &parsed))
@@ -314,7 +311,7 @@ int parse_plane(char** _scene, t_world* world, int* total) {
     char* scene = *_scene;
     int parsed = 0;
     t_object obj;
-    obj.type = PLANE;
+    obj.type = OBJECT_TYPE_PLANE;
     obj.material = default_material();
 
     if (!parse_string(&scene, "pl", &parsed))
@@ -326,33 +323,6 @@ int parse_plane(char** _scene, t_world* world, int* total) {
     if (!parse_space(&scene, &parsed))
         return 0;
     if (!parse_vector(&scene, &obj.value.plane.normal, &parsed))
-        return 0;
-    if (!parse_space(&scene, &parsed))
-        return 0;
-    if (!parse_color(&scene, &obj.material.albedo, &parsed))
-        return 0;
-    add_object(world, obj);
-    *total += parsed;
-    *_scene += parsed;
-    return parsed;
-}
-
-int parse_triangle(char** _scene, t_world* world, int* total) {
-    char* scene = *_scene;
-    int parsed = 0;
-    t_object obj;
-    obj.type = TRIANGLE;
-    obj.material = default_material();
-
-    if (!parse_string(&scene, "tr", &parsed))
-        return 0;
-    if (!parse_space(&scene, &parsed))
-        return 0;
-    if (!parse_vector(&scene, &obj.value.triangle.q, &parsed))
-        return 0;
-    if (!parse_space(&scene, &parsed))
-        return 0;
-    if (!parse_vector(&scene, &obj.value.triangle.u, &parsed))
         return 0;
     if (!parse_space(&scene, &parsed))
         return 0;
@@ -379,8 +349,6 @@ int parse_world(char* scene, t_world* world) {
         if (parse_sphere(&scene, world, &parsed))
             continue;
         if (parse_cylinder(&scene, world, &parsed))
-            continue;
-        if (parse_triangle(&scene, world, &parsed))
             continue;
         if (parse_plane(&scene, world, &parsed))
             continue;
