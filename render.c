@@ -6,22 +6,11 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:51:30 by andrei            #+#    #+#             */
-/*   Updated: 2024/08/23 00:30:01 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/23 17:31:49 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-t_vec vec_neg(t_vec v) {
-    return vec(-v.x, -v.y, -v.z);
-}
-typedef struct s_hit {
-    bool hit;
-    t_vec point;
-    t_vec normal;
-    t_object* object;
-    double distance;
-} t_hit;
 
 t_hit no_hit() {
     t_hit hit;
@@ -35,62 +24,6 @@ t_hit hit_object(t_object* object, double distance, t_vec point, t_vec normal) {
     hit.distance = distance;
     hit.point = point;
     hit.normal = normal;
-    hit.object = object;
-    return hit;
-}
-
-t_hit ray_cast_sphere(t_ray ray, t_interval interval, t_object* object) {
-    t_vec    oc;
-    double      a;
-    double      h;
-    double      c;
-    double      discriminant;
-    double      root;
-
-
-    oc = sub_vec_vec(object->value.sphere.center, ray.origin);
-    a = length_squared(ray.direction);
-    h = dot_vec(ray.direction, oc);
-    c = length_squared(oc) - (object->value.sphere.radius * object->value.sphere.radius);
-    discriminant = (h * h) - (a * c);
-    if (discriminant < 0)
-        return no_hit();
-    root = find_root1(discriminant, h, a);
-    if (!surrounds(interval, root))
-    {
-        root = find_root2(discriminant, h, a);
-        if (!surrounds(interval, root))
-            return no_hit();
-    }
-    t_vec hit_point = at_ray(ray, root);
-    return hit_object(
-        object,
-        root,
-        hit_point,
-        div_vec_double(sub_vec_vec(hit_point, object->value.sphere.center), object->value.sphere.radius)
-    );
-}
-
-t_hit ray_cast_plane(t_ray ray, t_interval interval, t_object* object) {
-    t_plane plane = object->value.plane;
-
-    t_vec to_point = sub_vec_vec(plane.point, ray.origin);
-    t_vec normal_to_plane = projection(to_point, plane.normal);
-    if (dot_vec(normal_to_plane, ray.direction) <= 0) {
-        return no_hit();
-    }
-    
-    double distance = length(ray.direction) * projection_length(to_point, plane.normal) / projection_length(ray.direction, plane.normal);
-    if (!surrounds(interval, distance))
-        return no_hit();
-    t_hit hit;
-    hit.hit = true;
-    hit.distance = distance;
-    hit.point = add_vec_vec(ray.origin, mul_vec_double(normalize(ray.direction),distance));
-    hit.normal = plane.normal;
-    if (dot_vec(ray.direction, hit.normal) > 0) {
-        hit.normal = vec_neg(plane.normal);
-    }
     hit.object = object;
     return hit;
 }
@@ -143,7 +76,6 @@ t_ray new_ray(t_vec origin, t_vec direction) {
 t_ray ray_from_to(t_vec from, t_vec to) {
     return new_ray(from, sub_vec_vec(to, from));
 }
-
 
 t_vec lighting_color(t_ray ray, t_hit hit, t_world* world) {
     t_vec res = mul_vec_vec(hit.object->material.albedo, ambient_light(world->ambient_light));

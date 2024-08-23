@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:39 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/23 00:28:28 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/23 17:31:56 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,3 +49,8 @@ t_vec  div_vec_vec(t_vec vec1, t_vec vec2)
     result.z = vec1.z / vec2.z;
     return (result);
 }
+
+t_vec vec_neg(t_vec v) {
+    return vec(-v.x, -v.y, -v.z);
+}
+

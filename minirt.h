@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/23 00:29:01 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/23 17:32:10 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@
 
 int    error_msg(char *msg);
 
+typedef struct s_vector
+{
+    double  x;
+    double  y;
+    double  z;
+}   t_vec;
+
 //material types
 typedef enum e_material_type
 {
@@ -47,13 +54,6 @@ typedef enum e_material_type
 
 
 typedef struct s_parser t_parser;
-
-typedef struct s_vector
-{
-    double  x;
-    double  y;
-    double  z;
-}   t_vec;
 
 typedef struct s_material
 {
@@ -126,6 +126,14 @@ typedef struct s_object {
     t_material material;
 } t_object;
 
+typedef struct s_hit {
+    bool hit;
+    t_vec point;
+    t_vec normal;
+    t_object* object;
+    double distance;
+} t_hit;
+
 typedef struct s_camera
 {
     double      aspect_ratio;
@@ -149,18 +157,6 @@ typedef struct s_ray
     t_vec    direction;
 }   t_ray;
 
-
-typedef struct s_hit_rec
-{
-    t_vec    hit_point;
-    t_vec    normal;
-    t_material  material;
-    double      hit_distance;
-    double      total_hit_distance;
-    bool        front_face;
-    int         object_index;
-    t_vec    last_hit_direction;
-}   t_hit_rec;
 
 typedef struct s_interval
 {
@@ -238,10 +234,6 @@ void        write_color(int fd, t_vec pixel_color);
 void        render(t_world* world, t_camera camera, t_image image);
 t_vec gamma_correct(t_vec pixel_color);
 
-//ray color
-t_vec    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_world *world);
-t_vec    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_world *world);
-
 //camera util
 t_vec    random_in_unit_sphere(void);
 t_vec    random_normalize_vec(void);
@@ -255,37 +247,27 @@ t_object*    world_init();
 
 void print_world(t_world* world);
 
+t_hit hit_object(t_object* object, double distance, t_vec point, t_vec normal);
+
 //sphere
-bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere);
 double  find_root1(double discriminant, double h, double a);
 double  find_root2(double discriminant, double h, double a);
+t_hit ray_cast_sphere(t_ray ray, t_interval interval, t_object* object);
 
 //quad
 bool    is_interior_quad(double alpha, double beta);
-bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad quad);
 
 //triangle
 bool    is_interior_tri(double alpha, double beta);
-bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_triangle tri);
 
 //cylinder
-bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cylinder);
 
 //plane
-bool    hit_plane(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_plane plane);
+t_hit ray_cast_plane(t_ray ray, t_interval interval, t_object* object);
 
-//objects
-bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_world *world);
-bool    obj_intersec(t_hit_rec *rec, double fuzz, double ref_idx, int i);
-
-//material
-bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vec attenuation, t_ray *scattered, t_material material);
-bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vec attenuation, t_ray *scattered, t_material material);
-bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vec attenuation, t_ray *scattered, t_material material);
-void    set_face_normal(t_ray r, t_vec outward_normal, t_hit_rec *rec);
+t_hit no_hit();
 
 // light
-t_vec lighting(t_hit_rec hit, t_world* world, t_vec incident_direction);
 t_vec ambient_light(t_amblight light);
 
 double projection_length(t_vec of, t_vec onto);
@@ -313,6 +295,7 @@ bool    hit_aabb(t_aabb aabb, t_ray ray, t_interval ray_t);
 t_vec	vec(double x, double y, double z);
 
 //vector operation
+t_vec vec_neg(t_vec v);
 t_vec    add_vec_vec(t_vec vec1, t_vec vec2);
 t_vec    sub_vec_vec(t_vec vec1, t_vec vec2);
 t_vec    mul_vec_vec(t_vec vec1, t_vec vec2);
