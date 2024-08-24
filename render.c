@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:51:30 by andrei            #+#    #+#             */
-/*   Updated: 2024/08/23 19:12:54 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/24 18:52:35 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,21 @@ t_hit ray_cast(t_ray ray, t_interval interval, t_world* world) {
 }
 
 double brdf(t_vec incident, t_vec reflected, t_vec normal) {
+    double max_specular_angle = 0.3;
+    double gloss = 10;
+
     if (dot_vec(reflected, normal) < 0) // TODO || dot_vec(incident, normal) < 0
         return 0;
 
-    double max_specular_angle = 0.5;
-    double glossiness = 1;
-
-    double matt = cos_angle_between(reflected, normal);
+    double matt = cos_angle_between(reflected, normal) / (gloss + 1);
 
     double angle = angle_between(reflected, reflect(incident, normal));
     if (angle >= max_specular_angle) 
         return matt;
-    double specular = pow(1 - angle / max_specular_angle, 2) * glossiness;
-    return (specular + 1)* matt;
+    double specular = pow(1 - angle / max_specular_angle, 2) * gloss / (gloss + 1);
+    return matt + specular;
 }
+
 
 t_ray new_ray(t_vec origin, t_vec direction) {
     t_ray ray;
@@ -112,12 +113,13 @@ t_vec    ray_trace(t_ray ray, int depth, t_world *world)
     if (!hit.hit) {
         return ambient_light(world->ambient_light);
     }
+
     // TODO we don't need to recalculate it every frame
     t_vec lighting = lighting_color(ray, hit, world);
      // TODO instead of multiplying by brdf, sample brdf to get a better random vector?
     t_ray secondary_ray = new_ray(hit.point, normalize(random_on_hemisphere(hit.normal)));
     t_vec to_reflect = ray_trace(secondary_ray, depth - 1, world);
-    t_vec reflected = mul_vec_double(mul_vec_vec(to_reflect, hit.object->material.albedo), brdf(secondary_ray.direction, vec_neg(ray.direction), hit.normal)); // FIXME potential bug -- -secondary_ray.direction
+    t_vec reflected = mul_vec_double(mul_vec_vec(to_reflect, hit.object->material.albedo), 2*M_PI*brdf(secondary_ray.direction, vec_neg(ray.direction), hit.normal)); // FIXME potential bug -- -secondary_ray.direction
     return add_vec_vec(lighting, reflected);
     // return lighting;
 }
