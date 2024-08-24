@@ -1,5 +1,11 @@
 #include "minirt.h"
 
+t_material default_material() {
+    t_material mat;
+    mat.albedo = vec(0,0,0);
+    return mat;
+}
+
 int parse_space(char** scene, int* total) {
     int parsed = 0;
     while(isspace((*scene)[parsed])) {
@@ -43,10 +49,12 @@ int parse_decimal(char** scene, int* dst, int* total) {
     return parsed;
 }
 
-double make_double(int whole, int fraction) {
+double make_double(int whole, int fraction, int position) {
     double f = fraction;
-    while(f > 1.)
+    while(position > 0) {
         f /= 10.;
+        position--;
+    }
     return (double)(whole) + f;
 }
 
@@ -57,12 +65,14 @@ int parse_double(char** scene, double* flt, int* total) {
     char* sc = *scene;
 
     int minus = parse_char(&sc, '-', &parsed);
+    int decimal_places = 0;
     parse_decimal(&sc, &whole, &parsed);
-    if (parse_char(&sc, '.', &parsed))
-        parse_decimal(&sc, &fraction, &parsed);
+    if (parse_char(&sc, '.', &parsed)) {
+        decimal_places = parse_decimal(&sc, &fraction, &parsed);
+    }
     if (!(parsed - minus) || ((parsed - minus) == 1 && (*scene)[minus] == '.'))
         return 0;
-    *flt = make_double(whole, fraction);
+    *flt = make_double(whole, fraction, decimal_places);
     if (minus)
         *flt = -*flt;
     *scene += parsed;
@@ -82,7 +92,7 @@ int parse_byte(char** scene, int* byte, int* total) {
     return parsed;
 }
 
-int parse_color(char** scene, t_vector* clr, int* total) {
+int parse_color(char** scene, t_vec* clr, int* total) {
     int parsed = 0;
     char* sc = *scene;
     int rgb[3];
@@ -106,7 +116,7 @@ int parse_color(char** scene, t_vector* clr, int* total) {
     return parsed;
 }
 
-int parse_vector(char** scene, t_vector* vec, int* total) {
+int parse_vector(char** scene, t_vec* vec, int* total) {
     int parsed = 0;
     char* sc = *scene;
 
@@ -232,10 +242,8 @@ int parse_sphere(char** _scene, t_world* world, int* total) {
     int parsed = 0;
     double diameter;
     t_object obj;
-    obj.type = SPHERE;
-    obj.material.fuzz = 0.1;
-    obj.material.ref_idx = 0.5;
-    obj.material.type = LAMBERTIAN;
+    obj.type = OBJECT_TYPE_SPHERE;
+    obj.material = default_material();
 
     if (!parse_string(&scene, "sp", &parsed))
         return 0;
@@ -265,10 +273,8 @@ int parse_cylinder(char** _scene, t_world* world, int* total) {
     int parsed = 0;
     double diameter;
     t_object obj;
-    obj.type = CYLINDER;
-    obj.material.fuzz = 0.1;
-    obj.material.ref_idx = 0.5;
-    obj.material.type = LAMBERTIAN;
+    obj.type = OBJECT_TYPE_CYLINDER;
+    obj.material = default_material();
 
     if (!parse_string(&scene, "cy", &parsed))
         return 0;
@@ -292,7 +298,7 @@ int parse_cylinder(char** _scene, t_world* world, int* total) {
         return 0;
     if (!parse_color(&scene, &obj.material.albedo, &parsed))
         return 0;
-    if (diameter < 0 || obj.value.cyllinder.height < 0 || vec_length(obj.value.cyllinder.axis) != 1.)
+    if (diameter < 0 || obj.value.cyllinder.height < 0 || length(obj.value.cyllinder.axis) != 1.)
         return 0;
     obj.value.cyllinder.radius = diameter / 2;
     add_object(world, obj);
@@ -305,10 +311,8 @@ int parse_plane(char** _scene, t_world* world, int* total) {
     char* scene = *_scene;
     int parsed = 0;
     t_object obj;
-    obj.type = PLANE;
-    obj.material.fuzz = 0.1;
-    obj.material.ref_idx = 0.5;
-    obj.material.type = LAMBERTIAN;
+    obj.type = OBJECT_TYPE_PLANE;
+    obj.material = default_material();
 
     if (!parse_string(&scene, "pl", &parsed))
         return 0;
@@ -319,35 +323,6 @@ int parse_plane(char** _scene, t_world* world, int* total) {
     if (!parse_space(&scene, &parsed))
         return 0;
     if (!parse_vector(&scene, &obj.value.plane.normal, &parsed))
-        return 0;
-    if (!parse_space(&scene, &parsed))
-        return 0;
-    if (!parse_color(&scene, &obj.material.albedo, &parsed))
-        return 0;
-    add_object(world, obj);
-    *total += parsed;
-    *_scene += parsed;
-    return parsed;
-}
-
-int parse_triangle(char** _scene, t_world* world, int* total) {
-    char* scene = *_scene;
-    int parsed = 0;
-    t_object obj;
-    obj.type = TRIANGLE;
-    obj.material.fuzz = 0.1;
-    obj.material.ref_idx = 0.5;
-    obj.material.type = LAMBERTIAN;
-
-    if (!parse_string(&scene, "tr", &parsed))
-        return 0;
-    if (!parse_space(&scene, &parsed))
-        return 0;
-    if (!parse_vector(&scene, &obj.value.triangle.q, &parsed))
-        return 0;
-    if (!parse_space(&scene, &parsed))
-        return 0;
-    if (!parse_vector(&scene, &obj.value.triangle.u, &parsed))
         return 0;
     if (!parse_space(&scene, &parsed))
         return 0;
@@ -374,8 +349,6 @@ int parse_world(char* scene, t_world* world) {
         if (parse_sphere(&scene, world, &parsed))
             continue;
         if (parse_cylinder(&scene, world, &parsed))
-            continue;
-        if (parse_triangle(&scene, world, &parsed))
             continue;
         if (parse_plane(&scene, world, &parsed))
             continue;

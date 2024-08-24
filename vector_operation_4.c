@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   vector_operation_4.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:24:25 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:24:26 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/23 00:28:28 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-double  dot_vec(t_vector vec1, t_vector vec2)
+double  dot_vec(t_vec vec1, t_vec vec2)
 {
     double  result;
 
@@ -20,9 +20,9 @@ double  dot_vec(t_vector vec1, t_vector vec2)
     return (result);
 }
 
-t_vector    cross_vec(t_vector vec1, t_vector vec2)
+t_vec    cross_vec(t_vec vec1, t_vec vec2)
 {
-    t_vector    result;
+    t_vec    result;
 
     result.x = (vec1.y * vec2.z) - (vec1.z * vec2.y);
     result.y = (vec1.z * vec2.x) - (vec1.x * vec2.z);
@@ -30,15 +30,15 @@ t_vector    cross_vec(t_vector vec1, t_vector vec2)
     return (result);
 }
 
-t_vector    at_vec(t_ray ray, double t)
+t_vec    at_ray(t_ray ray, double t)
 {
-    t_vector    result;
+    t_vec    result;
 
-    result = add_vec_vec(ray.origin, multi_vec_doub(ray.direction, t));
+    result = add_vec_vec(ray.origin, mul_vec_double(ray.direction, t));
     return (result);
 }
 
-double  length_squared(t_vector vec)
+double  length_squared(t_vec vec)
 {
     double  result;
 
@@ -46,7 +46,7 @@ double  length_squared(t_vector vec)
     return (result);
 }
 
-double  vec_length(t_vector vec)
+double  length(t_vec vec)
 {
     double  result;
 

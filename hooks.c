@@ -28,22 +28,22 @@ int	on_key_up(int keycode, t_mlx_context *ctx)
 	}
 	if (keycode == 'w') {
 		ctx->camera.center.z -= 1.;
-		ft_memset(ctx->sum.data, 0, ctx->width*ctx->height*sizeof(t_vector));
+		ft_memset(ctx->sum.data, 0, ctx->width*ctx->height*sizeof(t_vec));
 		ctx->samples = 0;
 	}
 	if (keycode == 's') {
 		ctx->camera.center.z += 1.;
-		ft_memset(ctx->sum.data, 0, ctx->width*ctx->height*sizeof(t_vector));
+		ft_memset(ctx->sum.data, 0, ctx->width*ctx->height*sizeof(t_vec));
 		ctx->samples = 0;
 	}
 	if (keycode == 'a') {
 		ctx->camera.center.x -= 1.;
-		ft_memset(ctx->sum.data, 0, ctx->width*ctx->height*sizeof(t_vector));
+		ft_memset(ctx->sum.data, 0, ctx->width*ctx->height*sizeof(t_vec));
 		ctx->samples = 0;
 	}
 	if (keycode == 'd') {
 		ctx->camera.center.x += 1.;
-		ft_memset(ctx->sum.data, 0, ctx->width*ctx->height*sizeof(t_vector));
+		ft_memset(ctx->sum.data, 0, ctx->width*ctx->height*sizeof(t_vec));
 		ctx->samples = 0;
 	}
 	return (1);

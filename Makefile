@@ -6,7 +6,7 @@
 #    By: andrei <andrei@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/15 18:43:02 by andrei           ###   ########.fr        #
+#    Updated: 2024/08/23 17:31:21 by andrei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,11 +30,6 @@ SRCS	=	main.c\
 			camera_util.c\
 			ray_color.c\
 			sphere.c\
-			quad.c\
-			triangle.c\
-			cylinder.c\
-			objects.c\
-			material.c\
 			material_util.c\
 			vector_operation_1.c\
 			vector_operation_2.c\
@@ -50,6 +45,8 @@ SRCS	=	main.c\
 			parser.c\
 			print.c\
 			plane.c\
+			light.c\
+			render.c\
 
 OBJS	=	$(SRCS:.c=.o)
 

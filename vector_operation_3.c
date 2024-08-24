@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   vector_operation_3.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:24:13 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/06 12:24:18 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/23 00:28:28 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vector  add_vec_doub(t_vector vec, double doub)
+t_vec  add_vec_double(t_vec vec, double doub)
 {
-    t_vector result;
+    t_vec result;
 
     result.x = vec.x + doub;
     result.y = vec.y + doub;
@@ -22,9 +22,9 @@ t_vector  add_vec_doub(t_vector vec, double doub)
     return (result);
 }
 
-t_vector  subtrac_vec_doub(t_vector vec, double doub)
+t_vec  sub_vec_double(t_vec vec, double doub)
 {
-    t_vector result;
+    t_vec result;
 
     result.x = vec.x - doub;
     result.y = vec.y - doub;
@@ -32,9 +32,9 @@ t_vector  subtrac_vec_doub(t_vector vec, double doub)
     return (result);
 }
 
-t_vector  multi_vec_doub(t_vector vec, double doub)
+t_vec  mul_vec_double(t_vec vec, double doub)
 {
-    t_vector result;
+    t_vec result;
 
     result.x = vec.x * doub;
     result.y = vec.y * doub;
@@ -42,9 +42,9 @@ t_vector  multi_vec_doub(t_vector vec, double doub)
     return (result);
 }
 
-t_vector  divi_vec_doub(t_vector vec, double doub)
+t_vec  div_vec_double(t_vec vec, double doub)
 {
-    t_vector result;
+    t_vec result;
 
     result.x = vec.x / doub;
     result.y = vec.y / doub;

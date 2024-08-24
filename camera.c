@@ -6,40 +6,40 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/16 13:53:48 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/23 00:28:28 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vector    sample_square(void)
+t_vec    sample_square(void)
 {
-    t_vector    square;
+    t_vec    square;
 
-    square = vec_init(random_double() - 0.5, random_double() - 0.5, 0);
+    square = vec(random_double() - 0.5, random_double() - 0.5, 0);
     return (square);
 }
 
 t_ray   get_ray(t_camera camera, int i, int j)
 {
-    t_vector    offset;
+    t_vec    offset;
     t_ray       ray;
-    t_vector    pixel_sample;
+    t_vec    pixel_sample;
 
     offset = sample_square();
-    pixel_sample = add_vec_vec(camera.pixel00_loc, add_vec_vec(multi_vec_doub(camera.pixel_delta_u, (i + offset.x)), multi_vec_doub(camera.pixel_delta_v, (j + offset.y))));
+    pixel_sample = add_vec_vec(camera.pixel00_loc, add_vec_vec(mul_vec_double(camera.pixel_delta_u, (i + offset.x)), mul_vec_double(camera.pixel_delta_v, (j + offset.y))));
     ray.origin = camera.center;
-    ray.direction = subtrac_vec_vec(pixel_sample, ray.origin);
+    ray.direction = sub_vec_vec(pixel_sample, ray.origin);
     return (ray);
 }
 
-t_vector gamma_correct(t_vector pixel_color) {
+t_vec gamma_correct(t_vec pixel_color) {
 
     double      r;
     double      g;
     double      b;
     t_interval  intensity;
-    t_vector result;
+    t_vec result;
 
     r = linear_to_gamma(pixel_color.x);
     g = linear_to_gamma(pixel_color.y);
@@ -52,21 +52,20 @@ t_vector gamma_correct(t_vector pixel_color) {
     return result;
 }
 
-void    write_color(int fd, t_vector pixel_color)
+void    write_color(int fd, t_vec pixel_color)
 {
-    t_vector rgb = gamma_correct(pixel_color);
+    t_vec rgb = gamma_correct(pixel_color);
     dprintf(fd, "%d %d %d\n", (int)(rgb.x * 256), (int)(rgb.y * 256), (int)(rgb.z * 256));
 }
 
-t_vector contrast(double value) {
-    return vec_init(fmax(0, value),0,fmax(0, -value));
+t_vec contrast(double value) {
+    return vec(fmax(0, value),0,fmax(0, -value));
 }
 
 void    render(t_world* world, t_camera camera, t_image image)
 {
-    t_vector        pixel_color;
+    t_vec        pixel_color;
     t_ray           ray;
-    t_hit_rec       rec;
     int             i;
     int             j;
 
@@ -75,16 +74,15 @@ void    render(t_world* world, t_camera camera, t_image image)
 
     world->camera.view_point = camera.center;
     camera_init(&camera, world->camera, camera.image_width, camera.image_height);
-    camera.max_depth = 2;
+    camera.max_depth = 3;
 
     while (j < image.height)
     {
         i = 0;
         while (i < image.width)
         {
-            rec.hit_distance = INFINITY;
             ray = get_ray(camera, i, j);
-            pixel_color = ray_color(&ray, &rec, camera.max_depth, world);
+            pixel_color = ray_trace(ray, camera.max_depth, world);
 
             // distance debug
             // double t = fabs(atan(fmin(rec.hit_distance,100))/atan(100));
@@ -94,9 +92,9 @@ void    render(t_world* world, t_camera camera, t_image image)
             // normal debug
             // pixel_color = contrast(dot_vec(vec_init(0,0,1), rec.normal)/vec_length(rec.normal));
 
-            // pixel_color = multi_vec_vec(unit_vector(rec.hit_point),unit_vector(rec.hit_point));
+            // pixel_color = multi_vec_vec(normalize_vec(rec.hit_point),normalize_vec(rec.hit_point));
 
-            image.data[j * image.width + i] = pixel_color;
+            image.data[j * image.width + i] = add_vec_vec(image.data[j * image.width + i], pixel_color);
             i++;
         }
         j++;

@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/15 18:40:46 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/23 19:11:05 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,99 +32,67 @@
 #define M 0xFFFFFFFF
 #define EPSILON 1e-8
 
-//pi
-#define PI 3.1415926535897932385
-
 int    error_msg(char *msg);
-
-//material types
-typedef enum e_material_type
-{
-    LAMBERTIAN,
-    METAL,
-    DIELECTRIC
-}   t_material_type;
-
-
-typedef struct s_parser t_parser;
 
 typedef struct s_vector
 {
     double  x;
     double  y;
     double  z;
-}   t_vector;
+}   t_vec;
+
+
+typedef struct s_parser t_parser;
 
 typedef struct s_material
 {
-    t_vector        albedo;
-    double          fuzz;
-    double          ref_idx;
-    t_material_type type;
+    t_vec        albedo;
 }   t_material;
 
 typedef enum e_object_type
 {
-    TYPE_NONE,
-    SPHERE,
-    QUAD,
-    TRIANGLE,
-    CUBE,
-    CYLINDER,
-    PLANE
+    OBJECT_TYPE_NONE,
+    OBJECT_TYPE_SPHERE,
+    OBJECT_TYPE_CYLINDER,
+    OBJECT_TYPE_PLANE
 }   t_object_type;
 
 typedef struct s_sphere
 {
-    t_vector    center;
+    t_vec    center;
     double      radius;
 }   t_sphere;
 
 typedef struct s_plane {
-    t_vector point;
-    t_vector normal;
+    t_vec point;
+    t_vec normal;
 } t_plane;
 
 typedef struct s_cylinder
 {
-    t_vector    center;
-    t_vector    axis;
+    t_vec    center;
+    t_vec    axis;
     double      radius;
     double      height;
 }   t_cylinder;
-
-typedef struct  s_quad
-{
-    t_vector    q;
-    t_vector    u;
-    t_vector    v;
-    t_vector    w;
-    t_vector    normal;
-    double      d;
-}   t_quad;
-
-typedef struct  s_triangle
-{
-    t_vector    q;
-    t_vector    u;
-    t_vector    v;
-    t_vector    w;
-    t_vector    normal;
-    double      d;
-}   t_triangle;
-
 
 typedef struct s_object {
     t_object_type type;
     union {
         t_cylinder cyllinder;
-        t_triangle triangle;
-        t_quad quad;
         t_sphere sphere;
         t_plane plane;
     } value;
     t_material material;
 } t_object;
+
+typedef struct s_hit {
+    bool hit;
+    t_vec point;
+    t_vec normal;
+    t_object* object;
+    double distance;
+} t_hit;
 
 typedef struct s_camera
 {
@@ -135,30 +103,20 @@ typedef struct s_camera
     double      pixel_samples_scale;
     int         max_depth;
     double      hfov;
-    t_vector    lookfrom;
-    t_vector    vup;
-    t_vector    pixel_delta_u;
-    t_vector    pixel_delta_v;
-    t_vector    center;
-    t_vector    pixel00_loc;
+    t_vec    lookfrom;
+    t_vec    vup;
+    t_vec    pixel_delta_u;
+    t_vec    pixel_delta_v;
+    t_vec    center;
+    t_vec    pixel00_loc;
 } t_camera;
 
 typedef struct s_ray
 {
-    t_vector    origin;
-    t_vector    direction;
+    t_vec    origin;
+    t_vec    direction;
 }   t_ray;
 
-
-typedef struct s_hit_rec
-{
-    t_vector    hit_point;
-    t_vector    normal;
-    t_material  material;
-    double      hit_distance;
-    bool        front_face;
-    int         object_index;
-}   t_hit_rec;
 
 typedef struct s_interval
 {
@@ -168,15 +126,15 @@ typedef struct s_interval
 
 typedef struct s_light
 {
-    t_vector    position;
-    t_vector    color;
+    t_vec    position;
+    t_vec    color;
     double      intensity;
 }   t_light;
 
 typedef struct  s_amblight
 {
     double      intensity;
-    t_vector    color;
+    t_vec    color;
 }   t_amblight;
 
 typedef struct s_aabb
@@ -189,12 +147,12 @@ typedef struct s_aabb
 typedef struct s_image {
     int width;
     int height;
-    t_vector* data;
+    t_vec* data;
 } t_image;
 
 typedef struct s_camera_spec {
-    t_vector view_point;
-    t_vector direction;
+    t_vec view_point;
+    t_vec direction;
     double hfov;
 } t_camera_spec;
 
@@ -206,6 +164,9 @@ typedef struct s_world {
     t_object* objects;
     t_camera_spec camera;
 } t_world;
+
+double angle_between(t_vec a, t_vec b);
+double cos_angle_between(t_vec a, t_vec b);
 
 int parse_world(char* scene, t_world* world);
 
@@ -220,27 +181,23 @@ typedef struct s_mlx_context {
 
     int width;
     int height;
-    t_image image;
     t_image sum;
     int samples;
+    int start_time;
     t_camera camera;
     t_world* world;
 } t_mlx_context;
 
 //camera
 t_ray       get_ray(t_camera camera, int i, int j);
-void        write_color(int fd, t_vector pixel_color);
+void        write_color(int fd, t_vec pixel_color);
 void        render(t_world* world, t_camera camera, t_image image);
-t_vector gamma_correct(t_vector pixel_color);
-
-//ray color
-t_vector    ray_color_util(t_ray scattered, t_hit_rec *rec, int depth, t_world *world);
-t_vector    ray_color(t_ray *ray, t_hit_rec *rec, int depth, t_world *world);
+t_vec gamma_correct(t_vec pixel_color);
 
 //camera util
-t_vector    random_in_unit_sphere(void);
-t_vector    random_unit_vector(void);
-t_vector    random_on_hemisphere(t_vector normal);
+t_vec    random_in_unit_sphere(void);
+t_vec    random_normalize_vec(void);
+t_vec    random_on_hemisphere(t_vec normal);
 double      linear_to_gamma(double linear_component);
 
 //data init
@@ -250,40 +207,31 @@ t_object*    world_init();
 
 void print_world(t_world* world);
 
+t_hit hit_object(t_object* object, double distance, t_vec point, t_vec normal);
+
 //sphere
-bool    hit_sphere(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_sphere sphere);
 double  find_root1(double discriminant, double h, double a);
 double  find_root2(double discriminant, double h, double a);
-
-//quad
-bool    is_interior_quad(double alpha, double beta);
-bool    hit_quad(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_quad quad);
-
-//triangle
-bool    is_interior_tri(double alpha, double beta);
-bool    hit_tri(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_triangle tri);
+t_hit ray_cast_sphere(t_ray ray, t_interval interval, t_object* object);
 
 //cylinder
-bool    hit_cylinder(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_cylinder cylinder);
 
 //plane
-bool    hit_plane(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_plane plane);
+t_hit ray_cast_plane(t_ray ray, t_interval interval, t_object* object);
 
-//objects
-bool    hit_objects(t_ray ray, t_interval ray_t, t_hit_rec *rec, t_world *world);
-bool    obj_intersec(t_hit_rec *rec, double fuzz, double ref_idx, int i);
+t_hit no_hit();
 
-//material
-bool    scatter_metal(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material);
-bool    scatter_lambertian(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material);
-bool    scatter_dieletric(t_ray *r_in, t_hit_rec *rec, t_vector attenuation, t_ray *scattered, t_material material);
-void    set_face_normal(t_ray r, t_vector outward_normal, t_hit_rec *rec);
+// light
+t_vec ambient_light(t_amblight light);
+
+double projection_length(t_vec of, t_vec onto);
+t_vec projection(t_vec of, t_vec onto);
 
 //material util
-t_vector    reflect(t_vector vec1, t_vector vec2);
+t_vec    reflect(t_vec vec1, t_vec vec2);
 double  reflectance(double cosine, double ref_idx);
 double      fuzz(double fuzz);
-t_vector    refract(t_vector uv, t_vector n, double etai_over_etat);
+t_vec    refract(t_vec uv, t_vec n, double etai_over_etat);
 
 //interval
 double  size(t_interval *ray_t);
@@ -298,31 +246,28 @@ t_interval  axis_interval(t_aabb aabb, int n);
 bool    hit_aabb(t_aabb aabb, t_ray ray, t_interval ray_t);
 
 //vector init
-t_vector	*vec_ptr_init(double x, double y, double z);
-t_vector	vec_init(double x, double y, double z);
-t_vector	*vec_free_init(t_vector *vec, double x, double y, double z);
+t_vec	vec(double x, double y, double z);
 
 //vector operation
-t_vector    add_vec_vec(t_vector vec1, t_vector vec2);
-t_vector    subtrac_vec_vec(t_vector vec1, t_vector vec2);
-t_vector    multi_vec_vec(t_vector vec1, t_vector vec2);
-t_vector    divi_vec_vec(t_vector vec1, t_vector vec2);
-t_vector    add_vec_int(t_vector vec, int inte);
-t_vector    subtrac_vec_int(t_vector vec, int inte);
-t_vector    multi_vec_int(t_vector vec, int inte);
-t_vector    divi_vec_int(t_vector vec, int inte);
-t_vector    add_vec_doub(t_vector vec, double doub);
-t_vector    subtrac_vec_doub(t_vector vec, double doub);
-t_vector    multi_vec_doub(t_vector vec, double doub);
-t_vector    divi_vec_doub(t_vector vec, double doub);
-double      dot_vec(t_vector vec1, t_vector vec2);
-t_vector    at_vec(t_ray ray, double t);
-double      length_squared(t_vector vec);
-double      vec_length(t_vector vec);
-t_vector    unit_vector(t_vector vec);
-t_vector    increment_vec_vec(t_vector vec_inc, t_vector vec);
-t_vector    normalize_vec(t_vector vec);
-t_vector    cross_vec(t_vector vec1, t_vector vec2);
+t_vec vec_neg(t_vec v);
+t_vec    add_vec_vec(t_vec vec1, t_vec vec2);
+t_vec    sub_vec_vec(t_vec vec1, t_vec vec2);
+t_vec    mul_vec_vec(t_vec vec1, t_vec vec2);
+t_vec    div_vec_vec(t_vec vec1, t_vec vec2);
+t_vec    add_vec_int(t_vec vec, int inte);
+t_vec    sub_vec_int(t_vec vec, int inte);
+t_vec    mul_vec_int(t_vec vec, int inte);
+t_vec    div_vec_int(t_vec vec, int inte);
+t_vec    add_vec_double(t_vec vec, double doub);
+t_vec    sub_vec_double(t_vec vec, double doub);
+t_vec    mul_vec_double(t_vec vec, double doub);
+t_vec    div_vec_double(t_vec vec, double doub);
+double   dot_vec(t_vec vec1, t_vec vec2);
+t_vec    at_ray(t_ray ray, double t);
+double   length_squared(t_vec vec);
+double   length(t_vec vec);
+t_vec    normalize(t_vec vec);
+t_vec    cross_vec(t_vec vec1, t_vec vec2);
 
 //util
 unsigned int ft_rand(void);
@@ -331,16 +276,19 @@ unsigned int ft_rand(void);
 double      random_double(void);
 double      random_double_range(double min, double max);
 double      degrees_to_radians(double degrees);
-t_vector	random_vec(void);
-t_vector    random_vec_range(double min, double max);
+t_vec	random_vec(void);
+t_vec   random_vec_range(double min, double max);
 
 //mlx
 int						on_expose(t_mlx_context *ctx);
 int						on_close_button(t_mlx_context *ctx);
 int						on_key_up(int keycode, t_mlx_context *ctx);
 int render_frame(t_mlx_context* ctx);
-int	set_pixel(t_mlx_context *ctx, int x, int y, t_vector rgb);
+int	set_pixel(t_mlx_context *ctx, int x, int y, t_vec rgb);
 void	setup_hooks(t_mlx_context *ctx);
 int	init_mlx_context(t_mlx_context *ctx, int width, int height);
+
+
+t_vec    ray_trace(t_ray ray, int depth, t_world *world);
 
 #endif

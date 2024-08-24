@@ -6,36 +6,40 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 18:26:44 by andrei            #+#    #+#             */
-/*   Updated: 2024/08/19 17:14:06 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/23 17:31:26 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-double projection_length(t_vector of, t_vector onto) {
+double projection_length(t_vec of, t_vec onto) {
     return dot_vec(of, onto) / dot_vec(onto, onto);
 }
 
-t_vector projection(t_vector of, t_vector onto) {
-    return multi_vec_doub(normalize_vec(onto), projection_length(of, onto));
+t_vec projection(t_vec of, t_vec onto) {
+    return mul_vec_double(onto, projection_length(of, onto));
 }
 
-bool    hit_plane(t_ray ray, t_interval interval, t_hit_rec *hit, t_plane plane) {
-    t_vector to_point = subtrac_vec_vec(plane.point, ray.origin);
-    t_vector normal_to_plane = projection(to_point, plane.normal);
+t_hit ray_cast_plane(t_ray ray, t_interval interval, t_object* object) {
+    t_plane plane = object->value.plane;
+
+    t_vec to_point = sub_vec_vec(plane.point, ray.origin);
+    t_vec normal_to_plane = projection(to_point, plane.normal);
     if (dot_vec(normal_to_plane, ray.direction) <= 0) {
-        return false;
+        return no_hit();
     }
     
-    double distance = vec_length(ray.direction) * projection_length(to_point, plane.normal) / projection_length(ray.direction, plane.normal);
+    double distance = length(ray.direction) * projection_length(to_point, plane.normal) / projection_length(ray.direction, plane.normal);
     if (!surrounds(interval, distance))
-        return (false);
-    hit->hit_distance = distance;
-    hit->hit_point = add_vec_vec(ray.origin, multi_vec_doub(normalize_vec(ray.direction),distance));
-    hit->front_face = true;
-    hit->normal = plane.normal;
-    if (dot_vec(ray.direction, hit->normal) > 0) {
-        hit->normal = subtrac_vec_vec(vec_init(0,0,0), plane.normal);
+        return no_hit();
+    t_hit hit;
+    hit.hit = true;
+    hit.distance = distance;
+    hit.point = add_vec_vec(ray.origin, mul_vec_double(normalize(ray.direction),distance));
+    hit.normal = plane.normal;
+    if (dot_vec(ray.direction, hit.normal) > 0) {
+        hit.normal = vec_neg(plane.normal);
     }
-    return true;
+    hit.object = object;
+    return hit;
 }
