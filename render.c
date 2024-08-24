@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:51:30 by andrei            #+#    #+#             */
-/*   Updated: 2024/08/24 19:54:16 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/24 20:22:15 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ double brdf(t_vec incident, t_vec reflected, t_vec normal) {
     if (dot_vec(reflected, normal) < 0) // TODO || dot_vec(incident, normal) < 0
         return 0;
 
-    double matt = cos_angle_between(reflected, normal) / (PHONG_GLOSS + 1);
+    double matt =1 / (PHONG_GLOSS + 1);
 
     double angle = angle_between(reflected, reflect(incident, normal));
     if (angle >= PHONG_MAX_ANGLE) 
@@ -104,7 +104,7 @@ t_vec lighting_color(t_ray ray, t_hit hit, t_world* world) {
 
         const double r_px = 0.1; // FIXME
         double intensity = pow(r_px, 2) / (length_squared(light_ray.direction)) * 255.*tan(light->intensity*M_PI/2);
-        double point_brdf = brdf(vec_neg(light_ray.direction), vec_neg(ray.direction), hit.normal);
+        double point_brdf = cos_angle_between(vec_neg(ray.direction), hit.normal);
         res = add_vec_vec(res, mul_vec_double(mul_vec_vec(mul_vec_double(hit.object->material.albedo, point_brdf), light->color), intensity));
     }
     return res;
@@ -129,7 +129,7 @@ t_vec    ray_trace(t_ray ray, int depth, t_world *world)
      // TODO instead of multiplying by brdf, sample brdf to get a better random vector?
     t_ray secondary_ray = new_ray(hit.point, sample_phong_brdf(ray.direction, hit.normal));
     t_vec to_reflect = ray_trace(secondary_ray, depth - 1, world);
-    t_vec reflected = mul_vec_vec(to_reflect, hit.object->material.albedo); // FIXME potential bug -- -secondary_ray.direction
+    t_vec reflected = mul_vec_double(mul_vec_vec(to_reflect, hit.object->material.albedo), cos_angle_between(vec_neg(ray.direction), hit.normal));
     return add_vec_vec(lighting, reflected);
     // return lighting;
 }

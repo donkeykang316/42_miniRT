@@ -6,7 +6,7 @@
 /*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/24 19:54:26 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/24 20:23:57 by andrei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,7 +292,7 @@ int	init_mlx_context(t_mlx_context *ctx, int width, int height);
 t_vec    ray_trace(t_ray ray, int depth, t_world *world);
 
 
-#define PHONG_MAX_ANGLE 0.2
-#define PHONG_GLOSS 1
+#define PHONG_MAX_ANGLE 0.1
+#define PHONG_GLOSS 0.5
 
 #endif
