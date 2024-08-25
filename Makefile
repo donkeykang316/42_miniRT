@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: andrei <andrei@student.42.fr>              +#+  +:+       +#+         #
+#    By: apago <apago@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/24 20:05:02 by andrei           ###   ########.fr        #
+#    Updated: 2024/08/25 14:00:28 by apago            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS	=	main.c\
 			interval.c\
 			camera.c\
 			camera_util.c\
+			cylinder.c\
 			ray_color.c\
 			sphere.c\
 			material_util.c\

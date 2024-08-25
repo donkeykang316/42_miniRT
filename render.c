@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:51:30 by andrei            #+#    #+#             */
-/*   Updated: 2024/08/24 20:22:15 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/25 14:10:02 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ t_hit ray_cast_at(t_ray ray, t_interval interval, t_object* object) {
         return ray_cast_sphere(ray, interval, object);
     if (object->type == OBJECT_TYPE_PLANE)
         return ray_cast_plane(ray, interval, object);
+    if (object->type == OBJECT_TYPE_CYLINDER)
+        return ray_cast_cylinder(ray, interval, object);
     return no_hit();
-} 
+}
 
 t_hit ray_cast(t_ray ray, t_interval interval, t_world* world) {
     t_hit closest = no_hit();
@@ -58,7 +60,7 @@ double brdf(t_vec incident, t_vec reflected, t_vec normal) {
     double matt =1 / (PHONG_GLOSS + 1);
 
     double angle = angle_between(reflected, reflect(incident, normal));
-    if (angle >= PHONG_MAX_ANGLE) 
+    if (angle >= PHONG_MAX_ANGLE)
         return matt;
     double specular = (1 - angle / PHONG_MAX_ANGLE) * PHONG_GLOSS / (PHONG_GLOSS + 1);
     return matt + specular;
@@ -92,7 +94,7 @@ t_vec lighting_color(t_ray ray, t_hit hit, t_world* world) {
     t_vec res = mul_vec_vec(hit.object->material.albedo, ambient_light(world->ambient_light));
     for(int i = 0; i < world->point_lights_len; i++) {
         t_light* light = &world->point_lights[i];
-        
+
         t_ray light_ray = ray_from_to(hit.point, light->position);
         t_interval interval;
         interval.min = 0.01;

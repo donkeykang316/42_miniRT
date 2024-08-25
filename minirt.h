@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/24 20:23:57 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/25 14:04:31 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct s_object {
         t_cylinder cyllinder;
         t_sphere sphere;
         t_plane plane;
+        t_cylinder cylinder;
     } value;
     t_material material;
 } t_object;
@@ -213,6 +214,7 @@ t_hit hit_object(t_object* object, double distance, t_vec point, t_vec normal);
 double  find_root1(double discriminant, double h, double a);
 double  find_root2(double discriminant, double h, double a);
 t_hit ray_cast_sphere(t_ray ray, t_interval interval, t_object* object);
+t_hit ray_cast_cylinder(t_ray ray, t_interval interval, t_object* obj);
 
 //cylinder
 
