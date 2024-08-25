@@ -280,11 +280,11 @@ int parse_cylinder(char** _scene, t_world* world, int* total) {
         return 0;
     if (!parse_space(&scene, &parsed))
         return 0;
-    if (!parse_vector(&scene, &obj.value.cyllinder.center, &parsed))
+    if (!parse_vector(&scene, &obj.value.cylinder.center, &parsed))
         return 0;
     if (!parse_space(&scene, &parsed))
         return 0;
-    if (!parse_vector(&scene, &obj.value.cyllinder.axis, &parsed))
+    if (!parse_vector(&scene, &obj.value.cylinder.axis, &parsed))
         return 0;
     if (!parse_space(&scene, &parsed))
         return 0;
@@ -292,15 +292,16 @@ int parse_cylinder(char** _scene, t_world* world, int* total) {
         return 0;
     if (!parse_space(&scene, &parsed))
         return 0;
-    if (!parse_double(&scene, &obj.value.cyllinder.height, &parsed))
+    if (!parse_double(&scene, &obj.value.cylinder.height, &parsed))
         return 0;
     if (!parse_space(&scene, &parsed))
         return 0;
     if (!parse_color(&scene, &obj.material.albedo, &parsed))
         return 0;
-    if (diameter < 0 || obj.value.cyllinder.height < 0 || length(obj.value.cyllinder.axis) != 1.)
+    if (diameter < 0 || obj.value.cylinder.height < 0)
         return 0;
-    obj.value.cyllinder.radius = diameter / 2;
+    obj.value.cylinder.axis = normalize(obj.value.cylinder.axis);
+    obj.value.cylinder.radius = diameter / 2;
     add_object(world, obj);
     *total += parsed;
     *_scene += parsed;
@@ -357,6 +358,6 @@ int parse_world(char* scene, t_world* world) {
         // printf("error at %s\n", scene);
         return 0;
     }
-    
+
     return parsed;
 }

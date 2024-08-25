@@ -11,15 +11,15 @@ void print_sphere(t_object sphere) {
 }
 
 void print_cylinder(t_object cylinder) {
-    t_vec center = cylinder.value.cyllinder.center;
-    t_vec axis = cylinder.value.cyllinder.axis;
-    printf("\t\t[cylinder]\n\t\t\tcenter=(%.2f, %.2f, %.2f)\n\t\t\taxis=(%.2f, %.2f, %.2f)\n", 
+    t_vec center = cylinder.value.cylinder.center;
+    t_vec axis = cylinder.value.cylinder.axis;
+    printf("\t\t[cylinder]\n\t\t\tcenter=(%.2f, %.2f, %.2f)\n\t\t\taxis=(%.2f, %.2f, %.2f)\n",
         center.x, center.y, center.z, axis.x, axis.y, axis.z);
 }
 void print_plane(t_object plane) {
     t_vec point = plane.value.plane.point;
     t_vec normal = plane.value.plane.normal;
-    printf("\t\t[plane]\n\t\t\tpoint=(%.2f, %.2f, %.2f)\n\t\t\tnormal=(%.2f, %.2f, %.2f)\n", 
+    printf("\t\t[plane]\n\t\t\tpoint=(%.2f, %.2f, %.2f)\n\t\t\tnormal=(%.2f, %.2f, %.2f)\n",
         point.x, point.y, point.z, normal.x, normal.y, normal.z);
 }
 
@@ -44,7 +44,7 @@ void print_world(t_world* world) {
             print_cylinder(world->objects[i]);
         else if (world->objects[i].type == OBJECT_TYPE_PLANE)
             print_plane(world->objects[i]);
-        else 
+        else
             printf("\t\t[unknown]\n");
         print_material(world->objects[i].material);
     }

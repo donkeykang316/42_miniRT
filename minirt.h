@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 14:04:31 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/25 14:28:23 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ typedef struct s_cylinder
 typedef struct s_object {
     t_object_type type;
     union {
-        t_cylinder cyllinder;
         t_sphere sphere;
         t_plane plane;
         t_cylinder cylinder;

@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:11 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 14:04:00 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/25 16:32:41 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,62 +21,134 @@ void    swap_double(double *a, double *b)
     *b = temp;
 }
 
+typedef struct s_matrix {
+    t_vec col0;
+    t_vec col1;
+    t_vec col2;
+} t_matrix;
+
+t_matrix identity() {
+    t_matrix a;
+    a.col0 = vec(1,0,0);
+    a.col1 = vec(0,1,0);
+    a.col2 = vec(0,0,1);
+    return a;
+}
+
+t_matrix add_matrix_matrix(t_matrix a, t_matrix b) {
+    t_matrix res;
+    res.col0 = add_vec_vec(a.col0, b.col0);
+    res.col1 = add_vec_vec(a.col1, b.col1);
+    res.col2 = add_vec_vec(a.col2, b.col2);
+    return res;
+}
+
+t_matrix mul_matrix_matrix(t_matrix a, t_matrix b) {
+    t_matrix res;
+    res.col0.x = a.col0.x * b.col0.x + a.col1.x * b.col0.y + a.col2.x * b.col0.z;
+    res.col1.x = a.col0.x * b.col1.x + a.col1.x * b.col1.y + a.col2.x * b.col1.z;
+    res.col2.x = a.col0.x * b.col2.x + a.col1.x * b.col2.y + a.col2.x * b.col2.z;
+
+    res.col0.y = a.col0.y * b.col0.x + a.col1.y * b.col0.y + a.col2.y * b.col0.z;
+    res.col1.y = a.col0.y * b.col1.x + a.col1.y * b.col1.y + a.col2.y * b.col1.z;
+    res.col2.y = a.col0.y * b.col2.x + a.col1.y * b.col2.y + a.col2.y * b.col2.z;
+
+    res.col0.z = a.col0.z * b.col0.x + a.col1.z * b.col0.y + a.col2.z * b.col0.z;
+    res.col1.z = a.col0.z * b.col1.x + a.col1.z * b.col1.y + a.col2.z * b.col1.z;
+    res.col2.z = a.col0.z * b.col2.x + a.col1.z * b.col2.y + a.col2.z * b.col2.z;
+    return res;
+}
+
+t_matrix mul_matrix_double(t_matrix m, double d) {
+    m.col0 = mul_vec_double(m.col0, d);
+    m.col1 = mul_vec_double(m.col1, d);
+    m.col2 = mul_vec_double(m.col2, d);
+    return m;
+}
+
+t_matrix rotation_matrix(t_vec turn_vec, t_vec into_vec) {
+    // https://math.stackexchange.com/questions/180418/calculate-rotation-matrix-to-align-vector-a-to-vector-b-in-3d
+
+    t_vec v = cross_vec(turn_vec, into_vec);
+    double s = length(v);
+    double c = dot_vec(turn_vec, into_vec);
+
+    t_matrix v_cross;
+    v_cross.col0.x = 0;
+    v_cross.col0.y = v.z;
+    v_cross.col0.z = -v.y;
+    v_cross.col1.x = -v.z;
+    v_cross.col1.y = 0;
+    v_cross.col1.z = v.x;
+    v_cross.col2.x = v.y;
+    v_cross.col2.y = -v.x;
+    v_cross.col2.z = 0;
+
+    t_matrix r = add_matrix_matrix(add_matrix_matrix(identity(), v_cross), mul_matrix_double(mul_matrix_matrix(v_cross, v_cross), (1-c)/pow(s,2)));
+    return r;
+}
+
+t_vec mul_matrix_vec(t_matrix m, t_vec v) {
+    return vec(
+        m.col0.x*v.x + m.col1.x*v.y + m.col2.x*v.z,
+        m.col0.y*v.x + m.col1.y*v.y + m.col2.y*v.z,
+        m.col0.z*v.x + m.col1.z*v.y + m.col2.z*v.z
+    );
+}
+
+bool root1(double a, double b, double c, double* root) {
+    double d = b*b-4*a*c;
+    if (d < 0)
+        return false;
+    *root = (-b-sqrt(d))/2/a;
+    return true;
+}
+
+bool root2(double a, double b, double c, double* root) {
+    double d = b*b-4*a*c;
+    if (d < 0)
+        return false;
+    *root = (-b+sqrt(d))/2/a;
+    return true;
+}
+
 t_hit    ray_cast_cylinder(t_ray ray, t_interval interval, t_object* obj)
 {
-    t_vec    oc;
-    double      a;
-    double      h;
-    double      c;
-    double      cad;
-    double      caoc;
-    double      discriminant;
-    double      root1;
-    double      root2;
-    double      cap_botom;
-    double      cap_top;
-    t_vec    intersection;
-    t_vec    cy_ax;
+    (void)interval;
+    t_vec ray_source_tick = sub_vec_vec(ray.origin, obj->value.cylinder.center);
+    t_vec d_hat = normalize(obj->value.cylinder.axis);
 
-    oc = sub_vec_vec(ray.origin, obj->value.cylinder.center);
-    cad = dot_vec(obj->value.cylinder.axis, ray.direction);
-    caoc = dot_vec(obj->value.cylinder.axis, oc);
-    a = dot_vec(ray.direction, ray.direction) - (cad * cad);
-    h = dot_vec(oc, ray.direction) - (cad * caoc);
-    c = length_squared(oc) - (caoc * caoc) - (obj->value.cylinder.radius * obj->value.cylinder.radius);
-    discriminant = (h * h) - (a * c);
-    if (discriminant < 0)
-        return (no_hit());
-    root1 = (-h - sqrt(discriminant)) / a;
-    root2 = (-h + sqrt(discriminant)) / a;
-    if (root1 > root2)
-        swap_double(&root1, &root2);
-    cap_top = caoc + root1 * cad;
-    cap_botom = caoc + root2 * cad;
-    if (cap_top < 0)
-    {
-        if (cap_botom < 0)
-            return (no_hit());
-        root1 = root2;
-        cap_top = cap_botom;
-    }
-    if (cap_top > obj->value.cylinder.height)
-    {
-        if (cap_botom > obj->value.cylinder.height)
-            return (no_hit());
-        root1 = root2;
-    }
+    t_matrix R = rotation_matrix(d_hat, vec(0,0,1));
+    t_vec ray_hat_rotated = mul_matrix_vec(R, normalize(ray.direction));
+    t_vec source_rotated = mul_matrix_vec(R, ray_source_tick);
 
-    if (!surrounds(interval, root1))
-        return (no_hit());
+
+    double a = pow(ray_hat_rotated.x, 2) +pow(ray_hat_rotated.y, 2);
+    double b = 2*(source_rotated.x*ray_hat_rotated.x+source_rotated.y*ray_hat_rotated.y);
+    double c = pow(source_rotated.x,2)+pow(source_rotated.y,2)-pow(obj->value.cylinder.radius,2);
+
+    double distance;
+    if (!root1(a,b,c,&distance))
+        return no_hit();
+    if (distance < 0)
+        root2(a,b,c,&distance);
+    if (distance < 0)
+        return no_hit();
+
+    t_vec intersect_tick = vec(source_rotated.x + ray_hat_rotated.x*distance,source_rotated.y + ray_hat_rotated.y*distance,0);
+    t_vec normal = mul_matrix_vec(rotation_matrix(vec(0,0,1), d_hat), intersect_tick);
+    if (dot_vec(normal, ray.direction) > 0)
+        normal = vec_neg(normal);
 
     t_hit hit;
     hit.hit = true;
-    hit.distance = root1;
     hit.object = obj;
+    hit.point = add_vec_vec(ray.origin, mul_vec_double(normalize(ray.direction), distance));
+    hit.distance = length(sub_vec_vec(hit.point, ray.origin));
+    hit.normal = normalize(normal);
 
-    intersection = at_ray(ray, root1);
-    cy_ax = mul_vec_double(obj->value.cylinder.axis, dot_vec(sub_vec_vec(intersection, obj->value.cylinder.center), obj->value.cylinder.axis));
-    hit.point = sub_vec_vec(sub_vec_vec(intersection, obj->value.cylinder.center), cy_ax);
-    hit.normal = normalize(hit.point);
+    if (hypot(obj->value.cylinder.radius, obj->value.cylinder.height/2) < length(sub_vec_vec(hit.point, obj->value.cylinder.center)))
+        return no_hit();
+
     return (hit);
 }
