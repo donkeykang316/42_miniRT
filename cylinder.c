@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:11 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 16:32:41 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/25 16:58:12 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,22 @@ t_hit    ray_cast_cylinder(t_ray ray, t_interval interval, t_object* obj)
     hit.distance = length(sub_vec_vec(hit.point, ray.origin));
     hit.normal = normalize(normal);
 
-    if (hypot(obj->value.cylinder.radius, obj->value.cylinder.height/2) < length(sub_vec_vec(hit.point, obj->value.cylinder.center)))
-        return no_hit();
+    if (hypot(obj->value.cylinder.radius, obj->value.cylinder.height/2) < length(sub_vec_vec(hit.point, obj->value.cylinder.center))) {
+        // render caps
+        double vertical_speed = projection_length(normalize(ray.direction), obj->value.cylinder.axis);
+        double times = (projection_length(sub_vec_vec(obj->value.cylinder.center, ray.origin), obj->value.cylinder.axis) + obj->value.cylinder.height/2) /vertical_speed;
+        t_vec intersection_2d = add_vec_vec(source_rotated, mul_vec_double(ray_hat_rotated, times));
+        if (hypot(intersection_2d.x, intersection_2d.y) > obj->value.cylinder.radius)
+            return no_hit();
+
+        t_hit hit;
+        hit.hit = true;
+        hit.object = obj;
+        hit.point = add_vec_vec(ray.origin, mul_vec_double(normalize(ray.direction), times));
+        hit.distance = length(sub_vec_vec(hit.point, ray.origin));
+        hit.normal = obj->value.cylinder.axis;
+        return hit;
+    }
 
     return (hit);
 }
