@@ -6,7 +6,7 @@
 #    By: apago <apago@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/25 14:00:28 by apago            ###   ########.fr        #
+#    Updated: 2024/08/25 19:58:49 by apago            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,14 +40,23 @@ SRCS	=	main.c\
 			random_generator.c\
 			util.c\
 			hooks.c\
+			hooks_util.c\
 			pixel.c\
 			mlx_init.c\
+			mlx_init_util.c\
 			error.c\
+			read_file.c\
 			parser.c\
+			parser_util_1.c\
+			parser_util_2.c\
+			parser_util_3.c\
+			parser_util_4.c\
 			print.c\
 			plane.c\
 			light.c\
 			render.c\
+			render_util_1.c\
+			render_util_2.c\
 
 OBJS	=	$(SRCS:.c=.o)
 

@@ -6,60 +6,57 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:07 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 18:18:12 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/25 20:04:37 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-double  find_root1(double discriminant, double h, double a)
+double	find_root1(double discriminant, double h, double a)
 {
-    double      sqrtd;
-    double      root;
+	double	sqrtd;
+	double	root;
 
-    sqrtd = sqrt(discriminant);
-    root = (h - sqrtd) / a;
-    return (root);
+	sqrtd = sqrt(discriminant);
+	root = (h - sqrtd) / a;
+	return (root);
 }
 
-double  find_root2(double discriminant, double h, double a)
+double	find_root2(double discriminant, double h, double a)
 {
-    double      sqrtd;
-    double      root;
+	double	sqrtd;
+	double	root;
 
-    sqrtd = sqrt(discriminant);
-    root = (h + sqrtd) / a;
-    return (root);
+	sqrtd = sqrt(discriminant);
+	root = (h + sqrtd) / a;
+	return (root);
 }
 
-t_hit ray_cast_sphere(t_ray ray, t_interval interval, t_object* object) {
-    t_vec    oc;
-    double      a;
-    double      h;
-    double      c;
-    double      discriminant;
-    double      root;
+t_hit	ray_cast_sphere(t_ray ray, t_interval interval, t_object *object)
+{
+	t_raycassphtmp	tmp;
 
-
-    oc = sub_vec_vec(object->value.sphere.center, ray.origin);
-    a = length_squared(ray.direction);
-    h = dot_vec(ray.direction, oc);
-    c = length_squared(oc) - (object->value.sphere.radius * object->value.sphere.radius);
-    discriminant = (h * h) - (a * c);
-    if (discriminant < 0)
-        return no_hit();
-    root = find_root1(discriminant, h, a);
-    if (!surrounds(interval, root))
-    {
-        root = find_root2(discriminant, h, a);
-        if (!surrounds(interval, root))
-            return no_hit();
-    }
-    t_vec hit_point = at_ray(ray, root);
-    return hit_object(
-        object,
-        length(sub_vec_vec(hit_point, ray.origin)),
-        hit_point,
-        div_vec_double(sub_vec_vec(hit_point, object->value.sphere.center), object->value.sphere.radius)
-    );
+	tmp.oc = sub_vec_vec(object->u_value.sphere.center, ray.origin);
+	tmp.a = length_squared(ray.direction);
+	tmp.h = dot_vec(ray.direction, tmp.oc);
+	tmp.c = length_squared(tmp.oc) - (object->u_value.sphere.radius
+			* object->u_value.sphere.radius);
+	tmp.discriminant = (tmp.h * tmp.h) - (tmp.a * tmp.c);
+	if (tmp.discriminant < 0)
+		return (no_hit());
+	tmp.root = find_root1(tmp.discriminant, tmp.h, tmp.a);
+	if (!surrounds(interval, tmp.root))
+	{
+		tmp.root = find_root2(tmp.discriminant, tmp.h, tmp.a);
+		if (!surrounds(interval, tmp.root))
+			return (no_hit());
+	}
+	tmp.hit_point = at_ray(ray, tmp.root);
+	return (hit_object(object,
+			length(sub_vec_vec(tmp.hit_point, ray.origin)),
+			tmp.hit_point,
+			div_vec_double(sub_vec_vec(tmp.hit_point,
+					object->u_value.sphere.center),
+				object->u_value.sphere.radius)
+		));
 }

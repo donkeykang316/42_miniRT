@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:24 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/23 19:13:27 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/25 17:41:41 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-double  degrees_to_radians(double degrees)
+double	degrees_to_radians(double degrees)
 {
-    double  radian;
+	double	radian;
 
-    radian = degrees * M_PI /180.0;
-    return (radian);
+	radian = degrees * M_PI /180.0;
+	return (radian);
 }

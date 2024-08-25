@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   random_generator.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:22:38 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/23 00:28:28 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/25 16:47:26 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ t_vec	random_vec(void)
 	return (vec(random_double(), random_double(), random_double()));
 }
 
-t_vec    random_vec_range(double min, double max)
+t_vec	random_vec_range(double min, double max)
 {
-    return (vec(random_double_range(min, max),
-            random_double_range(min, max),
-            random_double_range(min, max)));
+	return (vec(random_double_range(min, max),
+			random_double_range(min, max),
+			random_double_range(min, max)));
 }

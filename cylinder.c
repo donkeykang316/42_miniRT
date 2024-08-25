@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:11 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 19:54:02 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/25 20:05:12 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,20 +113,20 @@ bool root2(double a, double b, double c, double* root) {
 }
 
 t_hit render_caps(t_ray ray, t_object* obj, t_vec source_rotated, t_vec ray_hat_rotated, t_interval interval) {
-    double delta = obj->value.cylinder.height/2;
+    double delta = obj->u_value.cylinder.height/2;
 
     int i = 1;
-    if (dot_vec(obj->value.cylinder.axis, ray.direction) > 0)
+    if (dot_vec(obj->u_value.cylinder.axis, ray.direction) > 0)
         i = -1;
 
-    double vertical_speed = projection_length(normalize(ray.direction), obj->value.cylinder.axis);
-    double vertical_distance  =projection_length(sub_vec_vec(obj->value.cylinder.center, ray.origin), obj->value.cylinder.axis) + delta*i;
+    double vertical_speed = projection_length(normalize(ray.direction), obj->u_value.cylinder.axis);
+    double vertical_distance  =projection_length(sub_vec_vec(obj->u_value.cylinder.center, ray.origin), obj->u_value.cylinder.axis) + delta*i;
     double times = vertical_distance / vertical_speed;
     if (times<0)
         return no_hit();
 
     t_vec intersection_2d = add_vec_vec(source_rotated, mul_vec_double(ray_hat_rotated, times));
-    if (hypot(intersection_2d.x, intersection_2d.y) > obj->value.cylinder.radius) {
+    if (hypot(intersection_2d.x, intersection_2d.y) > obj->u_value.cylinder.radius) {
         return no_hit();
     }
 
@@ -135,7 +135,7 @@ t_hit render_caps(t_ray ray, t_object* obj, t_vec source_rotated, t_vec ray_hat_
     hit.object = obj;
     hit.point = add_vec_vec(ray.origin, mul_vec_double(normalize(ray.direction), times));
     hit.distance = length(sub_vec_vec(hit.point, ray.origin));
-    hit.normal = obj->value.cylinder.axis;
+    hit.normal = obj->u_value.cylinder.axis;
     if (dot_vec(hit.normal, ray.direction)>0)
         hit.normal = vec_neg(hit.normal);
     if (!surrounds(interval, hit.distance))
@@ -145,8 +145,8 @@ t_hit render_caps(t_ray ray, t_object* obj, t_vec source_rotated, t_vec ray_hat_
 
 t_hit    ray_cast_cylinder(t_ray ray, t_interval interval, t_object* obj)
 {
-    t_vec ray_source_tick = sub_vec_vec(ray.origin, obj->value.cylinder.center);
-    t_vec d_hat = normalize(obj->value.cylinder.axis);
+    t_vec ray_source_tick = sub_vec_vec(ray.origin, obj->u_value.cylinder.center);
+    t_vec d_hat = normalize(obj->u_value.cylinder.axis);
 
     t_matrix R = rotation_matrix(d_hat, vec(0,0,1));
     t_vec ray_hat_rotated = mul_matrix_vec(R, normalize(ray.direction));
@@ -155,7 +155,7 @@ t_hit    ray_cast_cylinder(t_ray ray, t_interval interval, t_object* obj)
 
     double a = pow(ray_hat_rotated.x, 2) +pow(ray_hat_rotated.y, 2);
     double b = 2*(source_rotated.x*ray_hat_rotated.x+source_rotated.y*ray_hat_rotated.y);
-    double c = pow(source_rotated.x,2)+pow(source_rotated.y,2)-pow(obj->value.cylinder.radius,2);
+    double c = pow(source_rotated.x,2)+pow(source_rotated.y,2)-pow(obj->u_value.cylinder.radius,2);
 
     double distance;
     if (!root1(a,b,c,&distance))
@@ -177,7 +177,7 @@ t_hit    ray_cast_cylinder(t_ray ray, t_interval interval, t_object* obj)
     hit.distance = length(sub_vec_vec(hit.point, ray.origin));
     hit.normal = normalize(normal);
 
-    if (hypot(obj->value.cylinder.radius, obj->value.cylinder.height/2) < length(sub_vec_vec(hit.point, obj->value.cylinder.center))) {
+    if (hypot(obj->u_value.cylinder.radius, obj->u_value.cylinder.height/2) < length(sub_vec_vec(hit.point, obj->u_value.cylinder.center))) {
         return render_caps(ray, obj, source_rotated, ray_hat_rotated, interval);
     }
     if (!surrounds(interval, hit.distance))
