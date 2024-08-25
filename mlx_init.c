@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mlx_init.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/25 15:24:45 by kaan              #+#    #+#             */
+/*   Updated: 2024/08/25 15:35:30 by kaan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 int	init_mlx_image(t_mlx_context *ctx)
@@ -8,84 +20,73 @@ int	init_mlx_image(t_mlx_context *ctx)
 	return (1);
 }
 
-void init_image(t_image* img, int width, int height) {
-    img->width = width;
-    img->height = height;
-    img->data = ft_calloc(width * height, sizeof(t_vec));
+void	init_image(t_image *img, int width, int height)
+{
+	img->width = width;
+	img->height = height;
+	img->data = ft_calloc(width * height, sizeof(t_vec));
 }
 
 int	init_mlx_context(t_mlx_context *ctx, int width, int height)
 {
-    ctx->width = width;
-    ctx->height = height;
-    void* mlx = mlx_init();
+	void	*mlx;
+
+	ctx->width = width;
+	ctx->height = height;
+	mlx = mlx_init();
 	if (!mlx)
 		return (0);
 	ctx->mlx_context = mlx;
 	ctx->window = mlx_new_window(mlx, width, height, "MiniRT");
-    init_mlx_image(ctx);
-    ctx->samples = 0;
-    init_image(&ctx->sum, ctx->width, ctx->height);
-    camera_init(&ctx->camera, ctx->world->camera, ctx->width, ctx->height);
+	init_mlx_image(ctx);
+	ctx->samples = 0;
+	init_image(&ctx->sum, ctx->width, ctx->height);
+	camera_init(&ctx->camera, ctx->world->camera, ctx->width, ctx->height);
 	mlx_put_image_to_window(ctx->mlx_context, ctx->window, ctx->mlx_image,
 		0, 0);
-    return 1;
+	return (1);
 }
 
-void display_image(t_mlx_context* ctx) {
-    int y = 0;
-    while(y < ctx->height) {
-        int x = 0;
-        while(x < ctx->width) {
-            t_vec color = gamma_correct(div_vec_double(ctx->sum.data[y * ctx->width + x], ctx->samples));
-            set_pixel(ctx, x, y, color);
-            x++;
-        }
-        y++;
-    }
-	mlx_put_image_to_window(ctx->mlx_context, ctx->window, ctx->mlx_image,
-		0, 0);
-    mlx_flush(ctx->mlx_context);
-}
-
-void debug_info(t_mlx_context* ctx) {
-    t_vec coords = ctx->camera.center;
-    char* s = ft_calloc(1024, sizeof(char));
-    sprintf(s, "camera coords: x=%f y=%f z=%f", coords.x, coords.y, coords.z);
-    mlx_string_put(ctx->mlx_context, ctx->window, 1, 10, 0xff0000, s);
-    ft_memset(s, 0, 1024);
-    t_vec direction = ctx->world->camera.direction;
-    sprintf(s, "camera direction: x=%f y=%f z=%f", direction.x, direction.y, direction.z);
-    mlx_string_put(ctx->mlx_context, ctx->window, 1, 20, 0xff0000, s);
-    sprintf(s, "sampled: %d", ctx->samples);
-    mlx_string_put(ctx->mlx_context, ctx->window, 1, 30, 0xff0000, s);
-    free(s);
-}
-
-int render_frame(t_mlx_context* ctx) {
-    t_camera camera = ctx->camera;
-
-    if (ctx->samples >= camera.samples_per_pixel) {
-        return 0;
-    }
-
-    t_image image = ctx->sum;
-
-    ctx->samples++;
-    render(ctx->world, camera, image);
-
-    display_image(ctx);
-    debug_info(ctx);
-
-    return ctx->samples < camera.samples_per_pixel;
-}
-
-void	setup_hooks(t_mlx_context *ctx)
+void	display_image(t_mlx_context *ctx)
 {
-	mlx_do_key_autorepeaton(ctx->mlx_context);
-	mlx_hook(ctx->window, 2, 1, &on_key_up, ctx);
-	mlx_expose_hook(ctx->window, &on_expose, ctx);
-    mlx_loop_hook(ctx->mlx_context, render_frame, ctx);
-	mlx_hook(ctx->window, 17, 0, &on_close_button, ctx);
-	mlx_clear_window(ctx->mlx_context, ctx->window);
+	int		y;
+	int		x;
+	t_vec	color;
+
+	y = 0;
+	while (y < ctx->height)
+	{
+		x = 0;
+		while (x < ctx->width)
+		{
+			color = gamma_correct(div_vec_double(ctx->sum.data[y
+						* ctx->width + x], ctx->samples));
+			set_pixel(ctx, x, y, color);
+			x++;
+		}
+		y++;
+	}
+	mlx_put_image_to_window(ctx->mlx_context, ctx->window, ctx->mlx_image,
+		0, 0);
+	mlx_flush(ctx->mlx_context);
+}
+
+void	debug_info(t_mlx_context *ctx)
+{
+	t_vec	coords;
+	char	*s;
+	t_vec	direction;
+
+	coords = ctx->camera.center;
+	s = ft_calloc(1024, sizeof(char));
+	sprintf(s, "camera coords: x=%f y=%f z=%f", coords.x, coords.y, coords.z);
+	mlx_string_put(ctx->mlx_context, ctx->window, 1, 10, 0xff0000, s);
+	ft_memset(s, 0, 1024);
+	direction = ctx->world->camera.direction;
+	sprintf(s, "camera direction: x=%f y=%f z=%f",
+		direction.x, direction.y, direction.z);
+	mlx_string_put(ctx->mlx_context, ctx->window, 1, 20, 0xff0000, s);
+	sprintf(s, "sampled: %d", ctx->samples);
+	mlx_string_put(ctx->mlx_context, ctx->window, 1, 30, 0xff0000, s);
+	free(s);
 }

@@ -3,53 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   interval.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrei <andrei@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:26 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/21 21:19:52 by andrei           ###   ########.fr       */
+/*   Updated: 2024/08/25 14:46:32 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-double  size(t_interval *ray_t)
+double	size(t_interval *ray_t)
 {
-    double  diff;
+	double	diff;
 
-    diff = ray_t->max - ray_t->min;
-    return (diff);
+	diff = ray_t->max - ray_t->min;
+	return (diff);
 }
 
-bool    contains(t_interval *ray_t, double x)
+bool	contains(t_interval *ray_t, double x)
 {
-    if (ray_t->min <= x && x <= ray_t->max)
-        return (true);
-    return (false);
+	if (ray_t->min <= x && x <= ray_t->max)
+		return (true);
+	return (false);
 }
 
-bool    surrounds(t_interval ray_t, double x)
+bool	surrounds(t_interval ray_t, double x)
 {
-    if (ray_t.min < x && x < ray_t.max)
-        return (true);
-    return (false);
+	if (ray_t.min < x && x < ray_t.max)
+		return (true);
+	return (false);
 }
 
-double  clamp(t_interval ray_t, double x)
+double	clamp(t_interval ray_t, double x)
 {
-    if (x < ray_t.min)
-        return (ray_t.min);
-    if (x > ray_t.max)
-        return (ray_t.max);
-    return (x);
+	if (x < ray_t.min)
+		return (ray_t.min);
+	if (x > ray_t.max)
+		return (ray_t.max);
+	return (x);
 }
-
-/*t_interval  expand(double delta)
-{
-    t_interval  interval;
-    double      padding;
-
-    padding = delta / 2;
-    interval.min = interval.min - padding;
-    interval.max = interval.max + padding;
-    return (interval);
-}*/

@@ -1,5 +1,16 @@
-#include "minirt.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pixel.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/25 16:36:04 by kaan              #+#    #+#             */
+/*   Updated: 2024/08/25 16:36:57 by kaan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minirt.h"
 
 unsigned int	flip_bytes(unsigned int x)
 {
@@ -30,8 +41,10 @@ int	set_pixel(t_mlx_context *ctx, int x, int y, t_vec rgb)
 {
 	unsigned int	color;
 	size_t			offset;
-    int cl = (int)(rgb.x * 255.) << 16 | (int)(rgb.y * 255.) << 8 | (int)(rgb.z * 255.);
+	int				cl;
 
+	cl = (int)(rgb.x * 255.) << 16
+		| (int)(rgb.y * 255.) << 8 | (int)(rgb.z * 255.);
 	if (x >= ctx->width || x < 0 || y < 0 || y >= ctx->height)
 		return (0);
 	offset = ctx->line_size * y + x * ctx->bits_per_px / 8;

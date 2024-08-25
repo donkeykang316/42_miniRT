@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hooks.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/25 14:41:55 by kaan              #+#    #+#             */
+/*   Updated: 2024/08/25 18:24:00 by kaan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 int	on_expose(t_mlx_context *ctx)
@@ -26,26 +38,14 @@ int	on_key_up(int keycode, t_mlx_context *ctx)
 		quit(ctx);
 		return (1);
 	}
-	if (keycode == 'w') {
-		ctx->camera.center.z -= 1.;
-		ft_memset(ctx->sum.data, 0, ctx->width*ctx->height*sizeof(t_vec));
-		ctx->samples = 0;
-	}
-	if (keycode == 's') {
-		ctx->camera.center.z += 1.;
-		ft_memset(ctx->sum.data, 0, ctx->width*ctx->height*sizeof(t_vec));
-		ctx->samples = 0;
-	}
-	if (keycode == 'a') {
-		ctx->camera.center.x -= 1.;
-		ft_memset(ctx->sum.data, 0, ctx->width*ctx->height*sizeof(t_vec));
-		ctx->samples = 0;
-	}
-	if (keycode == 'd') {
-		ctx->camera.center.x += 1.;
-		ft_memset(ctx->sum.data, 0, ctx->width*ctx->height*sizeof(t_vec));
-		ctx->samples = 0;
-	}
+	else if (keycode == 'w')
+		handle_key_w(ctx);
+	else if (keycode == 's')
+		handle_key_s(ctx);
+	else if (keycode == 'a')
+		handle_key_a(ctx);
+	else if (keycode == 'd')
+		handle_key_d(ctx);
 	return (1);
 }
 
