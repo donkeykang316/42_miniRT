@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:51:30 by andrei            #+#    #+#             */
-/*   Updated: 2024/08/25 18:34:50 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/25 19:57:31 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ t_vec    ray_trace(t_ray ray, int depth, t_world *world)
         return vec(0,0,0);
 
     t_interval interval;
-    interval.min = 0.01;
+    interval.min = EPSILON;
     interval.max = 1000;
 
     t_hit hit = ray_cast(ray, interval, world);

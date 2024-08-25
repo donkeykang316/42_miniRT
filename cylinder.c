@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:11 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 19:44:53 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/25 19:54:02 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ t_hit render_caps(t_ray ray, t_object* obj, t_vec source_rotated, t_vec ray_hat_
 
 t_hit    ray_cast_cylinder(t_ray ray, t_interval interval, t_object* obj)
 {
-    (void)interval;
     t_vec ray_source_tick = sub_vec_vec(ray.origin, obj->value.cylinder.center);
     t_vec d_hat = normalize(obj->value.cylinder.axis);
 
