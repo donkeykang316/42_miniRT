@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 19:07:35 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/25 20:00:14 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ typedef struct s_object {
 	t_object_type	type;
 	union
 	{
-		t_cylinder	cyllinder;
 		t_sphere	sphere;
 		t_plane		plane;
+        t_cylinder cylinder;
 	}	u_value;
 	t_material		material;
 }	t_object;
@@ -299,7 +299,7 @@ double			find_root1(double discriminant, double h, double a);
 double			find_root2(double discriminant, double h, double a);
 t_hit			ray_cast_sphere(t_ray ray,
 					t_interval interval, t_object *object);
-
+t_hit ray_cast_cylinder(t_ray ray, t_interval interval, t_object* obj);
 //cylinder
 
 //plane

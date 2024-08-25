@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:23:07 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 19:10:41 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/25 20:04:37 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_hit	ray_cast_sphere(t_ray ray, t_interval interval, t_object *object)
 	}
 	tmp.hit_point = at_ray(ray, tmp.root);
 	return (hit_object(object,
-			tmp.root,
+			length(sub_vec_vec(tmp.hit_point, ray.origin)),
 			tmp.hit_point,
 			div_vec_double(sub_vec_vec(tmp.hit_point,
 					object->u_value.sphere.center),

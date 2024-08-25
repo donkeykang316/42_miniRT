@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 16:42:42 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 18:05:09 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/25 20:02:58 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,15 @@ void	print_cylinder(t_object cylinder) {
 	t_vec	center;
 	t_vec	axis;
 
-	center = cylinder.u_value.cyllinder.center;
-	axis = cylinder.u_value.cyllinder.axis;
+	center = cylinder.u_value.cylinder.center;
+	axis = cylinder.u_value.cylinder.axis;
 	printf("\t\t[cylinder]\n\t\t\tcenter=(%.2f,%.2f, %.2f)\n\t\t\taxis=(%.2f, %.2f, %.2f)\n",
         center.x, center.y, center.z, axis.x, axis.y, axis.z);
 }
 void	print_plane(t_object plane) {
 	t_vec point = plane.u_value.plane.point;
 	t_vec normal = plane.u_value.plane.normal;
-	printf("\t\t[plane]\n\t\t\tpoint=(%.2f, %.2f, %.2f)\n\t\t\tnormal=(%.2f, %.2f, %.2f)\n", 
+	printf("\t\t[plane]\n\t\t\tpoint=(%.2f, %.2f, %.2f)\n\t\t\tnormal=(%.2f, %.2f, %.2f)\n",
         point.x, point.y, point.z, normal.x, normal.y, normal.z);
 }
 
@@ -66,7 +66,7 @@ void	print_world(t_world* world) {
             print_cylinder(world->objects[i]);
         else if (world->objects[i].type == OBJECT_TYPE_PLANE)
             print_plane(world->objects[i]);
-        else 
+        else
         	printf("\t\t[unknown]\n");
         print_material(world->objects[i].material);
     }

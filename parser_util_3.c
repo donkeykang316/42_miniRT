@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_util_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 16:28:32 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 18:04:35 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/25 20:01:21 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,11 @@ int	parse_cylinder(char **_scene, t_world *world, int *total)
 		return (0);
 	if (!parse_space(&scene, &parsed))
 		return (0);
-	if (!parse_vector(&scene, &obj.u_value.cyllinder.center, &parsed))
+	if (!parse_vector(&scene, &obj.u_value.cylinder.center, &parsed))
 		return (0);
 	if (!parse_space(&scene, &parsed))
 		return (0);
-	if (!parse_vector(&scene, &obj.u_value.cyllinder.axis, &parsed))
+	if (!parse_vector(&scene, &obj.u_value.cylinder.axis, &parsed))
 		return (0);
 	if (!parse_space(&scene, &parsed))
 		return (0);
@@ -117,16 +117,17 @@ int	parse_cylinder(char **_scene, t_world *world, int *total)
 		return (0);
 	if (!parse_space(&scene, &parsed))
 		return (0);
-	if (!parse_double(&scene, &obj.u_value.cyllinder.height, &parsed))
+	if (!parse_double(&scene, &obj.u_value.cylinder.height, &parsed))
 		return (0);
 	if (!parse_space(&scene, &parsed))
 		return (0);
 	if (!parse_color(&scene, &obj.material.albedo, &parsed))
 		return (0);
-	if (diameter < 0 || obj.u_value.cyllinder.height < 0
-		|| length(obj.u_value.cyllinder.axis) != 1.)
+	if (diameter < 0 || obj.u_value.cylinder.height < 0)
 		return (0);
-	obj.u_value.cyllinder.radius = diameter / 2;
+
+    obj.u_value.cylinder.axis = normalize(obj.u_value.cylinder.axis);
+	obj.u_value.cylinder.radius = diameter / 2;
 	add_object(world, obj);
 	*total += parsed;
 	*_scene += parsed;
