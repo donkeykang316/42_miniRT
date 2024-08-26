@@ -6,13 +6,13 @@
 #    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/26 15:47:31 by kaan             ###   ########.fr        #
+#    Updated: 2024/08/26 18:46:22 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .DEFAULT_TARGET := all
 
-NAME	=	minirt
+NAME	=	miniRT
 
 CC		=	gcc
 CFLAGS	=	-O2 -Wall -Werror -Wextra -Ilibmlx -g
