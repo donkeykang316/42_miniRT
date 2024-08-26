@@ -6,11 +6,30 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 16:29:45 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 18:04:49 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/26 15:11:06 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+int	parse_plane_properties(char **scene, t_object *obj, int *parsed)
+{
+	if (!parse_string(scene, "pl", parsed))
+		return (0);
+	if (!parse_space(scene, parsed))
+		return (0);
+	if (!parse_vector(scene, &obj->u_value.plane.point, parsed))
+		return (0);
+	if (!parse_space(scene, parsed))
+		return (0);
+	if (!parse_vector(scene, &obj->u_value.plane.normal, parsed))
+		return (0);
+	if (!parse_space(scene, parsed))
+		return (0);
+	if (!parse_color(scene, &obj->material.albedo, parsed))
+		return (0);
+	return (1);
+}
 
 int	parse_plane(char **_scene, t_world *world, int *total)
 {
@@ -22,19 +41,7 @@ int	parse_plane(char **_scene, t_world *world, int *total)
 	parsed = 0;
 	obj.type = OBJECT_TYPE_PLANE;
 	obj.material = default_material();
-	if (!parse_string(&scene, "pl", &parsed))
-		return (0);
-	if (!parse_space(&scene, &parsed))
-		return (0);
-	if (!parse_vector(&scene, &obj.u_value.plane.point, &parsed))
-		return (0);
-	if (!parse_space(&scene, &parsed))
-		return (0);
-	if (!parse_vector(&scene, &obj.u_value.plane.normal, &parsed))
-		return (0);
-	if (!parse_space(&scene, &parsed))
-		return (0);
-	if (!parse_color(&scene, &obj.material.albedo, &parsed))
+	if (!parse_plane_properties(&scene, &obj, &parsed))
 		return (0);
 	add_object(world, obj);
 	*total += parsed;

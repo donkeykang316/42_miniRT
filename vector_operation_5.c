@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:24:34 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 17:47:56 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/26 16:07:43 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,3 @@ t_vec	normalize(t_vec vec)
 	result = div_vec_double(vec, length(vec));
 	return (result);
 }
-

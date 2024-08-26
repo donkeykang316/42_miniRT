@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:33:49 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 20:00:14 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/26 16:06:04 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_vector
 	double	y;
 	double	z;
 }	t_vec;
-
 
 typedef struct s_parser	t_parser;
 
@@ -81,7 +80,7 @@ typedef struct s_object {
 	{
 		t_sphere	sphere;
 		t_plane		plane;
-        t_cylinder cylinder;
+		t_cylinder	cylinder;
 	}	u_value;
 	t_material		material;
 }	t_object;
@@ -133,7 +132,6 @@ typedef struct s_ray
 	t_vec	direction;
 }	t_ray;
 
-
 typedef struct s_interval
 {
 	double	min;
@@ -152,13 +150,6 @@ typedef struct s_amblight
 	double	intensity;
 	t_vec	color;
 }	t_amblight;
-
-typedef struct s_aabb
-{
-	t_interval	x;
-	t_interval	y;
-	t_interval	z;
-}	t_aabb;
 
 typedef struct s_image
 {
@@ -201,6 +192,12 @@ typedef struct s_mlx_context
 	t_camera	camera;
 	t_world		*world;
 }	t_mlx_context;
+
+typedef struct s_matrix {
+	t_vec	col0;
+	t_vec	col1;
+	t_vec	col2;
+}	t_matrix;
 
 typedef struct s_readtmp
 {
@@ -266,6 +263,32 @@ typedef struct s_raycassphtmp
 	t_vec	hit_point;
 }	t_raycassphtmp;
 
+typedef struct s_raycascyltmp
+{
+	t_vec		ray_source_tick;
+	t_vec		d_hat;
+	t_matrix	r;
+	t_vec		ray_hat_rotated;
+	t_vec		source_rotated;
+	double		a;
+	double		b;
+	double		c;
+	double		distance;
+	t_vec		intersect_tick;
+	t_vec		normal;
+	t_hit		hit;
+}	t_raycascyltmp;
+
+typedef struct s_rndcapstmp
+{
+	double	delta;
+	int		i;
+	double	vertical_speed;
+	double	vertical_distance;
+	double	times;
+	t_vec	intersection_2d;
+	t_hit	hit;
+}	t_rndcapstmp;
 
 int				error_msg(char *msg);
 double			angle_between(t_vec a, t_vec b);
@@ -299,9 +322,33 @@ double			find_root1(double discriminant, double h, double a);
 double			find_root2(double discriminant, double h, double a);
 t_hit			ray_cast_sphere(t_ray ray,
 					t_interval interval, t_object *object);
-t_hit ray_cast_cylinder(t_ray ray, t_interval interval, t_object* obj);
-//cylinder
 
+//cylinder
+void			swap_double(double *a, double *b);
+t_matrix		identity(void);
+t_matrix		add_matrix_matrix(t_matrix a, t_matrix b);
+t_matrix		mul_matrix_matrix(t_matrix a, t_matrix b);
+t_matrix		mul_matrix_double(t_matrix m, double d);
+
+//cylinder util 1
+t_matrix		rotation_matrix(t_vec turn_vec, t_vec into_vec);
+t_vec			mul_matrix_vec(t_matrix m, t_vec v);
+bool			root1(double a, double b, double c, double *root);
+bool			root2(double a, double b, double c, double *root);
+bool			compute_cap_intersection(t_ray ray, t_object *obj,
+					t_raycascyltmp *ray_ca, t_rndcapstmp *tmp);
+
+//cylinder util 2
+t_hit			construct_cap_hit(t_ray ray, t_object *obj,
+					t_rndcapstmp *tmp, t_interval interval);
+t_hit			render_caps(t_ray ray, t_object *obj,
+					t_raycascyltmp *ray_ca, t_interval interval);
+bool			calculate_cylinder_intersection(t_ray ray,
+					t_object *obj, t_raycascyltmp *tmp);
+t_hit			compute_hit_data(t_ray ray, t_object *obj,
+					t_raycascyltmp *tmp, t_interval interval);
+t_hit			ray_cast_cylinder(t_ray ray,
+					t_interval interval, t_object *obj);
 //plane
 t_hit			ray_cast_plane(t_ray ray,
 					t_interval interval, t_object *object);
@@ -366,6 +413,7 @@ t_vec			cross_vec(t_vec vec1, t_vec vec2);
 
 //util
 unsigned int	ft_rand(void);
+void			free_mem(t_mlx_context *ctx);
 
 //random generator
 double			random_double(void);
@@ -392,13 +440,27 @@ void			handle_key_s(t_mlx_context *ctx);
 void			handle_key_a(t_mlx_context *ctx);
 void			handle_key_d(t_mlx_context *ctx);
 
-
 //parser
 t_material		default_material(void);
 int				parse_char(char	**scene, char c, int *total);
 int				parse_space(char **scene, int *total);
 int				parse_whitespace(char **scene, int *total);
 int				parse_decimal(char **scene, int *dst, int *total);
+
+//parser cylinder
+int				parse_cylinder_type_and_space(char **scene, int *parsed);
+int				parse_cylinder_center_and_space(char **scene,
+					t_vec *center, int *parsed);
+int				parse_cylinder_axis_and_space(char **scene,
+					t_vec *axis, int *parsed);
+int				parse_cylinder_diameter_and_space(char **scene,
+					double *diameter, int *parsed);
+int				parse_cylinder_height_and_space(char **scene,
+					double *height, int *parsed);
+int				parse_cylinder_color(char **scene,
+					t_vec *color, int *parsed);
+int				parse_cylinder_properties(char **scene,
+					t_object *obj, double *diameter, int *parsed);
 
 //parser util 1
 int				parse_double(char **scene, double *flt, int *total);
@@ -430,7 +492,6 @@ int				expand_buffer(t_readtmp *tmp);
 int				read_file_content(t_readtmp *tmp);
 void			cleanup_on_error(t_readtmp *tmp);
 char			*read_file(char *name);
-
 
 # define PHONG_MAX_ANGLE 0.1
 # define PHONG_GLOSS 0.5

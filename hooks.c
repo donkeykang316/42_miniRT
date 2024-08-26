@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 14:41:55 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 18:24:00 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/26 15:14:30 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	quit(t_mlx_context *ctx)
 	mlx_loop_end(mlx);
 	mlx_destroy_display(mlx);
 	free(mlx);
-	exit(0);
+	free_mem(ctx);
+	exit (0);
 }
 
 int	on_key_up(int keycode, t_mlx_context *ctx)

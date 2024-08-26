@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: apago <apago@student.42.fr>                +#+  +:+       +#+         #
+#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/25 19:58:49 by apago            ###   ########.fr        #
+#    Updated: 2024/08/26 15:47:31 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,8 @@ SRCS	=	main.c\
 			camera.c\
 			camera_util.c\
 			cylinder.c\
+			cylinder_util_1.c\
+			cylinder_util_2.c\
 			ray_color.c\
 			sphere.c\
 			material_util.c\
@@ -47,6 +49,9 @@ SRCS	=	main.c\
 			error.c\
 			read_file.c\
 			parser.c\
+			parser_light.c\
+			parser_sphere.c\
+			parser_cylinder.c\
 			parser_util_1.c\
 			parser_util_2.c\
 			parser_util_3.c\

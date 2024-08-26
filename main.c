@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:43 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 18:40:25 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/26 16:21:00 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	main(int ac, char **av)
 	}
 	free(text);
 	print_world(&world);
-
 	ctx.world = &world;
 	if (!init_mlx_context(&ctx, 800, 600))
 		return (1);
@@ -38,4 +37,3 @@ int	main(int ac, char **av)
 	mlx_loop(ctx.mlx_context);
 	return (0);
 }
-

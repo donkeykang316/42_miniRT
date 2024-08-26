@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:20:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 20:04:52 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/26 16:03:42 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	render(t_world *world, t_camera camera, t_image image)
 
 	i = 0;
 	j = 0;
-
 	world->camera.view_point = camera.center;
 	camera_init(&camera, world->camera,
 		camera.image_width, camera.image_height);

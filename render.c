@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:51:30 by andrei            #+#    #+#             */
-/*   Updated: 2024/08/25 20:05:54 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/26 16:07:07 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ t_hit	ray_cast(t_ray ray, t_interval interval, t_world *world)
 	}
 	return (closest);
 }
-
 
 double	brdf(t_vec incident, t_vec reflected, t_vec normal)
 {

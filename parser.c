@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 15:36:26 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 20:00:51 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/26 16:06:40 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_material	default_material(void)
 {
 	t_material	mat;
 
-	mat.albedo = vec(0,0,0);
+	mat.albedo = vec(0, 0, 0);
 	return (mat);
 }
 
