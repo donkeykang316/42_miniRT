@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
+#    By: apago <apago@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 16:03:38 by kaan              #+#    #+#              #
-#    Updated: 2024/08/26 18:46:22 by kaan             ###   ########.fr        #
+#    Updated: 2024/08/26 19:06:30 by apago            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,6 @@ SRCS	=	main.c\
 			parser_util_2.c\
 			parser_util_3.c\
 			parser_util_4.c\
-			print.c\
 			plane.c\
 			light.c\
 			render.c\
