@@ -1,5 +1,5 @@
 **/*.a
 **/*.o
 **/*.ppm
-/minirt
+/miniRT
 /.vscode/**

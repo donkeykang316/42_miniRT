@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 18:26:47 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/26 19:40:01 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	init_camera_parameters(t_camera *camera, t_camera_spec spec)
 	camera->hfov = spec.hfov;
 	camera->lookfrom = spec.view_point;
 	camera->vup = vec(0, 10, 0);
+	if (spec.direction.x ==0 && spec.direction.z == 0)
+		camera->vup = vec(0,0,10);
 	camera->center = camera->lookfrom;
 	camera->pixel_samples_scale = 1.0 / camera->samples_per_pixel;
 	camera->max_depth = 50;
