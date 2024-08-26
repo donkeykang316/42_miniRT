@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 18:40:08 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/25 18:40:44 by kaan             ###   ########.fr       */
+/*   Updated: 2024/08/26 18:44:01 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ char	*read_file(char *name)
 {
 	t_readtmp	tmp;
 
+	if (!name)
+		return (0);
 	if (!open_file_and_init(&tmp, name))
 		return (0);
 	if (!read_file_content(&tmp))
