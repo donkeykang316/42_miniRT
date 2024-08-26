@@ -6,11 +6,18 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:43 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/26 19:08:06 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/26 20:04:49 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+static bool	world_valid(t_world *world)
+{
+	if (world->camera.hfov == 0)
+		return (false);
+	return (true);
+}
 
 int	main(int ac, char **av)
 {
@@ -23,7 +30,7 @@ int	main(int ac, char **av)
 	text = read_file(av[1]);
 	if (!text)
 		exit(error_msg("Error: failed to open file"));
-	if (!parse_world(text, &world))
+	if (!parse_world(text, &world) || !world_valid(&world))
 	{
 		if (world.point_lights)
 			free(world.point_lights);

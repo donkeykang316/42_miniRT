@@ -6,7 +6,7 @@
 /*   By: apago <apago@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:21:18 by kaan              #+#    #+#             */
-/*   Updated: 2024/08/26 19:40:01 by apago            ###   ########.fr       */
+/*   Updated: 2024/08/26 20:04:54 by apago            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	init_camera_parameters(t_camera *camera, t_camera_spec spec)
 	camera->hfov = spec.hfov;
 	camera->lookfrom = spec.view_point;
 	camera->vup = vec(0, 10, 0);
-	if (spec.direction.x ==0 && spec.direction.z == 0)
-		camera->vup = vec(0,0,10);
+	if (spec.direction.x == 0 && spec.direction.z == 0)
+		camera->vup = vec(0, 0, 10);
 	camera->center = camera->lookfrom;
 	camera->pixel_samples_scale = 1.0 / camera->samples_per_pixel;
 	camera->max_depth = 50;
@@ -40,8 +40,8 @@ void	calculate_viewport(t_camera *camera, t_camera_spec spec, t_camtmp *tmp)
 	tmp->h = tan(tmp->theta / 2);
 	tmp->focal_length = length(spec.direction);
 	tmp->viewport_height = 2.0 * tmp->h * tmp->focal_length;
-	tmp->viewport_width = tmp->viewport_height
-		* (double)(camera->image_width / camera->image_height);
+	tmp->viewport_width = tmp->viewport_height * (double)(camera->image_width
+			/ camera->image_height);
 	tmp->w = normalize(sub_vec_vec(vec(0, 0, 0), spec.direction));
 	tmp->u = normalize(cross_vec(camera->vup, tmp->w));
 	tmp->v = cross_vec(tmp->w, tmp->u);
